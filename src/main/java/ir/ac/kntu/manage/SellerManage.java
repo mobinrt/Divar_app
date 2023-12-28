@@ -97,25 +97,23 @@ public class SellerManage {
         showSellerMenu();
         int choice = getChoice(sc, 5);
         switch (choice) {
-            case 1:
+            case 1 -> {
                 sellerProfile(sc, seller);
                 sellerMenu(sc, seller);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 seller.showAvailableAds();
                 sellerMenu(sc, seller);
-                break;
-            case 3:
+            }
+            case 3 -> {
                 addAd(sc, seller);
                 sellerMenu(sc, seller);
-                break;
-            case 4:
+            }
+            case 4 -> {
                 seller.showHistory();
                 sellerMenu(sc, seller);
-                break;
-            default:
-                Main.getRunManage().run();
-                break;
+            }
+            default -> Main.getRunManage().run();
         }
     }
 
@@ -141,21 +139,19 @@ public class SellerManage {
         showProfileOption();
         int choice = getChoice(sc, 4);
         switch (choice) {
-            case 1:
+            case 1 -> {
                 System.out.println(seller.toString());
                 sellerProfile(sc, seller);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 editSellerInfo(sc, seller);
                 sellerProfile(sc, seller);
-                break;
-            case 3:
+            }
+            case 3 -> {
                 sellerWalletMenu(sc, seller);
                 sellerProfile(sc, seller);
-                break;
-            default:
-                sellerMenu(sc, seller);
-                break;
+            }
+            default -> sellerMenu(sc, seller);
         }
     }
 
@@ -163,11 +159,11 @@ public class SellerManage {
         showWalletOption();
         int choice = getChoice(sc, 3);
         switch (choice) {
-            case 1:
+            case 1 -> {
                 System.out.println("Your wallet: " + seller.getWallet());
                 sellerWalletMenu(sc, seller);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 System.out.println("How much do you want to withdraw money? if you want to back press zero.");
                 System.out.print("Enter: ");
                 int withDraw = sc.nextInt();
@@ -181,10 +177,8 @@ public class SellerManage {
                 System.out.println("Successfully done.");
                 System.out.println("==============================================================================================================");
                 sellerWalletMenu(sc, seller);
-                break;
-            default:
-                sellerProfile(sc, seller);
-                break;
+            }
+            default -> sellerProfile(sc, seller);
         }
     }
 
@@ -234,24 +228,12 @@ public class SellerManage {
         System.out.println("0. Back");
         int choice = getChoice(sc, 6);
         switch (choice) {
-            case 1:
-                adsCategory = AdsCategory.PHONE.name();
-                break;
-            case 2:
-                adsCategory = AdsCategory.HOME_STUFF.name();
-                break;
-            case 3:
-                adsCategory = AdsCategory.STATIONARY.name();
-                break;
-            case 4:
-                adsCategory = AdsCategory.CLOTHE.name();
-                break;
-            case 5:
-                adsCategory = AdsCategory.CAR.name();
-                break;
-            default:
-                sellerMenu(sc, seller);
-                break;
+            case 1 -> adsCategory = AdsCategory.PHONE.name();
+            case 2 -> adsCategory = AdsCategory.HOME_STUFF.name();
+            case 3 -> adsCategory = AdsCategory.STATIONARY.name();
+            case 4 -> adsCategory = AdsCategory.CLOTHE.name();
+            case 5 -> adsCategory = AdsCategory.CAR.name();
+            default -> sellerMenu(sc, seller);
         }
         return adsCategory;
     }

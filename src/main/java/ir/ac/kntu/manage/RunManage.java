@@ -17,22 +17,14 @@ public class RunManage {
         showFirstMenu();
         int type = getChoice(sc, 5);
         switch (type) {
-            case 1:
+            case 1 -> {
                 currentAdmin = adminManage.signInAdmin(sc);
                 adminManage.adminMenu(sc, currentAdmin);
-                break;
-            case 2:
-                handleSeller(sc);
-                break;
-            case 3:
-                handleCustomer(sc);
-                break;
-            case 4:
-                guest(sc);
-                break;
-            default:
-                System.exit(0);
-                break;
+            }
+            case 2 -> handleSeller(sc);
+            case 3 -> handleCustomer(sc);
+            case 4 -> guest(sc);
+            default -> System.exit(0);
         }
         sc.close();
     }

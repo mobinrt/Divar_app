@@ -98,26 +98,24 @@ public class CustomerManage {
         showCustomerMenu();
         int choice = getChoice(sc, 5);
         switch (choice) {
-            case 1:
+            case 1 -> {
                 customerProfile(sc, customer);
                 customerMenu(sc, customer);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 sortByPrice(sc, customer);
                 showAds(sc, customer);
                 customerMenu(sc, customer);
-                break;
-            case 3:
+            }
+            case 3 -> {
                 savedBoxOption(sc, customer);
                 customerMenu(sc, customer);
-                break;
-            case 4:
+            }
+            case 4 -> {
                 customer.showHistory();
                 customerMenu(sc, customer);
-                break;
-            default:
-                Main.getRunManage().run();
-                break;
+            }
+            default -> Main.getRunManage().run();
         }
     }
 
@@ -141,17 +139,15 @@ public class CustomerManage {
         System.out.println("==============================================================================================================");
         int type = getChoice(sc, 3);
         switch (type) {
-            case 1:
+            case 1 -> {
                 buyAd(sc, customer, product);
                 customerMenu(sc, customer);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 customer.getSavedBox().remove(choice);
                 customerMenu(sc, customer);
-                break;
-            default:
-                customerMenu(sc, customer);
-                break;
+            }
+            default -> customerMenu(sc, customer);
         }
     }
 
@@ -163,15 +159,9 @@ public class CustomerManage {
         System.out.println("==============================================================================================================");
         int choice = getChoice(sc, 3);
         switch (choice) {
-            case 1:
-                products.sort(Comparator.comparing(Product::getPrice));
-                break;
-            case 2:
-                products.sort(Comparator.comparing(Product::getPrice).reversed());
-                break;
-            default:
-                customerMenu(sc, customer);
-                break;
+            case 1 -> products.sort(Comparator.comparing(Product::getPrice));
+            case 2 -> products.sort(Comparator.comparing(Product::getPrice).reversed());
+            default -> customerMenu(sc, customer);
         }
     }
 
@@ -200,17 +190,15 @@ public class CustomerManage {
         showAdListOption();
         int type = getChoice(sc, 3);
         switch (type) {
-            case 1:
+            case 1 -> {
                 addToSavedBox(customer, product);
                 customerMenu(sc, customer);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 buyAd(sc, customer, product);
                 customerMenu(sc, customer);
-                break;
-            default:
-                showAds(sc, customer);
-                break;
+            }
+            default -> showAds(sc, customer);
         }
     }
 
@@ -258,21 +246,19 @@ public class CustomerManage {
         showProfileOption();
         int choice = getChoice(sc, 4);
         switch (choice) {
-            case 1:
+            case 1 -> {
                 System.out.println(customer.toString());
                 customerProfile(sc, customer);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 editCustomerInfo(sc, customer);
                 customerProfile(sc, customer);
-                break;
-            case 3:
+            }
+            case 3 -> {
                 customerWalletMenu(sc, customer);
                 customerProfile(sc, customer);
-                break;
-            default:
-                customerMenu(sc, customer);
-                break;
+            }
+            default -> customerMenu(sc, customer);
         }
     }
 
@@ -280,11 +266,11 @@ public class CustomerManage {
         walletOption();
         int choice = getChoice(sc, 3);
         switch (choice) {
-            case 1:
+            case 1 -> {
                 System.out.println("wallet: " + customer.getWallet());
                 customerWalletMenu(sc, customer);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 System.out.println("How much do you want to charge your wallet?");
                 System.out.print("Enter: ");
                 int charge = sc.nextInt();
@@ -292,10 +278,8 @@ public class CustomerManage {
                 customer.setWallet(charge);
                 System.out.println("Successfully done.");
                 customerWalletMenu(sc, customer);
-                break;
-            default:
-                customerProfile(sc, customer);
-                break;
+            }
+            default -> customerProfile(sc, customer);
         }
     }
 
@@ -381,26 +365,14 @@ public class CustomerManage {
         System.out.println("0. Back");
         int choice = getChoice(sc, 7);
         switch (choice) {
-            case 1:
-                adsCategory = AdsCategory.PHONE.name();
-                break;
-            case 2:
-                adsCategory = AdsCategory.HOME_STUFF.name();
-                break;
-            case 3:
-                adsCategory = AdsCategory.STATIONARY.name();
-                break;
-            case 4:
-                adsCategory = AdsCategory.CLOTHE.name();
-                break;
-            case 5:
-                adsCategory = AdsCategory.CAR.name();
-                break;
-            case 6:
-                break;
-            default:
-                customerMenu(sc, customer);
-                break;
+            case 1 -> adsCategory = AdsCategory.PHONE.name();
+            case 2 -> adsCategory = AdsCategory.HOME_STUFF.name();
+            case 3 -> adsCategory = AdsCategory.STATIONARY.name();
+            case 4 -> adsCategory = AdsCategory.CLOTHE.name();
+            case 5 -> adsCategory = AdsCategory.CAR.name();
+            case 6 -> {
+            }
+            default -> customerMenu(sc, customer);
         }
         return adsCategory;
     }

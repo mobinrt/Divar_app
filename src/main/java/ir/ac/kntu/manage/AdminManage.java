@@ -57,25 +57,23 @@ public class AdminManage {
         showAdminMenu();
         int choice = getChoice(sc, 5);
         switch (choice) {
-            case 1:
+            case 1 -> {
                 customerEdit(sc, admin);
                 adminMenu(sc, admin);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 sellerEdit(sc, admin);
                 adminMenu(sc, admin);
-                break;
-            case 3:
+            }
+            case 3 -> {
                 adsEdit(sc, admin);
                 adminMenu(sc, admin);
-                break;
-            case 4:
+            }
+            case 4 -> {
                 reqListOption(sc, admin);
                 adminMenu(sc, admin);
-                break;
-            default:
-                Main.getRunManage().run();
-                break;
+            }
+            default -> Main.getRunManage().run();
         }
     }
 
@@ -134,21 +132,19 @@ public class AdminManage {
         showReqListOption();
         int choice = getChoice(sc, 4);
         switch (choice) {
-            case 1:
+            case 1 -> {
                 acceptReq(sc, admin);
                 reqListOption(sc, admin);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 deniedReq(sc, admin);
                 reqListOption(sc, admin);
-                break;
-            case 3:
+            }
+            case 3 -> {
                 showReqList(sc, admin);
                 reqListOption(sc, admin);
-                break;
-            default:
-                adminMenu(sc, admin);
-                break;
+            }
+            default -> adminMenu(sc, admin);
         }
     }
 
