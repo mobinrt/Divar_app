@@ -1,6 +1,7 @@
 package ir.ac.kntu.util;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Seller extends User {
     private ArrayList<Product> products;
@@ -17,7 +18,6 @@ public class Seller extends User {
         history = new ArrayList<>();
         products = new ArrayList<>();
     }
-
 
     public void showAvailableAds() {
         if (products.isEmpty()) {

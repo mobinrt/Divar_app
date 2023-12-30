@@ -27,39 +27,6 @@ public class SellerManage {
         System.out.println("==============================================================================================================");
     }
 
-    public Seller addSeller(Scanner sc) {
-        sc.nextLine();
-        Seller currentSeller;
-        System.out.print("Enter your username: ");
-        String userName = sc.nextLine();
-        System.out.print("Enter your password: ");
-        String password = sc.nextLine();
-        System.out.print("Enter your password again: ");
-        String confirmPassword = sc.nextLine();
-        if (!confirmPassword.matches(password)) {
-            System.out.println("Enter the same password");
-            System.out.println("==============================================================================================================");
-            return addSeller(sc);
-        }
-        System.out.print("Enter your phone number: ");
-        String phoneNumber = sc.nextLine();
-        System.out.print("Enter your email: ");
-        String email = sc.nextLine();
-        if (!checkInfo(userName)) {
-            System.out.println("==============================================================================================================");
-            return addSeller(sc);
-        }
-        if (checkInfo(password, phoneNumber, email)) {
-            currentSeller = new Seller(userName, password, phoneNumber, email);
-            sellers.add(currentSeller);
-            System.out.println("Successfully done.");
-            return currentSeller;
-        } else {
-            System.out.println("==============================================================================================================");
-            return addSeller(sc);
-        }
-    }
-
     public Seller signInSeller(Scanner sc) {
         sc.nextLine();
         System.out.print("Enter your username: ");
@@ -144,7 +111,7 @@ public class SellerManage {
                 sellerProfile(sc, seller);
             }
             case 2 -> {
-                editSellerInfo(sc, seller);
+                seller.editUserInfo(sc, seller);
                 sellerProfile(sc, seller);
             }
             case 3 -> {
@@ -182,42 +149,6 @@ public class SellerManage {
         }
     }
 
-    private void editSellerInfo(Scanner sc, Seller currentSeller) {
-        sc.nextLine();
-        System.out.print("Enter new username: ");
-        String userName = sc.nextLine();
-        System.out.print("Enter new password: ");
-        String password = sc.nextLine();
-        System.out.print("Enter your password again: ");
-        String confirmPassword = sc.nextLine();
-        if (!confirmPassword.matches(password)) {
-            System.out.println("Enter the same password");
-            System.out.println("==============================================================================================================");
-            editSellerInfo(sc, currentSeller);
-            return;
-        }
-        System.out.print("Enter new phone number: ");
-        String phoneNumber = sc.nextLine();
-        System.out.print("Enter new email: ");
-        String email = sc.nextLine();
-
-        if (!currentSeller.getUserName().matches(userName)) {
-            if (!checkInfo(userName)) {
-                editSellerInfo(sc, currentSeller);
-                return;
-            }
-        }
-        if (checkInfo(password, phoneNumber, email)) {
-            currentSeller.setUserName(userName);
-            currentSeller.setPassword(password);
-            currentSeller.setPhoneNumber(phoneNumber);
-            currentSeller.setEmail(email);
-            System.out.println("Successfully done.");
-            System.out.println("==============================================================================================================");
-        }
-        sellerProfile(sc, currentSeller);
-    }
-
     private String showAdsCategory(Scanner sc, Seller seller) {
         String adsCategory = null;
         System.out.println("1. " + AdsCategory.PHONE.name());
@@ -248,41 +179,6 @@ public class SellerManage {
             return getChoice(scan, bound);
         }
     }
-
-    private boolean checkInfo(String userName) {
-        for (Seller seller : sellers) {
-            if (userName.equals(seller.getUserName())) {
-                System.out.println("This user name had taken please try again.");
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * @param password    - user password
-     * @param phoneNumber - user password phone number
-     * @param email       - user password email
-     * @return boolean
-     */
-    private boolean checkInfo(String password, String phoneNumber, String email) {
-        if (!password.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}")) {
-            System.out.println("The password should contain at least one small , capital letter and number.");
-            return false;
-        }
-
-        if (!phoneNumber.matches("0\\d{10}")) {
-            System.out.println("Please enter phone number properly.");
-            return false;
-        }
-
-        if (!email.matches(".*@.*\\.com")) {
-            System.out.println("Please enter email properly.");
-            return false;
-        }
-        return true;
-    }
-
     private void showSellerMenu() {
         System.out.println("==============================================================================================================");
         System.out.println("1. Profile");

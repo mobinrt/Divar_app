@@ -1,14 +1,13 @@
 package ir.ac.kntu.util;
 
-public class Admin extends User {
+public class MainAdmin extends Admin{
     /**
      * @param userName    - admin name
      * @param password    - admin password
      * @param phoneNumber - admin phone number
      * @param email       - admin email
      */
-
-    public Admin(String userName, String password, String phoneNumber, String email) {
+    public MainAdmin(String userName, String password, String phoneNumber, String email) {
         super(userName, password, phoneNumber, email);
     }
 }
