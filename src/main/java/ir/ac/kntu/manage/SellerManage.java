@@ -3,57 +3,10 @@ package ir.ac.kntu.manage;
 import ir.ac.kntu.Main;
 import ir.ac.kntu.util.*;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SellerManage {
-    private final ArrayList<Seller> sellers;
-
     public SellerManage() {
-        sellers = new ArrayList<>();
-        sellers.add(new Seller("s", "s", "s", "s"));
-        sellers.add(new Seller("ss", "s", "s", "s"));
-    }
-
-    public void showSellersList() {
-        if (sellers.isEmpty()) {
-            System.out.println("Seller box is empty");
-            return;
-        }
-        System.out.println("===============================================   Sellers:  ==================================================");
-        for (Seller seller : sellers) {
-            System.out.println(sellers.indexOf(seller) + 1 + ") " + seller);
-        }
-        System.out.println("==============================================================================================================");
-    }
-
-    public Seller signInSeller(Scanner sc) {
-        sc.nextLine();
-        System.out.print("Enter your username: ");
-        String userName = sc.nextLine();
-        System.out.print("Enter your password: ");
-        String password = sc.nextLine();
-        Seller currentSeller = findUser(userName, password);
-        if (currentSeller == null) {
-            System.out.println("Invalid username or password!!");
-            System.out.println("==============================================================================================================");
-            return signInSeller(sc);
-        }
-        return currentSeller;
-    }
-
-    /**
-     * @param userName -i have set a username for my online profile
-     * @param password - the user password
-     * @return current seller
-     */
-    private Seller findUser(String userName, String password) {
-        for (Seller seller : sellers) {
-            if (userName.equals(seller.getUserName()) && password.equals(seller.getPassword())) {
-                return seller;
-            }
-        }
-        return null;
     }
 
     /**
@@ -179,6 +132,7 @@ public class SellerManage {
             return getChoice(scan, bound);
         }
     }
+
     private void showSellerMenu() {
         System.out.println("==============================================================================================================");
         System.out.println("1. Profile");
@@ -204,10 +158,6 @@ public class SellerManage {
         System.out.println("2. Withdraw money");
         System.out.println("0. Back");
         System.out.println("==============================================================================================================");
-    }
-
-    public ArrayList<Seller> getSellers() {
-        return sellers;
     }
 }
 

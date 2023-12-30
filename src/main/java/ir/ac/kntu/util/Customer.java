@@ -17,6 +17,7 @@ public class Customer extends User {
         super(userName, password, phoneNumber, email);
         history = new ArrayList<>();
         savedBox = new ArrayList<>();
+        setRole(UsersRole.CUSTOMER);
     }
 
     public void showSavedBox() {

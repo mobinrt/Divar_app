@@ -17,6 +17,7 @@ public class Seller extends User {
         super(userName, password, phoneNumber, email);
         history = new ArrayList<>();
         products = new ArrayList<>();
+        setRole(UsersRole.SELLER);
     }
 
     public void showAvailableAds() {

@@ -7,8 +7,8 @@ public class Admin extends User {
      * @param phoneNumber - admin phone number
      * @param email       - admin email
      */
-
     public Admin(String userName, String password, String phoneNumber, String email) {
         super(userName, password, phoneNumber, email);
+        setRole(UsersRole.ADMIN);
     }
 }

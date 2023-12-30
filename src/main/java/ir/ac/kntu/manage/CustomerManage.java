@@ -1,9 +1,7 @@
 package ir.ac.kntu.manage;
 
 import ir.ac.kntu.Main;
-import ir.ac.kntu.util.AdsCategory;
-import ir.ac.kntu.util.Customer;
-import ir.ac.kntu.util.Product;
+import ir.ac.kntu.util.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,55 +9,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CustomerManage {
-    private final ArrayList<Customer> customers;
     private final ArrayList<Product> products;
 
     public CustomerManage() {
-        customers = new ArrayList<>();
-        customers.add(new Customer("c", "c", "c", "c"));
-        customers.add(new Customer("cc", "c", "c", "c"));
         products = new ArrayList<>();
-    }
-
-    public void showCustomersList() {
-        if (customers.isEmpty()) {
-            System.out.println("Customer box is empty");
-            return;
-        }
-        System.out.println("===============================================   Customers:  ================================================");
-        for (Customer customer : customers) {
-            System.out.println(customers.indexOf(customer) + 1 + ") " + customer);
-        }
-        System.out.println("==============================================================================================================");
-    }
-
-    public Customer signInCustomer(Scanner sc) {
-        sc.nextLine();
-        System.out.print("Enter your username: ");
-        String userName = sc.nextLine();
-        System.out.print("Enter your password: ");
-        String password = sc.nextLine();
-        Customer currentCustomer = findUser(userName, password);
-        if (currentCustomer == null) {
-            System.out.println("Invalid username or password!!");
-            System.out.println("==============================================================================================================");
-            return signInCustomer(sc);
-        }
-        return currentCustomer;
-    }
-
-    /**
-     * @param userName - The name of the user
-     * @param password - The password of the user
-     * @return customer
-     */
-    private Customer findUser(String userName, String password) {
-        for (Customer customer : customers) {
-            if (userName.equals(customer.getUserName()) && password.equals(customer.getPassword())) {
-                return customer;
-            }
-        }
-        return null;
     }
 
     public void customerMenu(Scanner sc, Customer customer) {
@@ -204,11 +157,11 @@ public class CustomerManage {
     }
 
     public void deleteProductFromSavedBox(Product deleteProduct) {
-        for (Customer customer : customers) {
+        for (User user : Main.getRunManage().getUsers()) {
+            Customer customer = (Customer) user;
             customer.getSavedBox().removeIf(product -> product.equals(deleteProduct));
         }
     }
-
 
     private void customerProfile(Scanner sc, Customer customer) {
         showProfileOption();
@@ -359,7 +312,4 @@ public class CustomerManage {
         return products;
     }
 
-    public ArrayList<Customer> getCustomers() {
-        return customers;
-    }
 }

@@ -1,16 +1,22 @@
 package ir.ac.kntu.manage;
 
-import ir.ac.kntu.util.Admin;
-import ir.ac.kntu.util.Customer;
-import ir.ac.kntu.util.Seller;
-import ir.ac.kntu.util.User;
+import ir.ac.kntu.util.*;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class RunManage {
     private final AdminManage adminManage = new AdminManage();
     private final SellerManage sellerManage = new SellerManage();
     private final CustomerManage customerManage = new CustomerManage();
+    private ArrayList<User> users;
+
+    public RunManage() {
+        users = new ArrayList<>();
+        users.add(new Admin("a", "a", "a", "a"));
+        users.add(new Seller("s", "s", "s", "s"));
+        users.add(new Customer("c", "c", "c", "c"));
+    }
 
     public void run() {
         Scanner sc = new Scanner(System.in);
@@ -19,13 +25,14 @@ public class RunManage {
         int choice = getChoice(sc, 4);
         switch (choice) {
             case 1 -> {
-                return;//sign in
+                user = signIn(sc);
+                handleUserMenu(sc, user);
             }
-            case 2 -> {
+                case 2 -> {
                 user = addUser(sc);
                 user = getRole(sc, user.getUserName(), user.getPassword(),
                         user.getPhoneNumber(), user.getEmail());
-                signUp(sc, user);
+                handleUserMenu(sc, user);
             }
             case 3 -> guest(sc);
             default -> System.exit(0);
@@ -33,7 +40,31 @@ public class RunManage {
         sc.close();
     }
 
-    private void signUp(Scanner sc, User user) {
+    public User signIn(Scanner sc) {
+        sc.nextLine();
+        System.out.print("Enter your username: ");
+        String userName = sc.nextLine();
+        System.out.print("Enter your password: ");
+        String password = sc.nextLine();
+        User currentUser = findUser(userName, password);
+        if (currentUser == null) {
+            System.out.println("Invalid username or password!!");
+            System.out.println("==============================================================================================================");
+            return signIn(sc);
+        }
+        return currentUser;
+    }
+
+    public User findUser(String userName, String password) {
+        for (User user : users) {
+            if (userName.equals(user.getUserName()) && password.equals(user.getPassword())) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    private void handleUserMenu(Scanner sc, User user) {
         if (user instanceof Admin currentAdmin) {
             adminManage.adminMenu(sc, currentAdmin);
             return;
@@ -65,18 +96,28 @@ public class RunManage {
         System.out.print("Enter your email: ");
         String email = sc.nextLine();
         User user = new User(userName, password, phoneNumber, email);
-        if (!user.checkInfo(userName)) {
+        if (!checkInfo(userName)) {
             System.out.println("==============================================================================================================");
             return addUser(sc);
         }
         if (user.checkInfo(password, phoneNumber, email)) {
-            user.getUsers().add(user);
+            users.add(user);
             System.out.println("Successfully done.");
             return user;
         } else {
             System.out.println("==============================================================================================================");
             return addUser(sc);
         }
+    }
+
+    public boolean checkInfo(String userName) {
+        for (User user : users) {
+            if (userName.equals(user.getUserName())) {
+                System.out.println("This user name had taken please try again.");
+                return false;
+            }
+        }
+        return true;
     }
 
     private void guest(Scanner sc) {
@@ -96,21 +137,25 @@ public class RunManage {
 
     private User getRole(Scanner sc, String userName, String password, String phoneNumber, String email) {
         showRoleMenu();
+        User user = null;
         System.out.println("which one is your role?");
         int choice = getChoice(sc, 4);
         switch (choice) {
             case 1 -> {
-                return new Admin(userName, password, phoneNumber, email);
+                user = new Admin(userName, password, phoneNumber, email);
+                user.setRole(UsersRole.ADMIN);
             }
             case 2 -> {
-                return new Seller(userName, password, phoneNumber, email);
+                user = new Seller(userName, password, phoneNumber, email);
+                user.setRole(UsersRole.SELLER);
             }
             case 3 -> {
-                return new Customer(userName, password, phoneNumber, email);
+                user = new Customer(userName, password, phoneNumber, email);
+                user.setRole(UsersRole.CUSTOMER);
             }
             default -> run();
         }
-        return null;
+        return user;
     }
 
     /**
@@ -157,5 +202,9 @@ public class RunManage {
 
     public SellerManage getSellerManage() {
         return sellerManage;
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
     }
 }

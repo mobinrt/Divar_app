@@ -3,7 +3,7 @@ package ir.ac.kntu;
 import ir.ac.kntu.manage.RunManage;
 
 /**
- * AP first project
+ * AP second project
  * 1402 3rd semester
  * @author mobin
  */

@@ -1,21 +1,21 @@
 package ir.ac.kntu.util;
 
-import java.util.ArrayList;
+import ir.ac.kntu.Main;
+
 import java.util.Scanner;
 
 public class User {
+    private UsersRole role;
     private String userName;
     private String password;
     private String phoneNumber;
     private String email;
     private int wallet;
-    private ArrayList<User> users;
 
     public User(String userName, String password) {
         this.userName = userName;
         this.password = password;
         wallet = 0;
-        users = new ArrayList<>();
     }
 
     public User(String userName, String password, String phoneNumber, String email) {
@@ -44,7 +44,7 @@ public class User {
         String email = sc.nextLine();
 
         if (!currentUser.getUserName().matches(userName)) {
-            if (!checkInfo(userName)) {
+            if (!Main.getRunManage().checkInfo(userName)) {
                 editUserInfo(sc, currentUser);
                 return;
             }
@@ -57,16 +57,6 @@ public class User {
             System.out.println("Successfully done.");
             System.out.println("===========================================================================================================");
         }
-    }
-
-    public boolean checkInfo(String userName) {
-        for (User user : users) {
-            if (userName.equals(user.getUserName())) {
-                System.out.println("This user name had taken please try again.");
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
@@ -93,6 +83,15 @@ public class User {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Role: " + getRole() + ", " +
+                "userName: " + getUserName() + ", " +
+                "Password: " + getPassword() + ", " +
+                "Phone Number: " + getPhoneNumber() + ", " +
+                "Email: " + getEmail() + ", " +
+                "Wallet: " + getWallet() + " }";
+    }
 
     public String getUserName() {
         return userName;
@@ -134,16 +133,11 @@ public class User {
         this.wallet = wallet;
     }
 
-    public ArrayList<User> getUsers() {
-        return users;
+    public UsersRole getRole() {
+        return role;
     }
 
-    @Override
-    public String toString() {
-        return "userName: " + getUserName() + ", " +
-                "Password: " + getPassword() + ", " +
-                "Phone Number: " + getPhoneNumber() + ", " +
-                "Email: " + getEmail() + ", " +
-                "Wallet: " + getWallet() + " }";
+    public void setRole(UsersRole role) {
+        this.role = role;
     }
 }
