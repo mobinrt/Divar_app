@@ -13,7 +13,7 @@ public class RunManage {
 
     public RunManage() {
         users = new ArrayList<>();
-        users.add(new Admin("a", "a", "a", "a"));
+        users.add(new MainAdmin("a", "a", "a", "a"));
         users.add(new Seller("s", "s", "s", "s"));
         users.add(new Customer("c", "c", "c", "c"));
     }

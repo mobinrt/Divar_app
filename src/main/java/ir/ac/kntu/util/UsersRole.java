@@ -1,5 +1,5 @@
 package ir.ac.kntu.util;
 
 public enum UsersRole {
-    ADMIN, SELLER, CUSTOMER
+    ADMIN, MAIN_ADMIN, SELLER, CUSTOMER
 }

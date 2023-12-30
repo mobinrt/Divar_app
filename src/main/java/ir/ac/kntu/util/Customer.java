@@ -1,7 +1,6 @@
 package ir.ac.kntu.util;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Customer extends User {
     private final ArrayList<Product> savedBox;

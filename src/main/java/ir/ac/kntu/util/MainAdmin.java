@@ -9,5 +9,6 @@ public class MainAdmin extends Admin{
      */
     public MainAdmin(String userName, String password, String phoneNumber, String email) {
         super(userName, password, phoneNumber, email);
+        setRole(UsersRole.MAIN_ADMIN);
     }
 }
