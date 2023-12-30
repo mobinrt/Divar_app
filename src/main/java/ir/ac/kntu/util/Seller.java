@@ -2,12 +2,7 @@ package ir.ac.kntu.util;
 
 import java.util.ArrayList;
 
-public class Seller {
-    private String userName;
-    private String password;
-    private String phoneNumber;
-    private String email;
-    private int wallet;
+public class Seller extends User {
     private ArrayList<Product> products;
     private final ArrayList<Product> history;
 
@@ -18,18 +13,11 @@ public class Seller {
      * @param email       - seller email
      */
     public Seller(String userName, String password, String phoneNumber, String email) {
-        this(userName, password);
-        this.phoneNumber = phoneNumber;
-        this.email = email;
+        super(userName, password, phoneNumber, email);
+        history = new ArrayList<>();
+        products = new ArrayList<>();
     }
 
-    public Seller(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
-        products = new ArrayList<>();
-        history = new ArrayList<>();
-        wallet = 0;
-    }
 
     public void showAvailableAds() {
         if (products.isEmpty()) {
@@ -67,38 +55,6 @@ public class Seller {
         return products.get(products.size() - 1);
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public int getWallet() {
-        return wallet;
-    }
-
-    public void setWallet(int wallet) {
-        this.wallet = wallet;
-    }
-
     public ArrayList<Product> getProducts() {
         return products;
     }
@@ -109,16 +65,6 @@ public class Seller {
 
     public ArrayList<Product> getHistory() {
         return history;
-    }
-
-    @Override
-    public String toString() {
-        return "Seller) " + "{ " +
-                "UserName: " + userName + ", " +
-                "Password: " + password + ", " +
-                "Phone Number: " + phoneNumber + ", " +
-                "Email: " + email + ", " +
-                "Wallet: " + wallet + " }";
     }
 }
 

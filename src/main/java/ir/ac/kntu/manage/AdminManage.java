@@ -12,7 +12,7 @@ public class AdminManage {
 
     public AdminManage() {
         admins = new ArrayList<>();
-        admins.add(new Admin("a", "a"));
+        admins.add(new Admin("a", "a", "a", "a"));
         req = new ArrayList<>();
     }
 

@@ -1,24 +1,13 @@
 package ir.ac.kntu.util;
 
-public class Admin {
-    private final String userName;
-    private final String password;
-
+public class Admin extends User {
     /**
-     * @param userName - the name of user
-     * @param password - password of user
+     * @param userName    - admin name
+     * @param password    - admin password
+     * @param phoneNumber - admin phone number
+     * @param email       - admin email
      */
-    public Admin(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
-    }
-
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getPassword() {
-        return password;
+    public Admin(String userName, String password, String phoneNumber, String email) {
+        super(userName, password, phoneNumber, email);
     }
 }
