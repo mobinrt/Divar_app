@@ -12,16 +12,12 @@ public class User {
     private String email;
     private int wallet;
 
-    public User(String userName, String password) {
+    public User(String userName, String password, String phoneNumber, String email) {
         this.userName = userName;
         this.password = password;
-        wallet = 0;
-    }
-
-    public User(String userName, String password, String phoneNumber, String email) {
-        this(userName, password);
         this.phoneNumber = phoneNumber;
         this.email = email;
+        wallet = 0;
     }
 
     public void editUserInfo(Scanner sc, User currentUser) {

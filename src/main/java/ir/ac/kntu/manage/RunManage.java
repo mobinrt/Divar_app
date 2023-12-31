@@ -9,6 +9,7 @@ public class RunManage {
     private final AdminManage adminManage = new AdminManage();
     private final SellerManage sellerManage = new SellerManage();
     private final CustomerManage customerManage = new CustomerManage();
+    private final DeliveryManage deliveryManage = new DeliveryManage();
     private ArrayList<User> users;
 
     public RunManage() {
@@ -16,6 +17,12 @@ public class RunManage {
         users.add(new MainAdmin("a", "a", "a", "a"));
         users.add(new Seller("s", "s", "s", "s"));
         users.add(new Customer("c", "c", "c", "c"));
+        users.add(new Delivery("d", "d", "d", "d", VehicleType.MOTOR));
+        users.add(new Delivery("dd", "dd", "dd", "dd", VehicleType.MOTOR));
+        users.add(new Delivery("ddd", "ddd", "ddd", "ddd", VehicleType.MOTOR));
+        users.add(new Delivery("t", "t", "t", "t", VehicleType.TRUCK));
+        users.add(new Delivery("tt", "tt", "tt", "tt", VehicleType.TRUCK));
+        users.add(new Delivery("ttt", "ttt", "ttt", "ttt", VehicleType.TRUCK));
     }
 
     public void run() {
@@ -28,7 +35,7 @@ public class RunManage {
                 user = signIn(sc);
                 handleUserMenu(sc, user);
             }
-                case 2 -> {
+            case 2 -> {
                 user = addUser(sc);
                 user = getRole(sc, user.getUserName(), user.getPassword(),
                         user.getPhoneNumber(), user.getEmail());
@@ -75,6 +82,10 @@ public class RunManage {
         }
         if (user instanceof Seller currenrSeller) {
             sellerManage.sellerMenu(sc, currenrSeller);
+            return;
+        }
+        if (user instanceof Delivery currentDelivery) {
+            deliveryManage.menu(sc, currentDelivery);
         }
     }
 
@@ -139,7 +150,7 @@ public class RunManage {
         showRoleMenu();
         User user = null;
         System.out.println("which one is your role?");
-        int choice = getChoice(sc, 4);
+        int choice = getChoice(sc, 5);
         switch (choice) {
             case 1 -> {
                 user = new Admin(userName, password, phoneNumber, email);
@@ -152,6 +163,17 @@ public class RunManage {
             case 3 -> {
                 user = new Customer(userName, password, phoneNumber, email);
                 user.setRole(UsersRole.CUSTOMER);
+            }
+            case 4 -> {
+                System.out.println("Witch one is your widget?");
+                System.out.println("1. " + VehicleType.MOTOR);
+                System.out.println("2. " + VehicleType.TRUCK);
+                int type = getChoice(sc, 2);
+                if (type == 1)
+                    user = new Delivery(userName, password, phoneNumber, email, VehicleType.MOTOR);
+                else
+                    user = new Delivery(userName, password, phoneNumber, email, VehicleType.TRUCK);
+                user.setRole(UsersRole.DELIVERY);
             }
             default -> run();
         }
@@ -188,6 +210,7 @@ public class RunManage {
         System.out.println("1. Admin");
         System.out.println("2. Seller");
         System.out.println("3. Customer");
+        System.out.println("4. Delivery");
         System.out.println("0. Exit");
         System.out.println("==============================================================================================================");
     }

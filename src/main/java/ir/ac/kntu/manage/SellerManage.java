@@ -6,9 +6,6 @@ import ir.ac.kntu.util.*;
 import java.util.Scanner;
 
 public class SellerManage {
-    public SellerManage() {
-    }
-
     /**
      * @param sc     - scan input
      * @param seller - online seller

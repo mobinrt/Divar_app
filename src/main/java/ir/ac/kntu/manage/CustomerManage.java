@@ -62,6 +62,7 @@ public class CustomerManage {
         switch (type) {
             case 1 -> {
                 buyAd(sc, customer, product);
+                deliverProduct(sc);
                 customerMenu(sc, customer);
             }
             case 2 -> {
@@ -117,6 +118,7 @@ public class CustomerManage {
             }
             case 2 -> {
                 buyAd(sc, customer, product);
+                deliverProduct(sc);
                 customerMenu(sc, customer);
             }
             default -> showAds(sc, customer);
@@ -154,6 +156,17 @@ public class CustomerManage {
         products.remove(product);
         System.out.println("Successfully done.");
         System.out.println("===========================================================================================================");
+    }
+
+    private void deliverProduct(Scanner sc) {
+        System.out.println("Do you want to deliver product?");
+        System.out.println("1. Yes");
+        System.out.println("2. No");
+        int choice = getChoice(sc, 2);
+        if (choice == 2) {
+            return;
+        }
+
     }
 
     public void deleteProductFromSavedBox(Product deleteProduct) {

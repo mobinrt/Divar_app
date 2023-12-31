@@ -6,6 +6,9 @@ public class Product {
     private final Seller seller;
     private final int price;
     private boolean isVisible;
+    private boolean readyTOSell;
+    private boolean sold;
+    private boolean waitingToSend;
 
     /**
      * @param adsCategory -product category
@@ -19,6 +22,9 @@ public class Product {
         this.seller = seller;
         this.price = price;
         isVisible = false;
+        readyTOSell = false;
+        sold = false;
+        waitingToSend = false;
     }
 
     public int getPrice() {
@@ -48,5 +54,29 @@ public class Product {
                 "Name: " + name + ", " +
                 "Seller: " + seller.getUserName() + ", " +
                 "Price: " + price + " }";
+    }
+
+    public boolean isReadyTOSell() {
+        return readyTOSell;
+    }
+
+    public void setReadyTOSell(boolean readyTOSell) {
+        this.readyTOSell = readyTOSell;
+    }
+
+    public boolean isSold() {
+        return sold;
+    }
+
+    public void setSold(boolean sold) {
+        this.sold = sold;
+    }
+
+    public boolean isWaitingToSend() {
+        return waitingToSend;
+    }
+
+    public void setWaitingToSend(boolean waitingToSend) {
+        this.waitingToSend = waitingToSend;
     }
 }

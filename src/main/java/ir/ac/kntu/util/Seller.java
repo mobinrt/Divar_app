@@ -3,7 +3,7 @@ package ir.ac.kntu.util;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Seller extends User implements Location {
+public class Seller extends User {
     private ArrayList<Product> products;
     private final ArrayList<Product> history;
 
@@ -54,18 +54,6 @@ public class Seller extends User implements Location {
     public Product addToRequestList(String adsCategory, String name, Seller seller, int price) {
         products.add(new Product(adsCategory, name, seller, price));
         return products.get(products.size() - 1);
-    }
-
-    @Override
-    public void setLocation(int[][] location, Scanner sc) {
-        System.out.println("Set your location between 0 and 9");
-        int firstIndex = sc.nextInt();
-        int secondIndex = sc.nextInt();
-        if (firstIndex >= 10 || secondIndex >= 10) {
-            setLocation(location, sc);
-            return;
-        }
-        location[firstIndex][secondIndex] = 2;
     }
 
     public ArrayList<Product> getProducts() {
