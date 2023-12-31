@@ -1,9 +1,10 @@
 package ir.ac.kntu.util;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Customer extends User {
+public class Customer extends User implements Location {
     private final ArrayList<Product> savedBox;
     private final ArrayList<Product> history;
 

@@ -1,9 +1,10 @@
 package ir.ac.kntu.util;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Seller extends User {
+public class Seller extends User implements Location {
     private ArrayList<Product> products;
     private final ArrayList<Product> history;
 
@@ -43,6 +44,7 @@ public class Seller extends User {
         }
         System.out.println("==============================================================================================================");
     }
+
 
     private String visibleProduct(Product product) {
         if (product.getIsVisible()) {

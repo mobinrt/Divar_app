@@ -1,6 +1,8 @@
 package ir.ac.kntu.util;
 
-public class Delivery extends User {
+import java.awt.*;
+
+public class Delivery extends User implements Location {
     private VehicleType vehicleType;
     private boolean isAvailable;
 
