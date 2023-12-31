@@ -17,7 +17,8 @@ public class DeliveryManage {
             Main.getRunManage().run();
         }
     }
-//
+
+    //
     private void profile(Scanner sc, Delivery delivery) {
         showProfileOption();
         int choice = getChoice(sc, 4);
@@ -31,20 +32,20 @@ public class DeliveryManage {
                 profile(sc, delivery);
             }
             case 3 -> {
-                WalletMenu(sc, delivery);
+                walletMenu(sc, delivery);
                 profile(sc, delivery);
             }
             default -> menu(sc, delivery);
         }
     }
 
-    private void WalletMenu(Scanner sc, Delivery delivery) {
+    private void walletMenu(Scanner sc, Delivery delivery) {
         showWalletOption();
         int choice = getChoice(sc, 3);
         switch (choice) {
             case 1 -> {
                 System.out.println("Your wallet: " + delivery.getWallet());
-                WalletMenu(sc, delivery);
+                walletMenu(sc, delivery);
             }
             case 2 -> {
                 System.out.println("How much do you want to withdraw money? if you want to back press zero.");
@@ -59,7 +60,7 @@ public class DeliveryManage {
                 delivery.setWallet(delivery.getWallet() - withDraw);
                 System.out.println("Successfully done.");
                 System.out.println("==============================================================================================================");
-                WalletMenu(sc, delivery);
+                walletMenu(sc, delivery);
             }
             default -> profile(sc, delivery);
         }
