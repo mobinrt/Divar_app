@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Seller extends User {
-    private final ArrayList<Product> products;
+    private ArrayList<Product> products;
     private final ArrayList<Product> history;
 
     /**
@@ -56,6 +56,10 @@ public class Seller extends User {
     public Product addToRequestList(String adsCategory, String name, Seller seller, int price) {
         products.add(new Product(adsCategory, name, seller, price));
         return products.get(products.size() - 1);
+    }
+
+    public void setProducts(ArrayList<Product> products) {
+        this.products = products;
     }
 
     public ArrayList<Product> getProducts() {

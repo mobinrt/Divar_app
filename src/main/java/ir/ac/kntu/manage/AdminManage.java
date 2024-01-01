@@ -21,69 +21,79 @@ public class AdminManage {
 
     /**
      * @param sc    - scan input
-     * @param admin - current admin (in this proj we have one admin.)
+     * @param admin - current admin
      */
-    public void adminMenu(Scanner sc, Admin admin) { // for next project in that case we have more admin
+    public void adminMenu(Scanner sc, Admin admin) {
         showAdminMenu();
-        int choice = getChoice(sc, 7);
+        int choice = getChoice(sc, 8);
         switch (choice) {
             case 1 -> {
-//                customerEdit(sc, admin);
+                generalEdit(sc, admin, UsersRole.CUSTOMER);
                 adminMenu(sc, admin);
             }
             case 2 -> {
-//                sellerEdit(sc, admin);
+                sellerEdit(sc, admin);
                 adminMenu(sc, admin);
             }
             case 3 -> {
-                adsEdit(sc, admin);
+                generalEdit(sc, admin, UsersRole.DELIVERY);
                 adminMenu(sc, admin);
             }
             case 4 -> {
+                adsEdit(sc, admin);
+                adminMenu(sc, admin);
+            }
+            case 5 -> {
                 reqListOption(sc, admin);
                 adminMenu(sc, admin);
+            }
+            case 6 -> {
+
             }
             default -> Main.getRunManage().run();
         }
     }
 
-//    private void customerEdit(Scanner sc, Admin admin) {
-//        Main.getRunManage().getCustomerManage().showCustomersList();
-//        System.out.println("Select one of the customers to remove or press zero to back");
-//        int choice = getChoice(sc, Main.getRunManage().getCustomerManage().getCustomers().size() + 1);
-//        if (choice == 0) {
-//            adminMenu(sc, admin);
-//            return;
-//        }
-//        Main.getRunManage().getCustomerManage().getCustomers().remove(--choice);
-//        System.out.println("Successfully done.");
-//        System.out.println("==============================================================================================================");
-//    }
+    public void generalEdit(Scanner sc, Admin admin, UsersRole usersRole) {
+        int length = Main.getRunManage().showUsersList(usersRole);
+        System.out.println("Select one of the customers to remove or press zero to back");
+        int choice = getChoice(sc, length);
+        if (choice == 0) {
+            adminMenu(sc, admin);
+            return;
+        }
+        Main.getRunManage().getUsers().remove(--choice);
+        System.out.println("Successfully done.");
+        System.out.println("==============================================================================================================");
+    }
 
-//    private void sellerEdit(Scanner sc, Admin admin) {
-//        Main.getRunManage().getSellerManage().showSellersList();
-//        System.out.println("Select one of the sellers to remove or press zero to back");
-//        int choice = getChoice(sc, Main.getRunManage().getSellerManage().getSellers().size() + 1);
-//        if (choice == 0) {
-//            adminMenu(sc, admin);
-//            return;
-//        }
-//        Seller removeSeller = Main.getRunManage().getSellerManage().getSellers().remove(--choice);
-//        removeSeller.setProducts(new ArrayList<>());
-//        removeSellerAds(removeSeller, Main.getRunManage().getCustomerManage().getProducts());
-//        removeSellerAds(removeSeller, req);
-//        for (Customer customer : Main.getRunManage().getCustomerManage().getCustomers()) {
-//            removeSellerAds(removeSeller, customer.getSavedBox());
-//        }
-//        System.out.println("Successfully done.");
-//        System.out.println("==============================================================================================================");
-//    }
+    public void sellerEdit(Scanner sc, Admin admin) {
+        int length = Main.getRunManage().showUsersList(UsersRole.SELLER);
+        System.out.println("Select one of the sellers to remove or press zero to back");
+        int choice = getChoice(sc, length);
+        if (choice == 0) {
+            adminMenu(sc, admin);
+            return;
+        }
+        User removeUser = Main.getRunManage().getUsers().remove(--choice);
+        Seller removeSeller = (Seller) removeUser;
+        removeSeller.setProducts(new ArrayList<>());
+        removeSellerAds(removeSeller, Main.getRunManage().getCustomerManage().getProducts());
+        removeSellerAds(removeSeller, req);
+        for (User user : Main.getRunManage().getUsers()) {
+            if (user instanceof Customer customer)
+                removeSellerAds(removeSeller, customer.getSavedBox());
+        }
+        System.out.println("Successfully done.");
+        System.out.println("==============================================================================================================");
+    }
 
-    private void removeSellerAds(Seller removeSeller, ArrayList<Product> ads) {
+
+    public void removeSellerAds(Seller removeSeller, ArrayList<Product> ads) {
         ads.removeIf(product -> removeSeller.getUserName().matches(product.getSeller().getUserName()));
     }
 
-    private void adsEdit(Scanner sc, Admin admin) {
+    public void adsEdit(Scanner sc, Admin admin) {
         Main.getRunManage().getCustomerManage().showAdsList();
         System.out.println("Select one of the ads to remove or press zero to back");
         int choice = getChoice(sc, Main.getRunManage().getCustomerManage().getProducts().size() + 1);
@@ -98,7 +108,7 @@ public class AdminManage {
         System.out.println("==============================================================================================================");
     }
 
-    private void reqListOption(Scanner sc, Admin admin) {
+    public void reqListOption(Scanner sc, Admin admin) {
         showReqListOption();
         int choice = getChoice(sc, 4);
         switch (choice) {
@@ -118,7 +128,7 @@ public class AdminManage {
         }
     }
 
-    private void acceptReq(Scanner sc, Admin admin) {
+    public void acceptReq(Scanner sc, Admin admin) {
         showReqList(sc, admin);
         System.out.println("Which product do you want to accept?");
         int choice = getChoice(sc, req.size() + 1);
@@ -132,7 +142,7 @@ public class AdminManage {
         req.remove(product);
     }
 
-    private void deniedReq(Scanner sc, Admin admin) {
+    public void deniedReq(Scanner sc, Admin admin) {
         showReqList(sc, admin);
         System.out.println("Which product do you want to delete?");
         int choice = getChoice(sc, req.size() + 1);
@@ -146,7 +156,7 @@ public class AdminManage {
         req.remove(deleteProduct);
     }
 
-    private void showReqList(Scanner sc, Admin admin) {
+    public void showReqList(Scanner sc, Admin admin) {
         if (req.isEmpty()) {
             System.out.println("Requests box is empty");
             reqListOption(sc, admin);
@@ -160,7 +170,7 @@ public class AdminManage {
         System.out.println("==============================================================================================================");
     }
 
-    private int getChoice(Scanner scan, int bound) {
+    public int getChoice(Scanner scan, int bound) {
         System.out.print("Enter your choice: ");
         int choice = scan.nextInt();
         if (choice >= 0 && choice < bound) {
@@ -171,19 +181,19 @@ public class AdminManage {
         }
     }
 
-    private void showAdminMenu() {
+    public void showAdminMenu() {
         System.out.println("==============================================================================================================");
         System.out.println("1. Customers");
         System.out.println("2. Sellers");
-        System.out.println("3. Delivers");
-        System.out.println("3. All ads");
-        System.out.println("4. Requests");
-        System.out.println("5. Product deliver");
+        System.out.println("3. Deliveries");
+        System.out.println("4. All ads");
+        System.out.println("5. Requests");
+        System.out.println("6. Product deliver");
         System.out.println("0. Exit");
         System.out.println("==============================================================================================================");
     }
 
-    private void showReqListOption() {
+    public void showReqListOption() {
         System.out.println("==============================================================================================================");
         System.out.println("1. Accept request");
         System.out.println("2. Denied request");

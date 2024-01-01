@@ -206,6 +206,17 @@ public class RunManage {
         return user;
     }
 
+    public int showUsersList(UsersRole role) {
+        int i = 1;
+        for (User user : users) {
+            if (user.getRole().equals(role)) {
+                System.out.println(i + ") " + user);
+                i++;
+            }
+        }
+        return i;
+    }
+
     /**
      * @param scan  - scan input
      * @param bound - limit the top
