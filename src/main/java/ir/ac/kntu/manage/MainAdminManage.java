@@ -37,7 +37,9 @@ public class MainAdminManage extends AdminManage {
                 reqListOption(sc, admin);
                 adminMenu(sc, admin);
             }
-            case 7 ->
+            case 7 -> {
+
+            }
             default -> Main.getRunManage().run();
         }
     }
