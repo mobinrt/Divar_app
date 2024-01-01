@@ -39,7 +39,7 @@ public class SellerManage {
      * @param currentSeller - online seller
      */
     public void addAd(Scanner sc, Seller currentSeller) {
-        if (!(currentSeller.getX() > 0 && currentSeller.getY() > 0)) {
+        if (currentSeller.getX() < 0 || currentSeller.getY() < 0) {
             System.out.println("you don't set your location.");
             currentSeller.setLocation(sc, currentSeller);
         }

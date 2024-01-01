@@ -11,10 +11,11 @@ public class RunManage {
     private final CustomerManage customerManage = new CustomerManage();
     private final DeliveryManage deliveryManage = new DeliveryManage();
     private final MainAdminManage mainAdminManage = new MainAdminManage();
-    private ArrayList<User> users;
+    private final ArrayList<User> users;
 
     public RunManage() {
         users = new ArrayList<>();
+        users.add(new MainAdmin("a", "a", "a", "a"));
         users.add(new Seller("s", "s", "s", "s"));
         users.add(new Customer("c", "c", "c", "c"));
         users.add(new Delivery("d", "d", "d", "d", VehicleType.MOTOR));

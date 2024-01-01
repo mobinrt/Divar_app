@@ -63,10 +63,12 @@ public class User {
     }
 
     public void setLocation(Scanner sc, User user) {
-        System.out.println("Set your location (between 0 and 9)");
+        System.out.print("Set your location: ");
         int x = sc.nextInt();
+        System.out.print("Set your location: ");
         int y = sc.nextInt();
-        if (!(x > 0 && y > 0)) {
+        if (!(x >= 0 && y >= 0)) {
+            System.out.println("Follow the rule!");
             setLocation(sc, user);
             return;
         }

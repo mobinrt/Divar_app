@@ -167,7 +167,7 @@ public class CustomerManage {
         int choice = getChoice(sc, 2);
         if (choice == 2)
             return;
-        if (!(customer.getX() > 0 && customer.getY() > 0)) {
+        if (customer.getX() < 0 || customer.getY() < 0) {
             System.out.println("you don't set your location.");
             customer.setLocation(sc, customer);
         }
@@ -207,8 +207,8 @@ public class CustomerManage {
 
     public void deleteProductFromSavedBox(Product deleteProduct) {
         for (User user : Main.getRunManage().getUsers()) {
-            Customer customer = (Customer) user;
-            customer.getSavedBox().removeIf(product -> product.equals(deleteProduct));
+            if (user instanceof Customer customer)
+                customer.getSavedBox().removeIf(product -> product.equals(deleteProduct));
         }
     }
 
