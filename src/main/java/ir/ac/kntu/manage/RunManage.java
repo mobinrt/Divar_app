@@ -10,11 +10,11 @@ public class RunManage {
     private final SellerManage sellerManage = new SellerManage();
     private final CustomerManage customerManage = new CustomerManage();
     private final DeliveryManage deliveryManage = new DeliveryManage();
+    private final MainAdminManage mainAdminManage = new MainAdminManage();
     private ArrayList<User> users;
 
     public RunManage() {
         users = new ArrayList<>();
-        users.add(new MainAdmin("a", "a", "a", "a"));
         users.add(new Seller("s", "s", "s", "s"));
         users.add(new Customer("c", "c", "c", "c"));
         users.add(new Delivery("d", "d", "d", "d", VehicleType.MOTOR));
@@ -111,7 +111,7 @@ public class RunManage {
             System.out.println("==============================================================================================================");
             return addUser(sc);
         }
-        if (user.checkInfo(password, phoneNumber, email)) {
+        if (checkInfo(password, phoneNumber, email)) {
             users.add(user);
             System.out.println("Successfully done.");
             return user;
@@ -130,6 +130,31 @@ public class RunManage {
         }
         return true;
     }
+
+    /**
+     * @param password    - the user password
+     * @param phoneNumber - the user phone number
+     * @param email       - the user phone email
+     * @return boolean
+     */
+    public static boolean checkInfo(String password, String phoneNumber, String email) {
+        if (!password.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}")) {
+            System.out.println("The password should contain at least 8 letters, small, capital letter and number.");
+            return false;
+        }
+
+        if (!phoneNumber.matches("0\\d{10}")) {
+            System.out.println("Please enter phone number properly.");
+            return false;
+        }
+
+        if (!email.matches(".*@.*\\.com")) {
+            System.out.println("Please enter email properly.");
+            return false;
+        }
+        return true;
+    }
+
 
     private void guest(Scanner sc) {
         customerManage.showAdsList();
@@ -229,5 +254,9 @@ public class RunManage {
 
     public ArrayList<User> getUsers() {
         return users;
+    }
+
+    public MainAdminManage getMainAdminManage() {
+        return mainAdminManage;
     }
 }

@@ -4,8 +4,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Seller extends User implements Location {
-    private ArrayList<Product> products;
+public class Seller extends User {
+    private final ArrayList<Product> products;
     private final ArrayList<Product> history;
 
     /**

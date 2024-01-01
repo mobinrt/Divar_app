@@ -8,9 +8,11 @@ import java.util.Scanner;
 
 public class AdminManage {
     private final ArrayList<Product> req;
+    private final ArrayList<Product> deliveryReq;
 
     public AdminManage() {
         req = new ArrayList<>();
+        deliveryReq = new ArrayList<>();
     }
 
     public void addProductToReq(Product product) {
@@ -23,7 +25,7 @@ public class AdminManage {
      */
     public void adminMenu(Scanner sc, Admin admin) { // for next project in that case we have more admin
         showAdminMenu();
-        int choice = getChoice(sc, 5);
+        int choice = getChoice(sc, 7);
         switch (choice) {
             case 1 -> {
 //                customerEdit(sc, admin);
@@ -173,8 +175,10 @@ public class AdminManage {
         System.out.println("==============================================================================================================");
         System.out.println("1. Customers");
         System.out.println("2. Sellers");
+        System.out.println("3. Delivers");
         System.out.println("3. All ads");
         System.out.println("4. Requests");
+        System.out.println("5. Product deliver");
         System.out.println("0. Exit");
         System.out.println("==============================================================================================================");
     }
@@ -186,5 +190,9 @@ public class AdminManage {
         System.out.println("3. Show request list");
         System.out.println("0. Back");
         System.out.println("==============================================================================================================");
+    }
+
+    public ArrayList<Product> getDeliveryReq() {
+        return deliveryReq;
     }
 }

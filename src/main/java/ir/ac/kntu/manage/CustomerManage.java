@@ -62,7 +62,7 @@ public class CustomerManage {
         switch (type) {
             case 1 -> {
                 buyAd(sc, customer, product);
-                deliverProduct(sc);
+                deliverProduct(sc, customer, product);
                 customerMenu(sc, customer);
             }
             case 2 -> {
@@ -118,7 +118,7 @@ public class CustomerManage {
             }
             case 2 -> {
                 buyAd(sc, customer, product);
-                deliverProduct(sc);
+                deliverProduct(sc, customer, product);
                 customerMenu(sc, customer);
             }
             default -> showAds(sc, customer);
@@ -158,15 +158,51 @@ public class CustomerManage {
         System.out.println("===========================================================================================================");
     }
 
-    private void deliverProduct(Scanner sc) {
+    private void deliverProduct(Scanner sc, Customer customer, Product product) {
+        if (product.getAdsCategory().matches(AdsCategory.CAR.toString()))
+            return;
         System.out.println("Do you want to deliver product?");
         System.out.println("1. Yes");
         System.out.println("2. No");
         int choice = getChoice(sc, 2);
-        if (choice == 2) {
+        if (choice == 2)
+            return;
+        if (!(customer.getX() > 0 && customer.getY() > 0)) {
+            System.out.println("you don't set your location.");
+            customer.setLocation(sc, customer);
+        }
+        AdsCategory adsCategory = AdsCategory.valueOf(product.getAdsCategory());
+        deliverPay(sc, customer, product, adsCategory);
+    }
+
+    private void deliverPay(Scanner sc, Customer customer, Product product, AdsCategory adsCategory) {
+        int charge = customer.calculateDistance(customer, product.getSeller());
+        System.out.println("It costs " + (charge * adsCategory.getBaseCharge()) + ". Are you sure?");
+        System.out.println("1. Yes");
+        System.out.println("2. No");
+        int temp = getChoice(sc, 2);
+        if (temp == 2) {
             return;
         }
+        if (customer.getWallet() < (charge * adsCategory.getBaseCharge())) {
+            chargeWallet(sc, customer);
+        }
+        int deliveryMoney = customer.getWallet() - (charge * adsCategory.getBaseCharge());
+        Admin admin = findMainAdmin();
+        assert admin != null;
+        admin.setWallet(deliveryMoney);
+        customer.setWallet(deliveryMoney);
+        System.out.println("Successfully done.");
+        System.out.println("==============================================================================================================");
+    }
 
+    private Admin findMainAdmin() {
+        for (User user : Main.getRunManage().getUsers()) {
+            if (user.isMainAdmin()) {
+                return (Admin) user;
+            }
+        }
+        return null;
     }
 
     public void deleteProductFromSavedBox(Product deleteProduct) {
@@ -205,16 +241,20 @@ public class CustomerManage {
                 customerWalletMenu(sc, customer);
             }
             case 2 -> {
-                System.out.println("How much do you want to charge your wallet?");
-                System.out.print("Enter: ");
-                int charge = sc.nextInt();
-                charge += customer.getWallet();
-                customer.setWallet(charge);
-                System.out.println("Successfully done.");
+                chargeWallet(sc, customer);
                 customerWalletMenu(sc, customer);
             }
             default -> customerProfile(sc, customer);
         }
+    }
+
+    private void chargeWallet(Scanner sc, Customer customer) {
+        System.out.println("How much do you want to charge your wallet?");
+        System.out.print("Enter: ");
+        int charge = sc.nextInt();
+        charge += customer.getWallet();
+        customer.setWallet(charge);
+        System.out.println("Successfully done.");
     }
 
     public void showAdsList() {

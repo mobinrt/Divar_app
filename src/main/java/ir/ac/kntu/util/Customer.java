@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Customer extends User implements Location {
+public class Customer extends User {
     private final ArrayList<Product> savedBox;
     private final ArrayList<Product> history;
 

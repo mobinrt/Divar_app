@@ -39,6 +39,10 @@ public class SellerManage {
      * @param currentSeller - online seller
      */
     public void addAd(Scanner sc, Seller currentSeller) {
+        if (!(currentSeller.getX() > 0 && currentSeller.getY() > 0)) {
+            System.out.println("you don't set your location.");
+            currentSeller.setLocation(sc, currentSeller);
+        }
         String adsCategory = showAdsCategory(sc, currentSeller);
         System.out.print("Enter product's name: ");
         String name = sc.next();

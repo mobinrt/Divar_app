@@ -1,7 +1,9 @@
 package ir.ac.kntu.util;
 
 import ir.ac.kntu.Main;
+import ir.ac.kntu.manage.RunManage;
 
+import java.awt.*;
 import java.util.Scanner;
 
 public class User {
@@ -11,6 +13,10 @@ public class User {
     private String phoneNumber;
     private String email;
     private int wallet;
+    private int x = -1;
+    private int y = -1;
+    private Point[][] location = new Point[1][1];
+    private boolean isMainAdmin;
 
     public User(String userName, String password, String phoneNumber, String email) {
         this.userName = userName;
@@ -18,6 +24,7 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.email = email;
         wallet = 0;
+        isMainAdmin = false;
     }
 
     public void editUserInfo(Scanner sc, User currentUser) {
@@ -45,7 +52,7 @@ public class User {
                 return;
             }
         }
-        if (checkInfo(password, phoneNumber, email)) {
+        if (RunManage.checkInfo(password, phoneNumber, email)) {
             currentUser.setUserName(userName);
             currentUser.setPassword(password);
             currentUser.setPhoneNumber(phoneNumber);
@@ -55,28 +62,27 @@ public class User {
         }
     }
 
-    /**
-     * @param password    - the user password
-     * @param phoneNumber - the user phone number
-     * @param email       - the user phone email
-     * @return boolean
-     */
-    public boolean checkInfo(String password, String phoneNumber, String email) {
-        if (!password.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}")) {
-            System.out.println("The password should contain at least 8 letters, small, capital letter and number.");
-            return false;
+    public void setLocation(Scanner sc, User user) {
+        System.out.println("Set your location (between 0 and 9)");
+        int x = sc.nextInt();
+        int y = sc.nextInt();
+        if (!(x > 0 && y > 0)) {
+            setLocation(sc, user);
+            return;
         }
+        user.setX(x);
+        user.setY(y);
+        user.setLocation();
+        System.out.println("Successfully done.");
+        System.out.println("==============================================================================================================");
+    }
 
-        if (!phoneNumber.matches("0\\d{10}")) {
-            System.out.println("Please enter phone number properly.");
-            return false;
-        }
-
-        if (!email.matches(".*@.*\\.com")) {
-            System.out.println("Please enter email properly.");
-            return false;
-        }
-        return true;
+    public int calculateDistance(User user1, User user2) {
+        int x1 = user1.getX();
+        int y1 = user1.getY();
+        int x2 = user2.getX();
+        int y2 = user2.getY();
+        return (int) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
     @Override
@@ -86,7 +92,8 @@ public class User {
                 "Password: " + getPassword() + ", " +
                 "Phone Number: " + getPhoneNumber() + ", " +
                 "Email: " + getEmail() + ", " +
-                "Wallet: " + getWallet() + " }";
+                "Wallet: " + getWallet() + " }" +
+                "Location: " + "[" + getX() + ", " + getY() + "]";
     }
 
     public String getUserName() {
@@ -135,5 +142,37 @@ public class User {
 
     public void setRole(UsersRole role) {
         this.role = role;
+    }
+
+    public Point[][] getLocation() {
+        return location;
+    }
+
+    public void setLocation() {
+        location[0][0] = new Point(x, y);
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public boolean isMainAdmin() {
+        return isMainAdmin;
+    }
+
+    public void setMainAdmin(boolean mainAdmin) {
+        isMainAdmin = mainAdmin;
     }
 }
