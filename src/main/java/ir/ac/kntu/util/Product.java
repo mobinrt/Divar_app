@@ -5,9 +5,11 @@ public class Product {
     private final String name;
     private final Seller seller;
     private final int price;
+    private Customer customer;
     private boolean isVisible;
-    private boolean readyTOSell;
+    private boolean readyToSend;
     private boolean sold;
+    private boolean isSending;
     private boolean waitingToSend;
 
     /**
@@ -21,10 +23,20 @@ public class Product {
         this.name = name;
         this.seller = seller;
         this.price = price;
+        customer = null;
         isVisible = false;
-        readyTOSell = false;
+        readyToSend = false;
         sold = false;
         waitingToSend = false;
+    }
+
+    @Override
+    public String toString() {
+        return "Ads) " + "{ " +
+                "Ads category: " + adsCategory + ", " +
+                "Name: " + name + ", " +
+                "Seller: " + seller.getUserName() + ", " +
+                "Price: " + price + " }";
     }
 
     public int getPrice() {
@@ -47,21 +59,12 @@ public class Product {
         return adsCategory;
     }
 
-    @Override
-    public String toString() {
-        return "Ads) " + "{ " +
-                "Ads category: " + adsCategory + ", " +
-                "Name: " + name + ", " +
-                "Seller: " + seller.getUserName() + ", " +
-                "Price: " + price + " }";
+    public boolean isReadyToSell() {
+        return readyToSend;
     }
 
-    public boolean isReadyTOSell() {
-        return readyTOSell;
-    }
-
-    public void setReadyTOSell(boolean readyTOSell) {
-        this.readyTOSell = readyTOSell;
+    public void setReadyToSend(boolean readyTOSell) {
+        this.readyToSend = readyTOSell;
     }
 
     public boolean isSold() {
@@ -78,5 +81,21 @@ public class Product {
 
     public void setWaitingToSend(boolean waitingToSend) {
         this.waitingToSend = waitingToSend;
+    }
+
+    public boolean isSending() {
+        return isSending;
+    }
+
+    public void setSending(boolean sending) {
+        isSending = sending;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

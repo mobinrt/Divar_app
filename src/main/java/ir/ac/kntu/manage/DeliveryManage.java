@@ -2,6 +2,7 @@ package ir.ac.kntu.manage;
 
 import ir.ac.kntu.Main;
 import ir.ac.kntu.util.Delivery;
+import ir.ac.kntu.util.User;
 
 import java.util.Scanner;
 
@@ -64,6 +65,17 @@ public class DeliveryManage {
             }
             default -> profile(sc, delivery);
         }
+    }
+
+    public boolean isAvailableDelivery() {
+        for (User user : Main.getRunManage().getUsers()) {
+            if (!(user instanceof Delivery delivery))
+                continue;
+            if (!(delivery.isAvailable()))
+                continue;
+            return true;
+        }
+        return false;
     }
 
     private int getChoice(Scanner scan, int bound) {

@@ -3,6 +3,7 @@ package ir.ac.kntu.manage;
 import ir.ac.kntu.Main;
 import ir.ac.kntu.util.*;
 
+import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -153,6 +154,7 @@ public class CustomerManage {
         product.getSeller().getHistory().add(product);
         customer.getSavedBox().remove(product);
         deleteProductFromSavedBox(product);
+        product.setCustomer(customer);
         products.remove(product);
         System.out.println("Successfully done.");
         System.out.println("===========================================================================================================");
@@ -165,8 +167,10 @@ public class CustomerManage {
         System.out.println("1. Yes");
         System.out.println("2. No");
         int choice = getChoice(sc, 2);
-        if (choice == 2)
+        if (choice == 2) {
+            product.setSold(true);
             return;
+        }
         if (customer.getX() < 0 || customer.getY() < 0) {
             System.out.println("you don't set your location.");
             customer.setLocation(sc, customer);
@@ -182,18 +186,24 @@ public class CustomerManage {
         System.out.println("2. No");
         int temp = getChoice(sc, 2);
         if (temp == 2) {
+            product.setSold(true);
             return;
         }
         if (customer.getWallet() < (charge * adsCategory.getBaseCharge())) {
             chargeWallet(sc, customer);
         }
-        int deliveryMoney = customer.getWallet() - (charge * adsCategory.getBaseCharge());
         Admin admin = findMainAdmin();
         assert admin != null;
-        admin.setWallet(deliveryMoney);
-        customer.setWallet(deliveryMoney);
+        admin.setWallet(charge * adsCategory.getBaseCharge());
+        customer.setWallet(customer.getWallet() - (charge * adsCategory.getBaseCharge()));
+        Main.getRunManage().getAdminManage().getDeliveryReq().add(product);
         System.out.println("Successfully done.");
         System.out.println("==============================================================================================================");
+        boolean isAvailableDelivery = Main.getRunManage().getDeliveryManage().isAvailableDelivery();
+        if (isAvailableDelivery) {
+            product.setReadyToSend(true);
+        }
+        product.setWaitingToSend(true);
     }
 
     private Admin findMainAdmin() {

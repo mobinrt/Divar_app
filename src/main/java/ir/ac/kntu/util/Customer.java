@@ -37,9 +37,21 @@ public class Customer extends User {
         }
         System.out.println("===============================================   History:  ==================================================");
         for (Product product : history) {
-            System.out.println(history.indexOf(product) + 1 + ") " + product);
+            System.out.println(history.indexOf(product) + 1 + ") " + product + productStatus(product));
         }
         System.out.println("==============================================================================================================");
+    }
+
+    private String productStatus(Product product) {
+        if (product.isReadyToSell())
+            return "Ready to sell";
+        if (product.isSending())
+            return "Sending product";
+        if (product.isSold())
+            return "sold";
+        if (product.isWaitingToSend())
+            return "Waiting to send";
+        return "";
     }
 
     public void addToSavedBox(Product product) {

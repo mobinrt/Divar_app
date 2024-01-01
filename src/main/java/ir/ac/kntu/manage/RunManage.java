@@ -253,11 +253,15 @@ public class RunManage {
         return sellerManage;
     }
 
-    public ArrayList<User> getUsers() {
-        return users;
+    public DeliveryManage getDeliveryManage() {
+        return deliveryManage;
     }
 
     public MainAdminManage getMainAdminManage() {
         return mainAdminManage;
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
     }
 }
