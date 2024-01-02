@@ -1,8 +1,7 @@
 package ir.ac.kntu.manage;
 
 import ir.ac.kntu.Main;
-import ir.ac.kntu.util.Delivery;
-import ir.ac.kntu.util.User;
+import ir.ac.kntu.util.*;
 
 import java.util.Scanner;
 
@@ -67,12 +66,29 @@ public class DeliveryManage {
         }
     }
 
-    public boolean isAvailableDelivery() {
+    public void unavailability(Delivery delivery, int distanceInKm, Product product) {
+        if (delivery.isAvailable()) {
+            try {
+                Thread.sleep(distanceInKm * 4000L);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        delivery.setX(product.getCustomer().getX());
+        delivery.setY(product.getCustomer().getY());
+        delivery.setLocation();
+    }
+
+    public boolean isAvailableDelivery(Product product) {
         for (User user : Main.getRunManage().getUsers()) {
             if (!(user instanceof Delivery delivery))
                 continue;
             if (!(delivery.isAvailable()))
                 continue;
+            if (product.getAdsCategory().matches(AdsCategory.HOME_STUFF.toString())) {
+                if (delivery.getVehicleType().equals(VehicleType.MOTOR))
+                    continue;
+            }
             return true;
         }
         return false;

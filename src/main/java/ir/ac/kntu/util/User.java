@@ -36,7 +36,7 @@ public class User {
         System.out.print("Enter your password again: ");
         String confirmPassword = sc.nextLine();
         if (!confirmPassword.matches(password)) {
-            System.out.println("Enter  the same password");
+            System.out.println("Enter the same password");
             System.out.println("==============================================================================================================");
             editUserInfo(sc, currentUser);
             return;
@@ -45,7 +45,6 @@ public class User {
         String phoneNumber = sc.nextLine();
         System.out.print("Enter new email: ");
         String email = sc.nextLine();
-
         if (!currentUser.getUserName().matches(userName)) {
             if (!Main.getRunManage().checkInfo(userName)) {
                 editUserInfo(sc, currentUser);
@@ -79,12 +78,12 @@ public class User {
         System.out.println("==============================================================================================================");
     }
 
-    public int calculateDistance(User user1, User user2) {
+    public double calculateDistance(User user1, User user2) {
         int x1 = user1.getX();
         int y1 = user1.getY();
         int x2 = user2.getX();
         int y2 = user2.getY();
-        return (int) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
     @Override
@@ -94,8 +93,8 @@ public class User {
                 "Password: " + getPassword() + ", " +
                 "Phone Number: " + getPhoneNumber() + ", " +
                 "Email: " + getEmail() + ", " +
-                "Wallet: " + getWallet() + " }" +
-                "Location: " + "[" + getX() + ", " + getY() + "]";
+                "Wallet: " + getWallet() +
+                "Location: " + "[" + getX() + ", " + getY() + "]" + " }";
     }
 
     public String getUserName() {

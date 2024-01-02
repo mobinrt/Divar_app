@@ -166,7 +166,7 @@ public class CustomerManage {
         System.out.println("Do you want to deliver product?");
         System.out.println("1. Yes");
         System.out.println("2. No");
-        int choice = getChoice(sc, 2);
+        int choice = getChoice(sc, 3);
         if (choice == 2) {
             product.setSold(true);
             return;
@@ -180,7 +180,7 @@ public class CustomerManage {
     }
 
     private void deliverPay(Scanner sc, Customer customer, Product product, AdsCategory adsCategory) {
-        int charge = customer.calculateDistance(customer, product.getSeller());
+        int charge = (int) customer.calculateDistance(customer, product.getSeller());
         System.out.println("It costs " + (charge * adsCategory.getBaseCharge()) + ". Are you sure?");
         System.out.println("1. Yes");
         System.out.println("2. No");
@@ -199,7 +199,7 @@ public class CustomerManage {
         Main.getRunManage().getAdminManage().getDeliveryReq().add(product);
         System.out.println("Successfully done.");
         System.out.println("==============================================================================================================");
-        boolean isAvailableDelivery = Main.getRunManage().getDeliveryManage().isAvailableDelivery();
+        boolean isAvailableDelivery = Main.getRunManage().getDeliveryManage().isAvailableDelivery(product);
         if (isAvailableDelivery) {
             product.setReadyToSend(true);
         }

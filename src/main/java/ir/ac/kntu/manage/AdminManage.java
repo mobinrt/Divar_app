@@ -48,7 +48,8 @@ public class AdminManage {
                 adminMenu(sc, admin);
             }
             case 6 -> {
-
+                deliverProduct(sc, admin);
+                adminMenu(sc, admin);
             }
             default -> Main.getRunManage().run();
         }
@@ -88,6 +89,46 @@ public class AdminManage {
         System.out.println("==============================================================================================================");
     }
 
+    private void deliverProduct(Scanner sc, Admin admin) {
+        showReqList(sc, admin, deliveryReq);
+        System.out.println("Which product do you want to deliver?");
+        int choice = getChoice(sc, deliveryReq.size() + 1);
+        if (choice == 0) {
+            adminMenu(sc, admin);
+            return;
+        }
+        Product product = req.get(--choice);
+        boolean isAvailable = Main.getRunManage().getDeliveryManage().isAvailableDelivery(product);
+        if (!isAvailable) {
+            System.out.println("No available delivery!");
+            return;
+        }
+        Delivery delivery = findClosestDelivery(product);
+        int distance = (int) admin.calculateDistance(delivery, product.getSeller());
+        Main.getRunManage().getDeliveryManage().unavailability(delivery, distance, product);
+    }
+
+    private Delivery findClosestDelivery(Product product) {
+        Delivery finalDelivery = null;
+        double distance;
+        double finalDistance = Integer.MAX_VALUE;
+        for (User user : Main.getRunManage().getUsers()) {
+            if (!(user instanceof Delivery delivery))
+                continue;
+            if (!(delivery.isAvailable()))
+                continue;
+            if (product.getAdsCategory().matches(AdsCategory.HOME_STUFF.toString())) {
+                if (delivery.getVehicleType().equals(VehicleType.MOTOR))
+                    continue;
+            }
+            distance = user.calculateDistance(delivery, product.getSeller());
+            if (distance < finalDistance) {
+                finalDistance = distance;
+                finalDelivery = delivery;
+            }
+        }
+        return finalDelivery;
+    }
 
     public void removeSellerAds(Seller removeSeller, ArrayList<Product> ads) {
         ads.removeIf(product -> removeSeller.getUserName().matches(product.getSeller().getUserName()));
@@ -121,7 +162,7 @@ public class AdminManage {
                 reqListOption(sc, admin);
             }
             case 3 -> {
-                showReqList(sc, admin);
+                showReqList(sc, admin, req);
                 reqListOption(sc, admin);
             }
             default -> adminMenu(sc, admin);
@@ -129,7 +170,7 @@ public class AdminManage {
     }
 
     public void acceptReq(Scanner sc, Admin admin) {
-        showReqList(sc, admin);
+        showReqList(sc, admin, req);
         System.out.println("Which product do you want to accept?");
         int choice = getChoice(sc, req.size() + 1);
         if (choice == 0) {
@@ -143,7 +184,7 @@ public class AdminManage {
     }
 
     public void deniedReq(Scanner sc, Admin admin) {
-        showReqList(sc, admin);
+        showReqList(sc, admin, req);
         System.out.println("Which product do you want to delete?");
         int choice = getChoice(sc, req.size() + 1);
         if (choice == 0) {
@@ -156,10 +197,10 @@ public class AdminManage {
         req.remove(deleteProduct);
     }
 
-    public void showReqList(Scanner sc, Admin admin) {
+    public void showReqList(Scanner sc, Admin admin, ArrayList<Product> req) {
         if (req.isEmpty()) {
             System.out.println("Requests box is empty");
-            reqListOption(sc, admin);
+            adminMenu(sc, admin);
             return;
         }
         System.out.println("===============================================   Requests:  ==================================================");
