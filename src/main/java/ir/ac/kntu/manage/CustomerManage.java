@@ -127,7 +127,7 @@ public class CustomerManage {
     }
 
     private Product findProduct(int choice, String category) {
-        List<Product> temp = new ArrayList<>();
+        ArrayList<Product> temp = new ArrayList<>();
         for (Product product : products) {
             if (category.matches(product.getAdsCategory())) {
                 temp.add(product);
@@ -288,10 +288,6 @@ public class CustomerManage {
         int i = 1;
         System.out.println("===============================================   Ads list:  =================================================");
         for (Product product : products) {
-            if (adsCategory.matches("")) {
-                System.out.println((products.indexOf(product) + 1) + ") " + product);
-                continue;
-            }
             if (adsCategory.matches(product.getAdsCategory())) {
                 System.out.println(i + ") " + product);
                 ++i;

@@ -55,15 +55,16 @@ public class AdminManage {
         }
     }
 
-    public void generalEdit(Scanner sc, Admin admin, UsersRole usersRole) {
-        int length = Main.getRunManage().showUsersList(usersRole);
+    public void generalEdit(Scanner sc, Admin admin, UsersRole userRole) {
+        int length = Main.getRunManage().showUsersList(userRole);
         System.out.println("Select one of the customers to remove or press zero to back");
         int choice = getChoice(sc, length);
         if (choice == 0) {
             adminMenu(sc, admin);
             return;
         }
-        Main.getRunManage().getUsers().remove(--choice);
+        User user = findUser(choice, userRole);
+        Main.getRunManage().getUsers().remove(user);
         System.out.println("Successfully done.");
         System.out.println("==============================================================================================================");
     }
@@ -76,7 +77,8 @@ public class AdminManage {
             adminMenu(sc, admin);
             return;
         }
-        User removeUser = Main.getRunManage().getUsers().remove(--choice);
+        User removeUser = findUser(choice, UsersRole.SELLER);
+        Main.getRunManage().getUsers().remove(removeUser);
         Seller removeSeller = (Seller) removeUser;
         removeSeller.setProducts(new ArrayList<>());
         removeSellerAds(removeSeller, Main.getRunManage().getCustomerManage().getProducts());
@@ -87,6 +89,16 @@ public class AdminManage {
         }
         System.out.println("Successfully done.");
         System.out.println("==============================================================================================================");
+    }
+
+    private User findUser(int choice, UsersRole role) {
+        ArrayList<User> temp = new ArrayList<>();
+        for (User user : Main.getRunManage().getUsers()) {
+            if (user.getRole().equals(role)) {
+                temp.add(user);
+            }
+        }
+        return temp.get(--choice);
     }
 
     private void deliverProduct(Scanner sc, Admin admin) {

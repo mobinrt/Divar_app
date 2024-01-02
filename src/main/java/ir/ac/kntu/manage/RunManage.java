@@ -73,6 +73,10 @@ public class RunManage {
     }
 
     private void handleUserMenu(Scanner sc, User user) {
+        if (user instanceof MainAdmin mainAdmin) {
+            mainAdminManage.adminMenu(sc, mainAdmin);
+            return;
+        }
         if (user instanceof Admin currentAdmin) {
             adminManage.adminMenu(sc, currentAdmin);
             return;
@@ -194,15 +198,20 @@ public class RunManage {
                 System.out.println("Witch one is your widget?");
                 System.out.println("1. " + VehicleType.MOTOR);
                 System.out.println("2. " + VehicleType.TRUCK);
-                int type = getChoice(sc, 2);
-                if (type == 1)
+                System.out.println("0. Back");
+                int type = getChoice(sc, 3);
+                if (type == 1) {
                     user = new Delivery(userName, password, phoneNumber, email, VehicleType.MOTOR);
-                else
+                    user.setRole(UsersRole.DELIVERY);
+                } else if (type == 2) {
                     user = new Delivery(userName, password, phoneNumber, email, VehicleType.TRUCK);
-                user.setRole(UsersRole.DELIVERY);
+                    user.setRole(UsersRole.DELIVERY);
+                } else
+                    return getRole(sc, userName, password, phoneNumber, email);
             }
             default -> run();
         }
+        assert user != null;
         return user;
     }
 

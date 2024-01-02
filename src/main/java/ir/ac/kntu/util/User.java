@@ -25,6 +25,7 @@ public class User {
         this.email = email;
         wallet = 0;
         isMainAdmin = false;
+        setRole(UsersRole.USER);
     }
 
     public void editUserInfo(Scanner sc, User currentUser) {
@@ -88,12 +89,12 @@ public class User {
 
     @Override
     public String toString() {
-        return "Role: " + getRole() + ", " +
+        return  "{ " + "Role: " + getRole() + ", " +
                 "userName: " + getUserName() + ", " +
                 "Password: " + getPassword() + ", " +
                 "Phone Number: " + getPhoneNumber() + ", " +
                 "Email: " + getEmail() + ", " +
-                "Wallet: " + getWallet() +
+                "Wallet: " + getWallet() + ", " +
                 "Location: " + "[" + getX() + ", " + getY() + "]" + " }";
     }
 
