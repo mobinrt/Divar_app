@@ -144,11 +144,14 @@ public class CustomerManage {
     private void buyAd(Scanner sc, Customer customer, Product product) {
         if (product.getPrice() > customer.getWallet()) {
             System.out.println("Charge your account. you do not have enough money to buy this product.");
-            customerMenu(sc, customer);
-            return;
+            chargeWallet(sc, customer);
         }
         customer.setWallet(customer.getWallet() - product.getPrice());
-        product.getSeller().setWallet(product.getPrice());
+        product.getSeller().setWallet((product.getPrice() * 9) / 10);
+        MainAdmin mainAdmin = findMainAdmin();
+        assert mainAdmin != null;
+        mainAdmin.setWallet(product.getPrice() / 10);
+
         customer.getHistory().add(product);
         product.getSeller().getProducts().remove(product);
         product.getSeller().getHistory().add(product);
@@ -190,11 +193,12 @@ public class CustomerManage {
             return;
         }
         if (customer.getWallet() < (charge * adsCategory.getBaseCharge())) {
+            System.out.println("Charge your account. you do not have enough money to buy this product.");
             chargeWallet(sc, customer);
         }
-        Admin admin = findMainAdmin();
-        assert admin != null;
-        admin.setWallet(charge * adsCategory.getBaseCharge());
+        MainAdmin mainAdmin = findMainAdmin();
+        assert mainAdmin != null;
+        mainAdmin.setWallet(charge * adsCategory.getBaseCharge());
         customer.setWallet(customer.getWallet() - (charge * adsCategory.getBaseCharge()));
         Main.getRunManage().getAdminManage().getDeliveryReq().add(product);
         System.out.println("Successfully done.");
@@ -206,10 +210,10 @@ public class CustomerManage {
         product.setWaitingToSend(true);
     }
 
-    private Admin findMainAdmin() {
+    private MainAdmin findMainAdmin() {
         for (User user : Main.getRunManage().getUsers()) {
             if (user.isMainAdmin()) {
-                return (Admin) user;
+                return (MainAdmin) user;
             }
         }
         return null;

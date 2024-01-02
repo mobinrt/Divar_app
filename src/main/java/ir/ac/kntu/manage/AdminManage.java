@@ -28,30 +28,81 @@ public class AdminManage {
         int choice = getChoice(sc, 8);
         switch (choice) {
             case 1 -> {
-                generalEdit(sc, admin, UsersRole.CUSTOMER);
+                adminProfile(sc, admin);
                 adminMenu(sc, admin);
             }
             case 2 -> {
-                sellerEdit(sc, admin);
+                generalEdit(sc, admin, UsersRole.CUSTOMER);
                 adminMenu(sc, admin);
             }
             case 3 -> {
-                generalEdit(sc, admin, UsersRole.DELIVERY);
+                sellerEdit(sc, admin);
                 adminMenu(sc, admin);
             }
             case 4 -> {
-                adsEdit(sc, admin);
+                generalEdit(sc, admin, UsersRole.DELIVERY);
                 adminMenu(sc, admin);
             }
             case 5 -> {
-                reqListOption(sc, admin);
+                adsEdit(sc, admin);
                 adminMenu(sc, admin);
             }
             case 6 -> {
+                reqListOption(sc, admin);
+                adminMenu(sc, admin);
+            }
+            case 7 -> {
                 deliverProduct(sc, admin);
                 adminMenu(sc, admin);
             }
             default -> Main.getRunManage().run();
+        }
+    }
+
+    public void adminProfile(Scanner sc, Admin admin) {
+        showProfileOption();
+        int choice = getChoice(sc, 4);
+        switch (choice) {
+            case 1 -> {
+                System.out.println(admin.toString());
+                adminProfile(sc, admin);
+            }
+            case 2 -> {
+                admin.editUserInfo(sc, admin);
+                adminProfile(sc, admin);
+            }
+            case 3 -> {
+                adminWalletMenu(sc, admin);
+                adminProfile(sc, admin);
+            }
+            default -> adminMenu(sc, admin);
+        }
+    }
+
+    public void adminWalletMenu(Scanner sc, Admin admin) {
+        showWalletOption();
+        int choice = getChoice(sc, 3);
+        switch (choice) {
+            case 1 -> {
+                System.out.println("Your wallet: " + admin.getWallet());
+                adminWalletMenu(sc, admin);
+            }
+            case 2 -> {
+                System.out.println("How much do you want to withdraw money? if you want to back press zero.");
+                System.out.print("Enter: ");
+                int withDraw = sc.nextInt();
+                while (withDraw > admin.getWallet()) {
+                    System.out.println("You don't have enough money!!");
+                    System.out.println("How much do you want to withdraw money? if you want to back press zero.");
+                    System.out.print("Enter: ");
+                    withDraw = sc.nextInt();
+                }
+                admin.setWallet(admin.getWallet() - withDraw);
+                System.out.println("Successfully done.");
+                System.out.println("==============================================================================================================");
+                adminWalletMenu(sc, admin);
+            }
+            default -> adminProfile(sc, admin);
         }
     }
 
@@ -91,7 +142,7 @@ public class AdminManage {
         System.out.println("==============================================================================================================");
     }
 
-    private User findUser(int choice, UsersRole role) {
+    public User findUser(int choice, UsersRole role) {
         ArrayList<User> temp = new ArrayList<>();
         for (User user : Main.getRunManage().getUsers()) {
             if (user.getRole().equals(role)) {
@@ -101,12 +152,11 @@ public class AdminManage {
         return temp.get(--choice);
     }
 
-    private void deliverProduct(Scanner sc, Admin admin) {
+    public void deliverProduct(Scanner sc, Admin admin) {
         showReqList(sc, admin, deliveryReq);
         System.out.println("Which product do you want to deliver?");
         int choice = getChoice(sc, deliveryReq.size() + 1);
         if (choice == 0) {
-            adminMenu(sc, admin);
             return;
         }
         Product product = req.get(--choice);
@@ -120,7 +170,7 @@ public class AdminManage {
         Main.getRunManage().getDeliveryManage().unavailability(delivery, distance, product);
     }
 
-    private Delivery findClosestDelivery(Product product) {
+    public Delivery findClosestDelivery(Product product) {
         Delivery finalDelivery = null;
         double distance;
         double finalDistance = Integer.MAX_VALUE;
@@ -234,6 +284,15 @@ public class AdminManage {
         }
     }
 
+    public void showProfileOption() {
+        System.out.println("==============================================================================================================");
+        System.out.println("1. your information");
+        System.out.println("2. Edit information");
+        System.out.println("3. Wallet");
+        System.out.println("0. Back");
+        System.out.println("==============================================================================================================");
+    }
+
     public void showAdminMenu() {
         System.out.println("==============================================================================================================");
         System.out.println("1. Customers");
@@ -251,6 +310,14 @@ public class AdminManage {
         System.out.println("1. Accept request");
         System.out.println("2. Denied request");
         System.out.println("3. Show request list");
+        System.out.println("0. Back");
+        System.out.println("==============================================================================================================");
+    }
+
+    public void showWalletOption() {
+        System.out.println("==============================================================================================================");
+        System.out.println("1. Check wallet");
+        System.out.println("2. Withdraw money");
         System.out.println("0. Back");
         System.out.println("==============================================================================================================");
     }

@@ -85,9 +85,9 @@ public class DeliveryManage {
                 continue;
             if (!(delivery.isAvailable()))
                 continue;
-            if (product.getAdsCategory().matches(AdsCategory.HOME_STUFF.toString())) {
-                if (delivery.getVehicleType().equals(VehicleType.MOTOR))
-                    continue;
+            if (product.getAdsCategory().matches(AdsCategory.HOME_STUFF.toString()) &&
+                    delivery.getVehicleType().equals(VehicleType.MOTOR)) {
+                continue;
             }
             return true;
         }

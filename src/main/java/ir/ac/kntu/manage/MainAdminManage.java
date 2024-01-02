@@ -9,40 +9,46 @@ import java.util.Scanner;
 
 public class MainAdminManage extends AdminManage {
     @Override
-    public void adminMenu(Scanner sc, Admin admin) {
+    public void adminMenu(Scanner sc, Admin Admin) {
+        MainAdmin mainAdmin = (MainAdmin) Admin;
         showAdminMenu();
-        int choice = getChoice(sc, 8);
+        int choice = getChoice(sc, 9);
         switch (choice) {
             case 1 -> {
-                generalEdit(sc, admin, UsersRole.CUSTOMER);
-                adminMenu(sc, admin);
+                adminProfile(sc, mainAdmin);
+                adminMenu(sc, mainAdmin);
             }
             case 2 -> {
-                sellerEdit(sc, admin);
-                adminMenu(sc, admin);
+                generalEdit(sc, mainAdmin, UsersRole.CUSTOMER);
+                adminMenu(sc, mainAdmin);
             }
             case 3 -> {
-                generalEdit(sc, admin, UsersRole.DELIVERY);
-                adminMenu(sc, admin);
+                sellerEdit(sc, mainAdmin);
+                adminMenu(sc, mainAdmin);
             }
             case 4 -> {
-                generalEdit(sc, admin, UsersRole.ADMIN);
-                adminMenu(sc, admin);
+                generalEdit(sc, mainAdmin, UsersRole.DELIVERY);
+                adminMenu(sc, mainAdmin);
             }
             case 5 -> {
-                adsEdit(sc, admin);
-                adminMenu(sc, admin);
+                generalEdit(sc, mainAdmin, UsersRole.ADMIN);
+                adminMenu(sc, mainAdmin);
             }
             case 6 -> {
-                reqListOption(sc, admin);
-                adminMenu(sc, admin);
+                adsEdit(sc, mainAdmin);
+                adminMenu(sc, mainAdmin);
             }
             case 7 -> {
+                reqListOption(sc, mainAdmin);
+                adminMenu(sc, mainAdmin);
+            }
+            case 8 -> {
 
             }
             default -> Main.getRunManage().run();
         }
     }
+
     @Override
     public void showAdminMenu() {
         System.out.println("==============================================================================================================");

@@ -12,7 +12,7 @@ public class User {
     private String password;
     private String phoneNumber;
     private String email;
-    private int wallet;
+    private double wallet;
     private int x = -1;
     private int y = -1;
     private Point[][] location = new Point[1][1];
@@ -130,11 +130,11 @@ public class User {
         return email;
     }
 
-    public int getWallet() {
+    public double getWallet() {
         return wallet;
     }
 
-    public void setWallet(int wallet) {
+    public void setWallet(double wallet) {
         this.wallet = wallet;
     }
 

@@ -146,7 +146,7 @@ public class SellerManage {
 
     private void showProfileOption() {
         System.out.println("==============================================================================================================");
-        System.out.println("1. Seller information");
+        System.out.println("1. your information");
         System.out.println("2. Edit information");
         System.out.println("3. Wallet");
         System.out.println("0. Back");
@@ -161,18 +161,3 @@ public class SellerManage {
         System.out.println("==============================================================================================================");
     }
 }
-
-
-//    private int checkId(Scanner sc) { in case need in next project
-//        int id = sc.nextInt();
-//        if (Main.runManage.customerManage.getProducts().isEmpty()) {
-//            return id;
-//        }
-//        for (Product product : Main.runManage.customerManage.getProducts()) {
-//            if (id == product.getId()) {
-//                System.out.println("This id has been taken.");
-//                return checkId(sc);
-//            }
-//        }
-//        return id;
-//    }

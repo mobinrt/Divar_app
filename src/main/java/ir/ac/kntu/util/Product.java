@@ -4,7 +4,7 @@ public class Product {
     private final String adsCategory;
     private final String name;
     private final Seller seller;
-    private final int price;
+    private final double price;
     private Customer customer;
     private boolean isVisible;
     private boolean readyToSend;
@@ -39,7 +39,7 @@ public class Product {
                 "Price: " + price + " }";
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
