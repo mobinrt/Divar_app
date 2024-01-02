@@ -43,7 +43,8 @@ public class MainAdminManage extends AdminManage {
                 adminMenu(sc, mainAdmin);
             }
             case 8 -> {
-
+                deliverProduct(sc, Admin);
+                adminMenu(sc, Admin);
             }
             default -> Main.getRunManage().run();
         }
@@ -52,13 +53,14 @@ public class MainAdminManage extends AdminManage {
     @Override
     public void showAdminMenu() {
         System.out.println("==============================================================================================================");
-        System.out.println("1. Customers");
-        System.out.println("2. Sellers");
-        System.out.println("3. Deliveries");
-        System.out.println("4. Admins");
-        System.out.println("5. All ads");
-        System.out.println("6. Requests");
-        System.out.println("7. Product deliver");
+        System.out.println("1. Profile");
+        System.out.println("2. Customers");
+        System.out.println("3. Sellers");
+        System.out.println("4. Deliveries");
+        System.out.println("5. Admins");
+        System.out.println("6. All ads");
+        System.out.println("7. Requests");
+        System.out.println("8. Product deliver");
         System.out.println("0. Exit");
         System.out.println("==============================================================================================================");
     }

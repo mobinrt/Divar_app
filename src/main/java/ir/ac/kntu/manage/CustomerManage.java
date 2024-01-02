@@ -3,10 +3,8 @@ package ir.ac.kntu.manage;
 import ir.ac.kntu.Main;
 import ir.ac.kntu.util.*;
 
-import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Scanner;
 
 public class CustomerManage {
@@ -151,7 +149,6 @@ public class CustomerManage {
         MainAdmin mainAdmin = findMainAdmin();
         assert mainAdmin != null;
         mainAdmin.setWallet(product.getPrice() / 10);
-
         customer.getHistory().add(product);
         product.getSeller().getProducts().remove(product);
         product.getSeller().getHistory().add(product);

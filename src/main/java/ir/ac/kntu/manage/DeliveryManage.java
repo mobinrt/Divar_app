@@ -69,14 +69,14 @@ public class DeliveryManage {
     public void unavailability(Delivery delivery, int distanceInKm, Product product) {
         if (delivery.isAvailable()) {
             try {
+                delivery.setX(product.getCustomer().getX());
+                delivery.setY(product.getCustomer().getY());
+                delivery.setLocation();
                 Thread.sleep(distanceInKm * 4000L);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
-        delivery.setX(product.getCustomer().getX());
-        delivery.setY(product.getCustomer().getY());
-        delivery.setLocation();
     }
 
     public boolean isAvailableDelivery(Product product) {
