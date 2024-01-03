@@ -63,9 +63,9 @@ public class User {
     }
 
     public void setLocation(Scanner sc, User user) {
-        System.out.print("Set your location: ");
+        System.out.print("Set your location relative to the X-axis: ");
         int x = sc.nextInt();
-        System.out.print("Set your location: ");
+        System.out.print("Set your location relative to the Y-axis: ");
         int y = sc.nextInt();
         if (!(x >= 0 && y >= 0)) {
             System.out.println("Follow the rule!");

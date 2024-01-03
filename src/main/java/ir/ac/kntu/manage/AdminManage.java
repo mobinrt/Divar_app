@@ -5,6 +5,8 @@ import ir.ac.kntu.util.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AdminManage {
     private ArrayList<Product> req;
@@ -168,22 +170,25 @@ public class AdminManage {
         Delivery delivery = findClosestDelivery(product);
         int distance = (int) delivery.calculateDistance(delivery, product.getSeller());
         makeUnavailableDelivery(distance, product, delivery);
-        product.setSending(false);
-        product.setSold(true);
-        delivery.setAvailable(true);
     }
 
     public void makeUnavailableDelivery(int distanceInKm, Product product, Delivery delivery) {
         product.setWaitingToSend(false);
         product.setReadyToSend(false);
-        product.setSending(true);
+        product.setSold(false);
         deliveryReq.remove(product);
         delivery.setAvailable(false);
-        try {
-            Thread.sleep(distanceInKm * 5000L);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        product.setSending(true);
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                delivery.setAvailable(true);
+                product.setSending(false);
+                product.setSold(true);
+                timer.cancel();
+            }
+        }, distanceInKm * 5000L);
     }
 
     public Delivery findClosestDelivery(Product product) {
