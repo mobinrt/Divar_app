@@ -6,10 +6,13 @@ public class Delivery extends User {
     private final VehicleType vehicleType;
     private boolean isAvailable;
     private final ArrayList<Product> history;
+
     public Delivery(String userName, String password, String phoneNumber, String email, VehicleType vehicleType) {
         super(userName, password, phoneNumber, email);
         this.vehicleType = vehicleType;
+        isAvailable = true;
         history = new ArrayList<>();
+        setRole(UsersRole.DELIVERY);
         setX(0);
         setY(0);
         setLocation();
@@ -17,7 +20,7 @@ public class Delivery extends User {
 
     @Override
     public String toString() {
-        return "Role: " + getRole() + ", " +
+        return "{ Role: " + getRole() + ", " +
                 "userName: " + getUserName() + ", " +
                 "Password: " + getPassword() + ", " +
                 "Phone Number: " + getPhoneNumber() + ", " +

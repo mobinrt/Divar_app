@@ -53,7 +53,7 @@ public class Seller extends User {
         return "Waiting for confirmation";
     }
 
-    public Product addToRequestList(String adsCategory, String name, Seller seller, int price) {
+    public Product addToRequestList(String adsCategory, String name, Seller seller, double price) {
         products.add(new Product(adsCategory, name, seller, price));
         return products.get(products.size() - 1);
     }

@@ -140,7 +140,7 @@ public class CustomerManage {
     }
 
     private void buyAd(Scanner sc, Customer customer, Product product) {
-        if (product.getPrice() > customer.getWallet()) {
+        while (product.getPrice() > customer.getWallet()) {
             System.out.println("Charge your account. you do not have enough money to buy this product.");
             chargeWallet(sc, customer);
         }
@@ -189,7 +189,7 @@ public class CustomerManage {
             product.setSold(true);
             return;
         }
-        if (customer.getWallet() < (charge * adsCategory.getBaseCharge())) {
+        while (customer.getWallet() < (charge * adsCategory.getBaseCharge())) {
             System.out.println("Charge your account. you do not have enough money to buy this product.");
             chargeWallet(sc, customer);
         }
@@ -198,11 +198,11 @@ public class CustomerManage {
         mainAdmin.setWallet(charge * adsCategory.getBaseCharge());
         customer.setWallet(customer.getWallet() - (charge * adsCategory.getBaseCharge()));
         Main.getRunManage().getAdminManage().getDeliveryReq().add(product);
-        System.out.println("Successfully done.");
         System.out.println("==============================================================================================================");
         boolean isAvailableDelivery = Main.getRunManage().getDeliveryManage().isAvailableDelivery(product);
         if (isAvailableDelivery) {
             product.setReadyToSend(true);
+            return;
         }
         product.setWaitingToSend(true);
     }
@@ -262,7 +262,7 @@ public class CustomerManage {
     private void chargeWallet(Scanner sc, Customer customer) {
         System.out.println("How much do you want to charge your wallet?");
         System.out.print("Enter: ");
-        int charge = sc.nextInt();
+        double charge = sc.nextDouble();
         charge += customer.getWallet();
         customer.setWallet(charge);
         System.out.println("Successfully done.");

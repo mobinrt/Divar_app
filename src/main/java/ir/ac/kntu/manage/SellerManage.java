@@ -47,7 +47,7 @@ public class SellerManage {
         System.out.print("Enter product's name: ");
         String name = sc.next();
         System.out.print("Enter product's price: ");
-        int price = sc.nextInt();
+        double price = sc.nextDouble();
         Product product = currentSeller.addToRequestList(adsCategory, name, currentSeller, price);
         System.out.println("Successfully done.");
         System.out.println("Waiting for admin accept...");

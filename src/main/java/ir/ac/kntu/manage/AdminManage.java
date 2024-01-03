@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AdminManage {
-    private final ArrayList<Product> req;
-    private final ArrayList<Product> deliveryReq;
+    private ArrayList<Product> req;
+    private ArrayList<Product> deliveryReq;
 
     public AdminManage() {
         req = new ArrayList<>();
@@ -159,36 +159,52 @@ public class AdminManage {
         if (choice == 0) {
             return;
         }
-        Product product = req.get(--choice);
+        Product product = deliveryReq.get(--choice);
         boolean isAvailable = Main.getRunManage().getDeliveryManage().isAvailableDelivery(product);
         if (!isAvailable) {
             System.out.println("No available delivery!");
             return;
         }
         Delivery delivery = findClosestDelivery(product);
-        int distance = (int) admin.calculateDistance(delivery, product.getSeller());
-        Main.getRunManage().getDeliveryManage().unavailability(delivery, distance, product);
+        int distance = (int) delivery.calculateDistance(delivery, product.getSeller());
+        makeUnavailableDelivery(distance, product, delivery);
+        product.setSending(false);
+        product.setSold(true);
+        delivery.setAvailable(true);
+    }
+
+    public void makeUnavailableDelivery(int distanceInKm, Product product, Delivery delivery) {
+        product.setWaitingToSend(false);
+        product.setReadyToSend(false);
+        product.setSending(true);
+        deliveryReq.remove(product);
+        delivery.setAvailable(false);
+        try {
+            Thread.sleep(distanceInKm * 5000L);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     public Delivery findClosestDelivery(Product product) {
         Delivery finalDelivery = null;
         double distance;
-        double finalDistance = Integer.MAX_VALUE;
+        double finalDistance = Double.MAX_VALUE;
         for (User user : Main.getRunManage().getUsers()) {
-            if (!(user instanceof Delivery delivery))
-                continue;
-            if (!(delivery.isAvailable()))
-                continue;
-            if (product.getAdsCategory().matches(AdsCategory.HOME_STUFF.toString())) {
-                if (delivery.getVehicleType().equals(VehicleType.MOTOR))
+            if (user instanceof Delivery delivery) {
+                if (!(delivery.isAvailable()))
                     continue;
-            }
-            distance = user.calculateDistance(delivery, product.getSeller());
-            if (distance < finalDistance) {
-                finalDistance = distance;
-                finalDelivery = delivery;
+                if (product.getAdsCategory().matches(AdsCategory.HOME_STUFF.toString()) &&
+                        delivery.getVehicleType().equals(VehicleType.MOTOR))
+                    continue;
+                distance = user.calculateDistance(delivery, product.getSeller());
+                if (distance < finalDistance) {
+                    finalDistance = distance;
+                    finalDelivery = delivery;
+                }
             }
         }
+        System.out.println(finalDelivery);
         return finalDelivery;
     }
 
@@ -323,7 +339,19 @@ public class AdminManage {
         System.out.println("==============================================================================================================");
     }
 
+    public ArrayList<Product> getReq() {
+        return req;
+    }
+
     public ArrayList<Product> getDeliveryReq() {
         return deliveryReq;
+    }
+
+    public void setReq(ArrayList<Product> req) {
+        this.req = req;
+    }
+
+    public void setDeliveryReq(ArrayList<Product> deliveryReq) {
+        this.deliveryReq = deliveryReq;
     }
 }

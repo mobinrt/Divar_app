@@ -89,7 +89,7 @@ public class User {
 
     @Override
     public String toString() {
-        return  "{ " + "Role: " + getRole() + ", " +
+        return "{ Role: " + getRole() + ", " +
                 "userName: " + getUserName() + ", " +
                 "Password: " + getPassword() + ", " +
                 "Phone Number: " + getPhoneNumber() + ", " +

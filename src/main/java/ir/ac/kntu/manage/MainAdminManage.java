@@ -3,14 +3,22 @@ package ir.ac.kntu.manage;
 import ir.ac.kntu.Main;
 import ir.ac.kntu.util.Admin;
 import ir.ac.kntu.util.MainAdmin;
+import ir.ac.kntu.util.Product;
 import ir.ac.kntu.util.UsersRole;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MainAdminManage extends AdminManage {
+    public MainAdminManage() {
+        super();
+    }
+
     @Override
-    public void adminMenu(Scanner sc, Admin Admin) {
-        MainAdmin mainAdmin = (MainAdmin) Admin;
+    public void adminMenu(Scanner sc, Admin admin) {
+        getReq().addAll(super.getReq());
+        getDeliveryReq().addAll(super.getDeliveryReq());
+        MainAdmin mainAdmin = (MainAdmin) admin;
         showAdminMenu();
         int choice = getChoice(sc, 9);
         switch (choice) {
@@ -43,8 +51,8 @@ public class MainAdminManage extends AdminManage {
                 adminMenu(sc, mainAdmin);
             }
             case 8 -> {
-                deliverProduct(sc, Admin);
-                adminMenu(sc, Admin);
+                deliverProduct(sc, mainAdmin);
+                adminMenu(sc, mainAdmin);
             }
             default -> Main.getRunManage().run();
         }

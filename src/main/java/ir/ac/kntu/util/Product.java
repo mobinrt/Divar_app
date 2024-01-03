@@ -18,7 +18,7 @@ public class Product {
      * @param seller      -product seller
      * @param price       -product price
      */
-    public Product(String adsCategory, String name, Seller seller, int price) {
+    public Product(String adsCategory, String name, Seller seller, double price) {
         this.adsCategory = adsCategory;
         this.name = name;
         this.seller = seller;
@@ -28,6 +28,18 @@ public class Product {
         readyToSend = false;
         sold = false;
         waitingToSend = false;
+    }
+
+    public String productStatus(Product product) {
+        if (product.isReadyToSend())
+            return "Ready to send";
+        if (product.isSending())
+            return "Sending product";
+        if (product.isSold())
+            return "sold";
+        if (product.isWaitingToSend())
+            return "Waiting to send";
+        return "";
     }
 
     @Override
@@ -59,12 +71,12 @@ public class Product {
         return adsCategory;
     }
 
-    public boolean isReadyToSell() {
+    public boolean isReadyToSend() {
         return readyToSend;
     }
 
-    public void setReadyToSend(boolean readyTOSell) {
-        this.readyToSend = readyTOSell;
+    public void setReadyToSend(boolean readyToSend) {
+        this.readyToSend = readyToSend;
     }
 
     public boolean isSold() {

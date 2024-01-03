@@ -66,28 +66,14 @@ public class DeliveryManage {
         }
     }
 
-    public void unavailability(Delivery delivery, int distanceInKm, Product product) {
-        if (delivery.isAvailable()) {
-            try {
-                delivery.setX(product.getCustomer().getX());
-                delivery.setY(product.getCustomer().getY());
-                delivery.setLocation();
-                Thread.sleep(distanceInKm * 4000L);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
-
     public boolean isAvailableDelivery(Product product) {
         for (User user : Main.getRunManage().getUsers()) {
-            if (!(user instanceof Delivery delivery))
-                continue;
-            if (!(delivery.isAvailable()))
-                continue;
-            if (product.getAdsCategory().matches(AdsCategory.HOME_STUFF.toString()) &&
-                    delivery.getVehicleType().equals(VehicleType.MOTOR)) {
-                continue;
+            if (user instanceof Delivery delivery) {
+                if (!(delivery.isAvailable()))
+                    continue;
+                if (product.getAdsCategory().matches(AdsCategory.HOME_STUFF.toString()) &&
+                        delivery.getVehicleType().equals(VehicleType.MOTOR))
+                    continue;
             }
             return true;
         }
