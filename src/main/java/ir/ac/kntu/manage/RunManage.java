@@ -11,6 +11,7 @@ public class RunManage {
     private final CustomerManage customerManage = new CustomerManage();
     private final DeliveryManage deliveryManage = new DeliveryManage();
     private final MainAdminManage mainAdminManage = new MainAdminManage();
+    private final ChatRoom chatRoom = new ChatRoom();
     private final ArrayList<User> users;
 
     public RunManage() {
@@ -18,7 +19,9 @@ public class RunManage {
         users.add(new MainAdmin("a", "a", "a", "a"));
         users.add(new Admin("aa", "a", "a", "a"));
         users.add(new Seller("s", "s", "s", "s"));
+        users.add(new Seller("ss", "s", "s", "s"));
         users.add(new Customer("c", "c", "c", "c"));
+        users.add(new Customer("cc", "c", "c", "c"));
         users.add(new Delivery("d", "d", "d", "d", VehicleType.MOTOR));
         users.add(new Delivery("dd", "dd", "dd", "dd", VehicleType.MOTOR));
         users.add(new Delivery("ddd", "ddd", "ddd", "ddd", VehicleType.MOTOR));
@@ -284,5 +287,9 @@ public class RunManage {
 
     public ArrayList<User> getUsers() {
         return users;
+    }
+
+    public ChatRoom getChatRoom() {
+        return chatRoom;
     }
 }

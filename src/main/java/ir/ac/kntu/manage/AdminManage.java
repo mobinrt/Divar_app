@@ -170,6 +170,9 @@ public class AdminManage {
         Delivery delivery = findClosestDelivery(product);
         int distance = (int) delivery.calculateDistance(delivery, product.getSeller());
         makeUnavailableDelivery(distance, product, delivery);
+        delivery.setX(product.getSeller().getX());
+        delivery.setY(product.getSeller().getY());
+        delivery.setLocation();
     }
 
     public void makeUnavailableDelivery(int distanceInKm, Product product, Delivery delivery) {

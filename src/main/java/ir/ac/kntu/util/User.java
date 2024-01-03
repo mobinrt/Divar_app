@@ -98,6 +98,24 @@ public class User {
                 "Location: " + "[" + getX() + ", " + getY() + "]" + " }";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        User user = (User) o;
+        return userName.equals(user.userName);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        int prime = 17;
+        result = result * prime + userName.hashCode();
+        return result;
+    }
+
     public String getUserName() {
         return userName;
     }

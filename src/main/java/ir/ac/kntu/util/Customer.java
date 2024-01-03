@@ -1,10 +1,10 @@
 package ir.ac.kntu.util;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.Map;
 
 public class Customer extends User {
+//    private final ChatRoom chatRoom = new ChatRoom();
     private final ArrayList<Product> savedBox;
     private final ArrayList<Product> history;
 

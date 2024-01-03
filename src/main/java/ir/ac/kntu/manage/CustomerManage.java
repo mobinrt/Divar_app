@@ -5,6 +5,7 @@ import ir.ac.kntu.util.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Map;
 import java.util.Scanner;
 
 public class CustomerManage {
@@ -109,7 +110,7 @@ public class CustomerManage {
             product = findProduct(choice, category);
         }
         showAdListOption();
-        int type = getChoice(sc, 3);
+        int type = getChoice(sc, 4);
         switch (type) {
             case 1 -> {
                 addToSavedBox(customer, product);
@@ -118,6 +119,10 @@ public class CustomerManage {
             case 2 -> {
                 buyAd(sc, customer, product);
                 deliverProduct(sc, customer, product);
+                customerMenu(sc, customer);
+            }
+            case 3 -> {
+                Main.getRunManage().getChatRoom().startChat(sc, customer, product.getSeller());
                 customerMenu(sc, customer);
             }
             default -> showAds(sc, customer);
@@ -345,6 +350,7 @@ public class CustomerManage {
         System.out.println("==============================================================================================================");
         System.out.println("1. Add to save box");
         System.out.println("2. Buy");
+        System.out.println("3. Chat with seller");
         System.out.println("0. Back");
         System.out.println("==============================================================================================================");
     }

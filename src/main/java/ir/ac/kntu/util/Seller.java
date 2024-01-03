@@ -2,9 +2,12 @@ package ir.ac.kntu.util;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Seller extends User {
+//    private Map<Customer, ArrayList<String>> chat;
+//    private final ChatRoom chatRoom = new ChatRoom();
     private ArrayList<Product> products;
     private final ArrayList<Product> history;
 

@@ -30,8 +30,20 @@ public class SellerManage {
                 seller.showHistory();
                 sellerMenu(sc, seller);
             }
+            case 5 -> {
+                chatBox(sc, seller);
+                sellerMenu(sc, seller);
+            }
             default -> Main.getRunManage().run();
         }
+    }
+
+    private void chatBox(Scanner sc, Seller seller) {
+
+    }
+
+    private void showChatOption() {
+        System.out.println("1. show ");
     }
 
     /**
@@ -140,6 +152,7 @@ public class SellerManage {
         System.out.println("2. Available ads");
         System.out.println("3. Add ad");
         System.out.println("4. History");
+        System.out.println("5. Massage");
         System.out.println("0. Exit");
         System.out.println("==============================================================================================================");
     }
