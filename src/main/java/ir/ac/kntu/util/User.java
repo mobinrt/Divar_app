@@ -4,6 +4,7 @@ import ir.ac.kntu.Main;
 import ir.ac.kntu.manage.RunManage;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class User {
@@ -17,6 +18,7 @@ public class User {
     private int y = -1;
     private Point[][] location = new Point[1][1];
     private boolean isMainAdmin;
+    private ArrayList<User> users;
 
     public User(String userName, String password, String phoneNumber, String email) {
         this.userName = userName;
@@ -194,5 +196,9 @@ public class User {
 
     public void setMainAdmin(boolean mainAdmin) {
         isMainAdmin = mainAdmin;
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
     }
 }

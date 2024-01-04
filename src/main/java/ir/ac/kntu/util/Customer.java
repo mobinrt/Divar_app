@@ -1,10 +1,8 @@
 package ir.ac.kntu.util;
 
-import javax.swing.plaf.PanelUI;
 import java.util.ArrayList;
-import java.util.Map;
 
-public class Customer extends User implements ChatPage {
+public class Customer extends User {
     private final ArrayList<Product> savedBox;
     private final ArrayList<Product> history;
 
@@ -52,18 +50,6 @@ public class Customer extends User implements ChatPage {
 
     public ArrayList<Product> getHistory() {
         return history;
-    }
-
-    /**
-     * @param chatPages - show open chats with user
-     */
-    @Override
-    public void choiceChat(ArrayList<User> chatPages) {
-
-        for (User user : chatPages) {
-
-        }
-            System.out.print("Equip chat: ");
     }
 }
 

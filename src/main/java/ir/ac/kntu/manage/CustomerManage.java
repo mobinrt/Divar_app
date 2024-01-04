@@ -16,8 +16,9 @@ public class CustomerManage {
     }
 
     public void customerMenu(Scanner sc, Customer customer) {
+        ChatRoom chatRoom = Main.getRunManage().getChatRoomManage().getShowChat().get(customer);
         showCustomerMenu();
-        int choice = getChoice(sc, 5);
+        int choice = getChoice(sc, 6);
         switch (choice) {
             case 1 -> {
                 customerProfile(sc, customer);
@@ -35,6 +36,15 @@ public class CustomerManage {
             case 4 -> {
                 customer.showHistory();
                 customerMenu(sc, customer);
+            }
+            case 5 -> {
+                if (chatRoom != null) {
+                    Main.getRunManage().getChatRoomManage().showAllChats(chatRoom);
+                    customerMenu(sc, customer);
+                } else {
+                    System.out.println("You don't have any conversation!");
+                    customerMenu(sc, customer);
+                }
             }
             default -> Main.getRunManage().run();
         }
@@ -122,11 +132,32 @@ public class CustomerManage {
                 customerMenu(sc, customer);
             }
             case 3 -> {
-                Main.getRunManage().getChatRoom().startChat(sc, customer, product.getSeller());
+                Seller seller = product.getSeller();
+                checkExistenceChat(sc, customer, seller);
                 customerMenu(sc, customer);
             }
             default -> showAds(sc, customer);
         }
+    }
+
+    public void checkExistenceChat(Scanner sc, Customer sender, Seller receiver) {
+        ChatRoom chatRoom;
+        if (sender.getUsers().isEmpty()) {
+            chatRoom = new ChatRoom(sender, receiver);
+            Main.getRunManage().getChatRoomManage().startChat(sc, chatRoom);
+            return;
+        }
+        for (User user : sender.getUsers()) {
+            Seller seller = (Seller) user;
+            if (receiver.equals(seller)) {
+                chatRoom = Main.getRunManage().getChatRoomManage().getShowChat().get(receiver);
+                Main.getRunManage().getChatRoomManage().chatPage();
+                Main.getRunManage().getChatRoomManage().sendMsg(sc, chatRoom);
+                return;
+            }
+        }
+        chatRoom = new ChatRoom(sender, receiver);
+        Main.getRunManage().getChatRoomManage().startChat(sc, chatRoom);
     }
 
     private Product findProduct(int choice, String category) {
@@ -333,6 +364,7 @@ public class CustomerManage {
         System.out.println("2. Sales ads");
         System.out.println("3. Saved box");
         System.out.println("4. History");
+        System.out.println("5. Chats");
         System.out.println("0. Exit");
         System.out.println("==============================================================================================================");
     }

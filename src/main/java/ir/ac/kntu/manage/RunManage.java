@@ -11,7 +11,7 @@ public class RunManage {
     private final CustomerManage customerManage = new CustomerManage();
     private final DeliveryManage deliveryManage = new DeliveryManage();
     private final MainAdminManage mainAdminManage = new MainAdminManage();
-    private final ChatRoom chatRoom = new ChatRoom();
+    private final ChatRoomManage chatRoomManage = new ChatRoomManage();
     private final ArrayList<User> users;
 
     public RunManage() {
@@ -289,7 +289,7 @@ public class RunManage {
         return users;
     }
 
-    public ChatRoom getChatRoom() {
-        return chatRoom;
+    public ChatRoomManage getChatRoomManage() {
+        return chatRoomManage;
     }
 }
