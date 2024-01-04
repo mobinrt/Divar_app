@@ -22,9 +22,9 @@ public class ChatRoom {
     public void startChat(Scanner sc, Customer sender, Seller receiver) {
         System.out.println("===========================================   Chat room:  ============================================");
         System.out.print("Enter massage: ");
-        String msg = sc.nextLine();
+        msg = sc.nextLine();
         msg = sender.getUserName() + " (" + UsersRole.CUSTOMER + ") " + ": " + msg;
-        chat.add(new ChatRoom(sender, receiver, msg));
+        getChat().add(new ChatRoom(sender, receiver, msg));
         System.out.println("======================================================================================================");
     }
 
@@ -35,13 +35,9 @@ public class ChatRoom {
         }
     }
 
-    public void choiceChat() {
-
-    }
-
     public void sendChat(Scanner sc, User sender, User receiver) {
         System.out.print("Enter massage: ");
-        String msg = sc.nextLine();
+        msg = sc.nextLine();
         msg = sender.getUserName() + " (" + sender.getRole() + ") " + ": " + msg;
         chat.add(new ChatRoom(sender, receiver, msg));
         System.out.println("======================================================================================================");

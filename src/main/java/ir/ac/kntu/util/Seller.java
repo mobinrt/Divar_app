@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Seller extends User {
-//    private Map<Customer, ArrayList<String>> chat;
-//    private final ChatRoom chatRoom = new ChatRoom();
+public class Seller extends User implements ChatPage{
     private ArrayList<Product> products;
     private final ArrayList<Product> history;
 
@@ -71,6 +69,14 @@ public class Seller extends User {
 
     public ArrayList<Product> getHistory() {
         return history;
+    }
+
+    /**
+     * @param chatPages
+     */
+    @Override
+    public void choiceChat(ArrayList<User> chatPages) {
+
     }
 }
 
