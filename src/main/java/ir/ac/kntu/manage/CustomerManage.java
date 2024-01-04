@@ -5,7 +5,6 @@ import ir.ac.kntu.util.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Map;
 import java.util.Scanner;
 
 public class CustomerManage {
@@ -16,7 +15,9 @@ public class CustomerManage {
     }
 
     public void customerMenu(Scanner sc, Customer customer) {
-        ChatRoom chatRoom = Main.getRunManage().getChatRoomManage().getShowChat().get(customer);
+        ChatRoom chatRoom = Main.getRunManage().getChatRoomManage().getReturnChatRoomByCustomer().get(customer);
+        if (chatRoom != null)
+            swapRoleCustomer(chatRoom, customer);
         showCustomerMenu();
         int choice = getChoice(sc, 6);
         switch (choice) {
@@ -39,7 +40,7 @@ public class CustomerManage {
             }
             case 5 -> {
                 if (chatRoom != null) {
-                    Main.getRunManage().getChatRoomManage().showAllChats(chatRoom);
+                    Main.getRunManage().getChatRoomManage().chatBox(sc, chatRoom, customer);
                     customerMenu(sc, customer);
                 } else {
                     System.out.println("You don't have any conversation!");
@@ -47,6 +48,15 @@ public class CustomerManage {
                 }
             }
             default -> Main.getRunManage().run();
+        }
+    }
+
+    private void swapRoleCustomer(ChatRoom chatRoom, Customer currentCustomer) {
+        if (!chatRoom.getSender().equals(currentCustomer)) {
+            User userReceiver = chatRoom.getSender();
+            User userSender = chatRoom.getReceiver();
+            chatRoom.setSender(userSender);
+            chatRoom.setReceiver(userReceiver);
         }
     }
 
@@ -133,31 +143,11 @@ public class CustomerManage {
             }
             case 3 -> {
                 Seller seller = product.getSeller();
-                checkExistenceChat(sc, customer, seller);
+                Main.getRunManage().getChatRoomManage().checkExistenceChat(sc, customer, seller);
                 customerMenu(sc, customer);
             }
             default -> showAds(sc, customer);
         }
-    }
-
-    public void checkExistenceChat(Scanner sc, Customer sender, Seller receiver) {
-        ChatRoom chatRoom;
-        if (sender.getUsers().isEmpty()) {
-            chatRoom = new ChatRoom(sender, receiver);
-            Main.getRunManage().getChatRoomManage().startChat(sc, chatRoom);
-            return;
-        }
-        for (User user : sender.getUsers()) {
-            Seller seller = (Seller) user;
-            if (receiver.equals(seller)) {
-                chatRoom = Main.getRunManage().getChatRoomManage().getShowChat().get(receiver);
-                Main.getRunManage().getChatRoomManage().chatPage();
-                Main.getRunManage().getChatRoomManage().sendMsg(sc, chatRoom);
-                return;
-            }
-        }
-        chatRoom = new ChatRoom(sender, receiver);
-        Main.getRunManage().getChatRoomManage().startChat(sc, chatRoom);
     }
 
     private Product findProduct(int choice, String category) {

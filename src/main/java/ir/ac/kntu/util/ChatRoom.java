@@ -8,6 +8,9 @@ public class ChatRoom {
     private User receiver;
     private String msg;
 
+    public ChatRoom(){
+
+    }
     public ChatRoom(User sender, User receiver) {
         this.sender = sender;
         this.receiver = receiver;
@@ -22,7 +25,6 @@ public class ChatRoom {
     public String toString() {
         return getSender().getUserName() + " (" + getSender().getRole() + ") " + ": " + msg;
     }
-
 
     public User getSender() {
         return sender;

@@ -11,8 +11,11 @@ public class SellerManage {
      * @param seller - online seller
      */
     public void sellerMenu(Scanner sc, Seller seller) {
+        ChatRoom chatRoom = Main.getRunManage().getChatRoomManage().getReturnChatRoomBySeller().get(seller);
+        if (chatRoom != null)
+            swapRoleSeller(chatRoom, seller);
         showSellerMenu();
-        int choice = getChoice(sc, 5);
+        int choice = getChoice(sc, 6);
         switch (choice) {
             case 1 -> {
                 sellerProfile(sc, seller);
@@ -31,19 +34,25 @@ public class SellerManage {
                 sellerMenu(sc, seller);
             }
             case 5 -> {
-                chatBox(sc, seller);
-                sellerMenu(sc, seller);
+                if (chatRoom != null) {
+                    Main.getRunManage().getChatRoomManage().chatBox(sc, chatRoom, seller);
+                    sellerMenu(sc, seller);
+                } else {
+                    System.out.println("You don't have any conversation!");
+                    sellerMenu(sc, seller);
+                }
             }
             default -> Main.getRunManage().run();
         }
     }
 
-    private void chatBox(Scanner sc, Seller seller) {
-
-    }
-
-    private void showChatOption() {
-        System.out.println("1. show ");
+    private void swapRoleSeller(ChatRoom chatRoom, Seller currentSeller) {
+        if (!chatRoom.getSender().equals(currentSeller)) {
+            User userReceiver = chatRoom.getSender();
+            User userSender = chatRoom.getReceiver();
+            chatRoom.setSender(userReceiver);
+            chatRoom.setReceiver(userSender);
+        }
     }
 
     /**
