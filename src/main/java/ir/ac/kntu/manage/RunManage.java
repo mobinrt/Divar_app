@@ -1,5 +1,6 @@
 package ir.ac.kntu.manage;
 
+import ir.ac.kntu.Main;
 import ir.ac.kntu.util.*;
 
 import java.util.ArrayList;
@@ -217,17 +218,6 @@ public class RunManage {
         }
         assert user != null;
         return user;
-    }
-
-    public int showUsersList(UsersRole role) {
-        int i = 1;
-        for (User user : users) {
-            if (user.getRole().equals(role)) {
-                System.out.println(i + ") " + user);
-                i++;
-            }
-        }
-        return i;
     }
 
     /**

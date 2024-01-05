@@ -110,7 +110,7 @@ public class AdminManage {
     }
 
     public void generalEdit(Scanner sc, Admin admin, UsersRole userRole) {
-        int length = Main.getRunManage().showUsersList(userRole);
+        int length = showUsersList(userRole);
         System.out.println("Select one of the customers to remove or press zero to back");
         int choice = getChoice(sc, length);
         if (choice == 0) {
@@ -124,7 +124,7 @@ public class AdminManage {
     }
 
     public void sellerEdit(Scanner sc, Admin admin) {
-        int length = Main.getRunManage().showUsersList(UsersRole.SELLER);
+        int length = showUsersList(UsersRole.SELLER);
         System.out.println("Select one of the sellers to remove or press zero to back");
         int choice = getChoice(sc, length);
         if (choice == 0) {
@@ -307,6 +307,17 @@ public class AdminManage {
             System.out.println("Invalid input!");
             return getChoice(scan, bound);
         }
+    }
+
+    public int showUsersList(UsersRole role) {
+        int i = 1;
+        for (User user : Main.getRunManage().getUsers()) {
+            if (user.getRole().equals(role)) {
+                System.out.println(i + ") " + user);
+                i++;
+            }
+        }
+        return i;
     }
 
     public void showProfileOption() {

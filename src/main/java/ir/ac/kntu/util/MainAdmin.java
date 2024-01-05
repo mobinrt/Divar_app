@@ -1,6 +1,6 @@
 package ir.ac.kntu.util;
 
-public class MainAdmin extends Admin{
+public class MainAdmin extends Admin {
 
     /**
      * @param userName    - admin name

@@ -12,7 +12,7 @@ public class MainAdminManage extends AdminManage {
     @Override
     public void adminMenu(Scanner sc, Admin admin) {
         showAdminMenu();
-        int choice = getChoice(sc, 9);
+        int choice = getChoice(sc, 10);
         MainAdmin mainAdmin = (MainAdmin) admin;
         switch (choice) {
             case 1 -> {
@@ -49,15 +49,59 @@ public class MainAdminManage extends AdminManage {
             }
             case 9 -> {
                 salaryPay(sc, mainAdmin);
-                adminMenu(sc,admin);
+                adminMenu(sc, admin);
             }
             default -> Main.getRunManage().run();
         }
     }
 
     private void salaryPay(Scanner sc, MainAdmin mainAdmin) {
-
+        System.out.println("Witch type of user you want to pay?");
+        System.out.println("1. " + UsersRole.DELIVERY);
+        System.out.println("2. " + UsersRole.ADMIN);
+        System.out.println("0. Back");
+        int choice = getChoice(sc, 3);
+        UsersRole usersRole;
+        switch (choice) {
+            case 1 -> {
+                usersRole = UsersRole.DELIVERY;
+                salaryPay(sc, mainAdmin, usersRole);
+                adminMenu(sc, mainAdmin);
+            }
+            case 2 -> {
+                usersRole = UsersRole.ADMIN;
+                salaryPay(sc, mainAdmin, usersRole);
+                adminMenu(sc, mainAdmin);
+            }
+            case 3 -> adminMenu(sc, mainAdmin);
+        }
     }
+
+    private void salaryPay(Scanner sc, MainAdmin mainAdmin, UsersRole usersRole) {
+        User user = chooseUser(sc, mainAdmin, usersRole);
+        int salary;
+        System.out.print("Enter the payment amount: ");
+        salary = sc.nextInt();
+        while (mainAdmin.getWallet() < salary) {
+            System.out.println("You don't have enough money to pay!");
+            System.out.print("Enter the payment amount: ");
+            salary = sc.nextInt();
+        }
+        mainAdmin.setWallet(mainAdmin.getWallet() - salary);
+        user.setWallet(salary);
+        System.out.println("Successfully done.");
+        System.out.println("==============================================================================================================");
+    }
+
+    private User chooseUser(Scanner sc, MainAdmin mainAdmin, UsersRole usersRole) {
+        int length = showUsersList(usersRole);
+        System.out.println("Select one of the user to pay or press zero to back");
+        int choice = getChoice(sc, length);
+        if (choice == 0)
+            adminMenu(sc, mainAdmin);
+        return findUser(choice, usersRole);
+    }
+
 
     @Override
     public void showAdminMenu() {
@@ -70,6 +114,7 @@ public class MainAdminManage extends AdminManage {
         System.out.println("6. All ads");
         System.out.println("7. Requests");
         System.out.println("8. Product deliver");
+        System.out.println("9. Salary pay");
         System.out.println("0. Exit");
         System.out.println("==============================================================================================================");
     }

@@ -25,14 +25,21 @@ public class Delivery extends User {
                 "Password: " + getPassword() + ", " +
                 "Phone Number: " + getPhoneNumber() + ", " +
                 "Email: " + getEmail() + ", " +
-                "Wallet: " + getWallet() + " }" +
+                "Wallet: " + getWallet() +
+                "Location" + location() + " }" +
                 "(" + available() + ")";
     }
 
     private String available() {
         if (isAvailable)
-            return "You are free at the moment.";
-        return "You have product to deliver.";
+            return "free at the moment.";
+        return "hase product to deliver.";
+    }
+
+    private String location() {
+        if (isAvailable)
+            return "unAvailable";
+        return "[" + getX() + ", " + getY() + "]";
     }
 
     public VehicleType getVehicleType() {
