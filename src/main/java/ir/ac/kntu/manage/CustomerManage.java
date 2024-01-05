@@ -3,10 +3,7 @@ package ir.ac.kntu.manage;
 import ir.ac.kntu.Main;
 import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.AdsCategory;
-import ir.ac.kntu.util.users.Customer;
-import ir.ac.kntu.util.users.MainAdmin;
-import ir.ac.kntu.util.users.Seller;
-import ir.ac.kntu.util.users.User;
+import ir.ac.kntu.util.users.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,9 +17,6 @@ public class CustomerManage {
     }
 
     public void customerMenu(Scanner sc, Customer customer) {
-        ChatRoom chatRoom = Main.getRunManage().getChatRoomManage().getReturnChatRoomBySender().get(customer);
-        if (chatRoom != null)
-            swapRoleCustomer(chatRoom, customer);
         showCustomerMenu();
         int choice = getChoice(sc, 6);
         switch (choice) {
@@ -44,13 +38,8 @@ public class CustomerManage {
                 customerMenu(sc, customer);
             }
             case 5 -> {
-                if (chatRoom != null) {
-                    Main.getRunManage().getChatRoomManage().chatBox(sc, chatRoom, customer);
-                    customerMenu(sc, customer);
-                } else {
-                    System.out.println("You don't have any conversation!");
-                    customerMenu(sc, customer);
-                }
+                Main.getRunManage().getChatRoomManage().chatBox(sc, customer);
+                customerMenu(sc, customer);
             }
             default -> Main.getRunManage().run();
         }
@@ -112,7 +101,6 @@ public class CustomerManage {
         }
     }
 
-    // Method to handle the ad selection process
     private Product handleAdSelection(Scanner sc, Customer customer) {
         int choice;
         Product product;
@@ -153,12 +141,10 @@ public class CustomerManage {
                 deliverProduct(sc, customer, product);
             }
             case 3 -> {
-                Seller seller = product.getSeller();
-                Main.getRunManage().getChatRoomManage().checkExistenceChat(sc, customer, seller);
+                Seller receiver = product.getSeller();
+                Main.getRunManage().getChatRoomManage().checkExistenceChat(sc, customer, receiver);
             }
-            case 4 -> {
-                Main.getRunManage().getFeedbackManage().handleFeedback(sc, customer, product);
-            }
+            case 4 -> Main.getRunManage().getFeedbackManage().handleFeedback(sc, customer, product);
             default -> customerMenu(sc, customer);
         }
         customerMenu(sc, customer);

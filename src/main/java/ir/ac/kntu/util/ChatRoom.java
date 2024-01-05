@@ -8,17 +8,34 @@ public class ChatRoom {
     private User sender;
     private User receiver;
     private final ArrayList<String> msg;
+    private final ArrayList<ChatRoom> allChats;
 
     public ChatRoom(User sender, User receiver) {
         this.sender = sender;
         this.receiver = receiver;
         msg = new ArrayList<>();
+        allChats = new ArrayList<>();
     }
 
     @Override
-    public String toString() {
-        int length = msg.size();
-        return getSender().getUserName() + " (" + getSender().getRole() + ") " + ": " + msg.get(--length);
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null)
+            return false;
+        if (getClass() != o.getClass())
+            return false;
+        ChatRoom chatRoom = (ChatRoom) o;
+        return (sender.equals(chatRoom.sender) && receiver.equals(chatRoom.receiver));
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        int prime = 17;
+        result = result * prime + sender.hashCode();
+        result = result * prime + receiver.hashCode();
+        return result;
     }
 
     public User getSender() {
@@ -39,6 +56,9 @@ public class ChatRoom {
 
     public ArrayList<String> getMsg() {
         return msg;
+    }
+    public ArrayList<ChatRoom> getAllChats() {
+        return allChats;
     }
 }
 

@@ -119,7 +119,7 @@ public class RunManage {
         System.out.print("Enter your email: ");
         String email = sc.nextLine();
         User user = new User(userName, password, phoneNumber, email);
-        if (!checkInfo(userName)) {
+        if (checkInfo(userName)) {
             System.out.println("==============================================================================================================");
             return addUser(sc);
         }
@@ -137,10 +137,10 @@ public class RunManage {
         for (User user : users) {
             if (userName.equals(user.getUserName())) {
                 System.out.println("This user name had taken please try again.");
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     /**
@@ -166,7 +166,6 @@ public class RunManage {
         }
         return true;
     }
-
 
     private void guest(Scanner sc) {
         customerManage.showAdsList();

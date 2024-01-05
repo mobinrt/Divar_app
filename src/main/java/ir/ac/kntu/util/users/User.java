@@ -51,7 +51,7 @@ public class User {
         System.out.print("Enter new email: ");
         String email = sc.nextLine();
         if (!currentUser.getUserName().matches(userName)) {
-            if (!Main.getRunManage().checkInfo(userName)) {
+            if (Main.getRunManage().checkInfo(userName)) {
                 editUserInfo(sc, currentUser);
                 return;
             }

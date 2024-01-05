@@ -24,7 +24,7 @@ public class FeedbackManage {
         Feedback feedback = new Feedback(customer);
         System.out.print("Enter your feedback: ");
         String text = sc.nextLine();
-        feedback.getText().add(text);
+        feedback.setText(text);
         product.getSeller().getFeedback().add(feedback);
         System.out.println("Successfully done.");
         System.out.println("===========================================================================================================");
