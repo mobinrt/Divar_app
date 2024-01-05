@@ -1,6 +1,5 @@
 package ir.ac.kntu.util;
 
-import javax.swing.plaf.PanelUI;
 import java.util.*;
 
 public class ChatRoom {

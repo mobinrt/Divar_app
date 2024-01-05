@@ -9,8 +9,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class AdminManage {
-    private ArrayList<Product> req;
-    private ArrayList<Product> deliveryReq;
+    private final ArrayList<Product> req;
+    private final ArrayList<Product> deliveryReq;
 
     public AdminManage() {
         req = new ArrayList<>();
@@ -365,14 +365,5 @@ public class AdminManage {
 
     public ArrayList<Product> getDeliveryReq() {
         return deliveryReq;
-    }
-
-    public void setReq(ArrayList<Product> req) {
-        this.req = req;
-    }
-
-
-    public void setDeliveryReq(ArrayList<Product> deliveryReq) {
-        this.deliveryReq = deliveryReq;
     }
 }

@@ -3,10 +3,7 @@ package ir.ac.kntu.manage;
 import ir.ac.kntu.Main;
 import ir.ac.kntu.util.*;
 
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainAdminManage extends AdminManage {
     @Override

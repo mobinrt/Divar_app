@@ -18,7 +18,7 @@ public class User {
     private int y = -1;
     private final Point[][] location = new Point[1][1];
     private boolean isMainAdmin;
-    private ArrayList<User> users;
+    private final ArrayList<User> users;
 
     public User(String userName, String password, String phoneNumber, String email) {
         this.userName = userName;
@@ -28,6 +28,7 @@ public class User {
         wallet = 0;
         isMainAdmin = false;
         setRole(UsersRole.USER);
+        users = new ArrayList<>();
     }
 
     public void editUserInfo(Scanner sc, User currentUser) {
@@ -164,10 +165,6 @@ public class User {
 
     public void setRole(UsersRole role) {
         this.role = role;
-    }
-
-    public Point[][] getLocation() {
-        return location;
     }
 
     public void setLocation() {

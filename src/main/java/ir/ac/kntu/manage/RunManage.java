@@ -1,6 +1,5 @@
 package ir.ac.kntu.manage;
 
-import ir.ac.kntu.Main;
 import ir.ac.kntu.util.*;
 
 import java.util.ArrayList;
