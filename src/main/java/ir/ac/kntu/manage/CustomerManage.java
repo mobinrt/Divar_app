@@ -15,7 +15,7 @@ public class CustomerManage {
     }
 
     public void customerMenu(Scanner sc, Customer customer) {
-        ChatRoom chatRoom = Main.getRunManage().getChatRoomManage().getReturnChatRoomByCustomer().get(customer);
+        ChatRoom chatRoom = Main.getRunManage().getChatRoomManage().getReturnChatRoomBySender().get(customer);
         if (chatRoom != null)
             swapRoleCustomer(chatRoom, customer);
         showCustomerMenu();

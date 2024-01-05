@@ -6,24 +6,18 @@ import java.util.*;
 public class ChatRoom {
     private User sender;
     private User receiver;
-    private String msg;
+    private final ArrayList<String> msg;
 
-    public ChatRoom(){
-
-    }
     public ChatRoom(User sender, User receiver) {
         this.sender = sender;
         this.receiver = receiver;
-    }
-
-    public ChatRoom(User sender, User receiver, String msg) {
-        this(sender, receiver);
-        this.msg = msg;
+        msg = new ArrayList<>();
     }
 
     @Override
     public String toString() {
-        return getSender().getUserName() + " (" + getSender().getRole() + ") " + ": " + msg;
+        int length = msg.size();
+        return getSender().getUserName() + " (" + getSender().getRole() + ") " + ": " + msg.get(--length);
     }
 
     public User getSender() {
@@ -42,12 +36,8 @@ public class ChatRoom {
         this.receiver = receiver;
     }
 
-    public String getMsg() {
+    public ArrayList<String> getMsg() {
         return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
     }
 }
 

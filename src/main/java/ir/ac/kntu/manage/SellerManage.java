@@ -11,7 +11,7 @@ public class SellerManage {
      * @param seller - online seller
      */
     public void sellerMenu(Scanner sc, Seller seller) {
-        ChatRoom chatRoom = Main.getRunManage().getChatRoomManage().getReturnChatRoomBySeller().get(seller);
+        ChatRoom chatRoom = Main.getRunManage().getChatRoomManage().getReturnChatRoomByReceiver().get(seller);
         if (chatRoom != null)
             swapRoleSeller(chatRoom, seller);
         showSellerMenu();

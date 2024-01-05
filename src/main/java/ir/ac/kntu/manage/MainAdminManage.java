@@ -10,10 +10,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MainAdminManage extends AdminManage {
-    public MainAdminManage() {
-        super();
-    }
-
     @Override
     public void adminMenu(Scanner sc, Admin admin) {
         getReq().addAll(super.getReq());
