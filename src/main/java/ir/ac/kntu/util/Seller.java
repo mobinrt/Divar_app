@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Seller extends User {
     private ArrayList<Product> products;
     private final ArrayList<Product> history;
-    private final ArrayList<String> feedback;
+    private final ArrayList<Feedback> feedback;
 
     /**
      * @param userName    - seller name
@@ -70,7 +70,7 @@ public class Seller extends User {
         return history;
     }
 
-    public ArrayList<String> getFeedback() {
+    public ArrayList<Feedback> getFeedback() {
         return feedback;
     }
 }

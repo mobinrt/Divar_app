@@ -140,7 +140,7 @@ public class CustomerManage {
             return;
         }
         showAdListOption();
-        int type = getChoice(sc, 4);
+        int type = getChoice(sc, 5);
         switch (type) {
             case 1 -> addToSavedBox(customer, product);
             case 2 -> {
@@ -150,6 +150,9 @@ public class CustomerManage {
             case 3 -> {
                 Seller seller = product.getSeller();
                 Main.getRunManage().getChatRoomManage().checkExistenceChat(sc, customer, seller);
+            }
+            case 4 -> {
+                Main.getRunManage().getFeedbackManage().handleFeedback(sc, customer, product);
             }
             default -> customerMenu(sc, customer);
         }
@@ -380,6 +383,7 @@ public class CustomerManage {
         System.out.println("1. Add to save box");
         System.out.println("2. Buy");
         System.out.println("3. Chat with seller");
+        System.out.println("4. Feedbacks");
         System.out.println("0. Back");
         System.out.println("==============================================================================================================");
     }
@@ -407,45 +411,3 @@ public class CustomerManage {
         return products;
     }
 }
-//    private void showAds(Scanner sc, Customer customer) {
-//        int choice;
-//        Product product;
-//        String category = showAdsCategory(sc, customer);
-//        if (category.matches("")) {
-//            showAdsList();
-//            System.out.println("Select one of the ads to remove or press zero to back: ");
-//            choice = getChoice(sc, products.size() + 1);
-//            if (choice == 0) {
-//                customerMenu(sc, customer);
-//                return;
-//            }
-//            product = products.get(--choice);
-//        } else {
-//            int length = showAdsListByCategory(category, sc, customer);
-//            choice = getChoice(sc, length + 1);
-//            if (choice == 0) {
-//                customerMenu(sc, customer);
-//                return;
-//            }
-//            product = findProduct(choice, category);
-//        }
-//        showAdListOption();
-//        int type = getChoice(sc, 4);
-//        switch (type) {
-//            case 1 -> {
-//                addToSavedBox(customer, product);
-//                customerMenu(sc, customer);
-//            }
-//            case 2 -> {
-//                buyAd(sc, customer, product);
-//                deliverProduct(sc, customer, product);
-//                customerMenu(sc, customer);
-//            }
-//            case 3 -> {
-//                Seller seller = product.getSeller();
-//                Main.getRunManage().getChatRoomManage().checkExistenceChat(sc, customer, seller);
-//                customerMenu(sc, customer);
-//            }
-//            default -> showAds(sc, customer);
-//        }
-//    }

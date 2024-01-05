@@ -15,7 +15,7 @@ public class SellerManage {
         if (chatRoom != null)
             swapRoleSeller(chatRoom, seller);
         showSellerMenu();
-        int choice = getChoice(sc, 6);
+        int choice = getChoice(sc, 7);
         switch (choice) {
             case 1 -> {
                 sellerProfile(sc, seller);
@@ -42,6 +42,10 @@ public class SellerManage {
                     sellerMenu(sc, seller);
                 }
             }
+            case 6 -> {
+                showFeedbacks(seller);
+                sellerMenu(sc, seller);
+            }
             default -> Main.getRunManage().run();
         }
     }
@@ -52,6 +56,16 @@ public class SellerManage {
             User userSender = chatRoom.getReceiver();
             chatRoom.setSender(userReceiver);
             chatRoom.setReceiver(userSender);
+        }
+    }
+
+    public void showFeedbacks(Seller seller) {
+        if (seller.getFeedback().isEmpty()) {
+            System.out.println("There is no comment.");
+            return;
+        }
+        for (Feedback feedback : seller.getFeedback()) {
+            System.out.println(feedback);
         }
     }
 
@@ -163,6 +177,7 @@ public class SellerManage {
         System.out.println("3. Add ad");
         System.out.println("4. History");
         System.out.println("5. Massage");
+        System.out.println("6. Feedbacks");
         System.out.println("0. Exit");
         System.out.println("==============================================================================================================");
     }
