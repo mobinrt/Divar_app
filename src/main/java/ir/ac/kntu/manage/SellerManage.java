@@ -17,10 +17,22 @@ public class SellerManage {
         showSellerMenu();
         int choice = getChoice(sc, 6);
         switch (choice) {
-            case 1 -> sellerProfile(sc, seller);
-            case 2 -> seller.showAvailableAds();
-            case 3 -> addAd(sc, seller);
-            case 4 -> seller.showHistory();
+            case 1 -> {
+                sellerProfile(sc, seller);
+                sellerMenu(sc, seller);
+            }
+            case 2 -> {
+                seller.showAvailableAds();
+                sellerMenu(sc, seller);
+            }
+            case 3 -> {
+                addAd(sc, seller);
+                sellerMenu(sc, seller);
+            }
+            case 4 -> {
+                seller.showHistory();
+                sellerMenu(sc, seller);
+            }
             case 5 -> {
                 if (chatRoom != null) {
                     Main.getRunManage().getChatRoomManage().chatBox(sc, chatRoom, seller);
@@ -53,6 +65,7 @@ public class SellerManage {
             currentSeller.setLocation(sc, currentSeller);
         }
         String adsCategory = showAdsCategory(sc, currentSeller);
+        sc.nextLine();
         System.out.print("Enter product's name: ");
         String name = sc.next();
         System.out.print("Enter product's price: ");
@@ -62,7 +75,7 @@ public class SellerManage {
         System.out.println("Waiting for admin accept...");
         System.out.println("==============================================================================================================");
         Main.getRunManage().getAdminManage().addProductToReq(product);
-        sellerMenu(sc, currentSeller);
+        Main.getRunManage().getMainAdminManage().addProductToReq(product);
     }
 
     private void sellerProfile(Scanner sc, Seller seller) {

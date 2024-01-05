@@ -69,7 +69,6 @@ public class ChatRoomManage {
 
     private void startChat(Scanner sc, ChatRoom chatRoom) {
         System.out.println("===========================================   Chat page:  ===================================================");
-        System.out.print("Enter massage: ");
         sendAndSaveMsg(sc, chatRoom);
         returnChatRoomByReceiver.put(chatRoom.getReceiver(), chatRoom);
         returnChatRoomBySender.put(chatRoom.getSender(), chatRoom);
@@ -94,7 +93,6 @@ public class ChatRoomManage {
     }
 
     private void sendMsg(Scanner sc, ChatRoom chatRoom) {
-        System.out.print("Enter massage: ");
         sendAndSaveMsg(sc, chatRoom);
         System.out.println("=============================================================================================================");
     }
@@ -107,6 +105,8 @@ public class ChatRoomManage {
     }
 
     private void sendAndSaveMsg(Scanner sc, ChatRoom chatRoom) {
+        sc.nextLine();
+        System.out.print("Enter massage(Enter 0 for back): ");
         String msg = sc.next();
         if (msg.matches("0"))
             return;

@@ -18,7 +18,6 @@ public class DeliveryManage {
         }
     }
 
-    //
     private void profile(Scanner sc, Delivery delivery) {
         showProfileOption();
         int choice = getChoice(sc, 4);

@@ -29,13 +29,34 @@ public class AdminManage {
         showAdminMenu();
         int choice = getChoice(sc, 8);
         switch (choice) {
-            case 1 -> adminProfile(sc, admin);
-            case 2 -> generalEdit(sc, admin, UsersRole.CUSTOMER);
-            case 3 -> sellerEdit(sc, admin);
-            case 4 -> generalEdit(sc, admin, UsersRole.DELIVERY);
-            case 5 -> adsEdit(sc, admin);
-            case 6 -> reqListOption(sc, admin);
-            case 7 -> deliverProduct(sc, admin);
+            case 1 -> {
+                adminProfile(sc, admin);
+                adminMenu(sc, admin);
+            }
+            case 2 -> {
+                generalEdit(sc, admin, UsersRole.CUSTOMER);
+                adminMenu(sc, admin);
+            }
+            case 3 -> {
+                sellerEdit(sc, admin);
+                adminMenu(sc, admin);
+            }
+            case 4 -> {
+                generalEdit(sc, admin, UsersRole.DELIVERY);
+                adminMenu(sc, admin);
+            }
+            case 5 -> {
+                adsEdit(sc, admin);
+                adminMenu(sc, admin);
+            }
+            case 6 -> {
+                reqListOption(sc, admin);
+                adminMenu(sc, admin);
+            }
+            case 7 -> {
+                deliverProduct(sc, admin);
+                adminMenu(sc, admin);
+            }
             default -> Main.getRunManage().run();
         }
     }
@@ -228,7 +249,7 @@ public class AdminManage {
                 reqListOption(sc, admin);
             }
             case 3 -> {
-                showReqList(sc, admin, req);
+                showReqList(sc, admin, getReq());
                 reqListOption(sc, admin);
             }
             default -> adminMenu(sc, admin);
@@ -236,31 +257,31 @@ public class AdminManage {
     }
 
     public void acceptReq(Scanner sc, Admin admin) {
-        showReqList(sc, admin, req);
+        showReqList(sc, admin, getReq());
         System.out.println("Which product do you want to accept?");
-        int choice = getChoice(sc, req.size() + 1);
+        int choice = getChoice(sc, getReq().size() + 1);
         if (choice == 0) {
             reqListOption(sc, admin);
             return;
         }
-        Product product = req.get(--choice);
+        Product product = getReq().get(--choice);
         product.setIsVisible(true);
         Main.getRunManage().getCustomerManage().getProducts().add(product);
-        req.remove(product);
+        getReq().remove(product);
     }
 
     public void deniedReq(Scanner sc, Admin admin) {
-        showReqList(sc, admin, req);
+        showReqList(sc, admin, getReq());
         System.out.println("Which product do you want to delete?");
-        int choice = getChoice(sc, req.size() + 1);
+        int choice = getChoice(sc, getReq().size() + 1);
         if (choice == 0) {
             reqListOption(sc, admin);
             return;
         }
-        Product deleteProduct = req.get(--choice);
-        Seller seller = req.get(choice).getSeller();
+        Product deleteProduct = getReq().get(--choice);
+        Seller seller = getReq().get(choice).getSeller();
         seller.getProducts().remove(deleteProduct);
-        req.remove(deleteProduct);
+        getReq().remove(deleteProduct);
     }
 
     public void showReqList(Scanner sc, Admin admin, ArrayList<Product> req) {
@@ -338,6 +359,7 @@ public class AdminManage {
     public void setReq(ArrayList<Product> req) {
         this.req = req;
     }
+
 
     public void setDeliveryReq(ArrayList<Product> deliveryReq) {
         this.deliveryReq = deliveryReq;

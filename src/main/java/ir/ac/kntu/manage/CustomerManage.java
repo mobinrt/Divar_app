@@ -21,18 +21,30 @@ public class CustomerManage {
         showCustomerMenu();
         int choice = getChoice(sc, 6);
         switch (choice) {
-            case 1 -> customerProfile(sc, customer);
+            case 1 -> {
+                customerProfile(sc, customer);
+                customerMenu(sc, customer);
+            }
             case 2 -> {
                 sortByPrice(sc, customer);
                 showAds(sc, customer);
+                customerMenu(sc, customer);
             }
-            case 3 -> savedBoxOption(sc, customer);
-            case 4 -> customer.showHistory();
+            case 3 -> {
+                savedBoxOption(sc, customer);
+                customerMenu(sc, customer);
+            }
+            case 4 -> {
+                customer.showHistory();
+                customerMenu(sc, customer);
+            }
             case 5 -> {
                 if (chatRoom != null) {
                     Main.getRunManage().getChatRoomManage().chatBox(sc, chatRoom, customer);
+                    customerMenu(sc, customer);
                 } else {
                     System.out.println("You don't have any conversation!");
+                    customerMenu(sc, customer);
                 }
             }
             default -> Main.getRunManage().run();
@@ -212,6 +224,7 @@ public class CustomerManage {
         mainAdmin.setWallet(charge * adsCategory.getBaseCharge());
         customer.setWallet(customer.getWallet() - (charge * adsCategory.getBaseCharge()));
         Main.getRunManage().getAdminManage().getDeliveryReq().add(product);
+        Main.getRunManage().getMainAdminManage().getDeliveryReq().add(product);
         System.out.println("==============================================================================================================");
         boolean isAvailableDelivery = Main.getRunManage().getDeliveryManage().isAvailableDelivery(product);
         if (isAvailableDelivery) {
