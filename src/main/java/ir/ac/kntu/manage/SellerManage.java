@@ -2,6 +2,9 @@ package ir.ac.kntu.manage;
 
 import ir.ac.kntu.Main;
 import ir.ac.kntu.util.*;
+import ir.ac.kntu.util.enums.AdsCategory;
+import ir.ac.kntu.util.users.Seller;
+import ir.ac.kntu.util.users.User;
 
 import java.util.Scanner;
 

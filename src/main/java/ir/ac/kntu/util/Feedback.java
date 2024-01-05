@@ -1,5 +1,7 @@
 package ir.ac.kntu.util;
 
+import ir.ac.kntu.util.users.Customer;
+
 import java.util.ArrayList;
 
 public class Feedback {

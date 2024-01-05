@@ -1,5 +1,8 @@
 package ir.ac.kntu.util;
 
+import ir.ac.kntu.util.users.Customer;
+import ir.ac.kntu.util.users.Seller;
+
 public class Product {
     private final String adsCategory;
     private final String name;

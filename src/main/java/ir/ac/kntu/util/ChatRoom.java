@@ -1,5 +1,7 @@
 package ir.ac.kntu.util;
 
+import ir.ac.kntu.util.users.User;
+
 import java.util.*;
 
 public class ChatRoom {

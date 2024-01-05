@@ -1,6 +1,8 @@
 package ir.ac.kntu.manage;
 
-import ir.ac.kntu.util.*;
+import ir.ac.kntu.util.enums.UsersRole;
+import ir.ac.kntu.util.enums.VehicleType;
+import ir.ac.kntu.util.users.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;

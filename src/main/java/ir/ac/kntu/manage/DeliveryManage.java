@@ -2,6 +2,10 @@ package ir.ac.kntu.manage;
 
 import ir.ac.kntu.Main;
 import ir.ac.kntu.util.*;
+import ir.ac.kntu.util.enums.AdsCategory;
+import ir.ac.kntu.util.enums.VehicleType;
+import ir.ac.kntu.util.users.Delivery;
+import ir.ac.kntu.util.users.User;
 
 import java.util.Scanner;
 

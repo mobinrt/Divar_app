@@ -1,6 +1,10 @@
 package ir.ac.kntu.manage;
 
 import ir.ac.kntu.util.*;
+import ir.ac.kntu.util.enums.UsersRole;
+import ir.ac.kntu.util.users.Customer;
+import ir.ac.kntu.util.users.Seller;
+import ir.ac.kntu.util.users.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;

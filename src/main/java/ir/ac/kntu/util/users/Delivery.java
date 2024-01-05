@@ -1,4 +1,8 @@
-package ir.ac.kntu.util;
+package ir.ac.kntu.util.users;
+
+import ir.ac.kntu.util.Product;
+import ir.ac.kntu.util.enums.UsersRole;
+import ir.ac.kntu.util.enums.VehicleType;
 
 import java.util.ArrayList;
 

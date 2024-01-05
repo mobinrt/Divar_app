@@ -1,7 +1,10 @@
 package ir.ac.kntu.manage;
 
 import ir.ac.kntu.Main;
-import ir.ac.kntu.util.*;
+import ir.ac.kntu.util.enums.UsersRole;
+import ir.ac.kntu.util.users.Admin;
+import ir.ac.kntu.util.users.MainAdmin;
+import ir.ac.kntu.util.users.User;
 
 import java.util.Scanner;
 

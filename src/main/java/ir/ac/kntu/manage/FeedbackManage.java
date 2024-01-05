@@ -1,7 +1,7 @@
 package ir.ac.kntu.manage;
 
 import ir.ac.kntu.Main;
-import ir.ac.kntu.util.Customer;
+import ir.ac.kntu.util.users.Customer;
 import ir.ac.kntu.util.Feedback;
 import ir.ac.kntu.util.Product;
 
