@@ -21,30 +21,18 @@ public class CustomerManage {
         showCustomerMenu();
         int choice = getChoice(sc, 6);
         switch (choice) {
-            case 1 -> {
-                customerProfile(sc, customer);
-                customerMenu(sc, customer);
-            }
+            case 1 -> customerProfile(sc, customer);
             case 2 -> {
                 sortByPrice(sc, customer);
                 showAds(sc, customer);
-                customerMenu(sc, customer);
             }
-            case 3 -> {
-                savedBoxOption(sc, customer);
-                customerMenu(sc, customer);
-            }
-            case 4 -> {
-                customer.showHistory();
-                customerMenu(sc, customer);
-            }
+            case 3 -> savedBoxOption(sc, customer);
+            case 4 -> customer.showHistory();
             case 5 -> {
                 if (chatRoom != null) {
                     Main.getRunManage().getChatRoomManage().chatBox(sc, chatRoom, customer);
-                    customerMenu(sc, customer);
                 } else {
                     System.out.println("You don't have any conversation!");
-                    customerMenu(sc, customer);
                 }
             }
             default -> Main.getRunManage().run();

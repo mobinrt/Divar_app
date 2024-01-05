@@ -29,37 +29,17 @@ public class AdminManage {
         showAdminMenu();
         int choice = getChoice(sc, 8);
         switch (choice) {
-            case 1 -> {
-                adminProfile(sc, admin);
-                adminMenu(sc, admin);
-            }
-            case 2 -> {
-                generalEdit(sc, admin, UsersRole.CUSTOMER);
-                adminMenu(sc, admin);
-            }
-            case 3 -> {
-                sellerEdit(sc, admin);
-                adminMenu(sc, admin);
-            }
-            case 4 -> {
-                generalEdit(sc, admin, UsersRole.DELIVERY);
-                adminMenu(sc, admin);
-            }
-            case 5 -> {
-                adsEdit(sc, admin);
-                adminMenu(sc, admin);
-            }
-            case 6 -> {
-                reqListOption(sc, admin);
-                adminMenu(sc, admin);
-            }
-            case 7 -> {
-                deliverProduct(sc, admin);
-                adminMenu(sc, admin);
-            }
+            case 1 -> adminProfile(sc, admin);
+            case 2 -> generalEdit(sc, admin, UsersRole.CUSTOMER);
+            case 3 -> sellerEdit(sc, admin);
+            case 4 -> generalEdit(sc, admin, UsersRole.DELIVERY);
+            case 5 -> adsEdit(sc, admin);
+            case 6 -> reqListOption(sc, admin);
+            case 7 -> deliverProduct(sc, admin);
             default -> Main.getRunManage().run();
         }
     }
+
 
     public void adminProfile(Scanner sc, Admin admin) {
         showProfileOption();

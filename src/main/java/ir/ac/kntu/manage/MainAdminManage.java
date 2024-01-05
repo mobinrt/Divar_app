@@ -10,46 +10,26 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MainAdminManage extends AdminManage {
+    public MainAdminManage() {
+//        getReq() = new ArrayList<>();
+
+    }
+
     @Override
     public void adminMenu(Scanner sc, Admin admin) {
         getReq().addAll(super.getReq());
         getDeliveryReq().addAll(super.getDeliveryReq());
-        MainAdmin mainAdmin = (MainAdmin) admin;
         showAdminMenu();
         int choice = getChoice(sc, 9);
         switch (choice) {
-            case 1 -> {
-                adminProfile(sc, mainAdmin);
-                adminMenu(sc, mainAdmin);
-            }
-            case 2 -> {
-                generalEdit(sc, mainAdmin, UsersRole.CUSTOMER);
-                adminMenu(sc, mainAdmin);
-            }
-            case 3 -> {
-                sellerEdit(sc, mainAdmin);
-                adminMenu(sc, mainAdmin);
-            }
-            case 4 -> {
-                generalEdit(sc, mainAdmin, UsersRole.DELIVERY);
-                adminMenu(sc, mainAdmin);
-            }
-            case 5 -> {
-                generalEdit(sc, mainAdmin, UsersRole.ADMIN);
-                adminMenu(sc, mainAdmin);
-            }
-            case 6 -> {
-                adsEdit(sc, mainAdmin);
-                adminMenu(sc, mainAdmin);
-            }
-            case 7 -> {
-                reqListOption(sc, mainAdmin);
-                adminMenu(sc, mainAdmin);
-            }
-            case 8 -> {
-                deliverProduct(sc, mainAdmin);
-                adminMenu(sc, mainAdmin);
-            }
+            case 1 -> adminProfile(sc, admin);
+            case 2 -> generalEdit(sc, admin, UsersRole.CUSTOMER);
+            case 3 -> sellerEdit(sc, admin);
+            case 4 -> generalEdit(sc, admin, UsersRole.DELIVERY);
+            case 5 -> generalEdit(sc, admin, UsersRole.ADMIN);
+            case 6 -> adsEdit(sc, admin);
+            case 7 -> reqListOption(sc, admin);
+            case 8 -> deliverProduct(sc, admin);
             default -> Main.getRunManage().run();
         }
     }

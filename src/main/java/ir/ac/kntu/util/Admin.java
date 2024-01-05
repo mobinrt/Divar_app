@@ -11,4 +11,14 @@ public class Admin extends User {
         super(userName, password, phoneNumber, email);
         setRole(UsersRole.ADMIN);
     }
+
+    @Override
+    public String toString() {
+        return "{ Role: " + getRole() + ", " +
+                "userName: " + getUserName() + ", " +
+                "Password: " + getPassword() + ", " +
+                "Phone Number: " + getPhoneNumber() + ", " +
+                "Email: " + getEmail() + ", " +
+                "Wallet: " + getWallet() + " }";
+    }
 }
