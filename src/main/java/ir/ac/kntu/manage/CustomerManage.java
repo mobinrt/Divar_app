@@ -27,7 +27,7 @@ public class CustomerManage {
             }
             case 2 -> {
                 sortByPrice(sc, customer);
-                showAds(sc, customer);
+                handleUserAction(sc, customer);
                 customerMenu(sc, customer);
             }
             case 3 -> {
@@ -107,7 +107,8 @@ public class CustomerManage {
         }
     }
 
-    private void showAds(Scanner sc, Customer customer) {
+    // Method to handle the ad selection process
+    private Product handleAdSelection(Scanner sc, Customer customer) {
         int choice;
         Product product;
         String category = showAdsCategory(sc, customer);
@@ -117,37 +118,42 @@ public class CustomerManage {
             choice = getChoice(sc, products.size() + 1);
             if (choice == 0) {
                 customerMenu(sc, customer);
-                return;
+                return null;
             }
-            product = products.get(--choice);
+            return products.get(--choice);
         } else {
             int length = showAdsListByCategory(category, sc, customer);
             choice = getChoice(sc, length + 1);
             if (choice == 0) {
                 customerMenu(sc, customer);
-                return;
+                return null;
             }
             product = findProduct(choice, category);
+        }
+        return product;
+    }
+
+    private void handleUserAction(Scanner sc, Customer customer) {
+        Product product = handleAdSelection(sc, customer);
+        if (product == null) {
+            customerMenu(sc, customer);
+            return;
         }
         showAdListOption();
         int type = getChoice(sc, 4);
         switch (type) {
-            case 1 -> {
-                addToSavedBox(customer, product);
-                customerMenu(sc, customer);
-            }
+            case 1 -> addToSavedBox(customer, product);
             case 2 -> {
                 buyAd(sc, customer, product);
                 deliverProduct(sc, customer, product);
-                customerMenu(sc, customer);
             }
             case 3 -> {
                 Seller seller = product.getSeller();
                 Main.getRunManage().getChatRoomManage().checkExistenceChat(sc, customer, seller);
-                customerMenu(sc, customer);
             }
-            default -> showAds(sc, customer);
+            default -> customerMenu(sc, customer);
         }
+        customerMenu(sc, customer);
     }
 
     private Product findProduct(int choice, String category) {
@@ -400,5 +406,46 @@ public class CustomerManage {
     public ArrayList<Product> getProducts() {
         return products;
     }
-
 }
+//    private void showAds(Scanner sc, Customer customer) {
+//        int choice;
+//        Product product;
+//        String category = showAdsCategory(sc, customer);
+//        if (category.matches("")) {
+//            showAdsList();
+//            System.out.println("Select one of the ads to remove or press zero to back: ");
+//            choice = getChoice(sc, products.size() + 1);
+//            if (choice == 0) {
+//                customerMenu(sc, customer);
+//                return;
+//            }
+//            product = products.get(--choice);
+//        } else {
+//            int length = showAdsListByCategory(category, sc, customer);
+//            choice = getChoice(sc, length + 1);
+//            if (choice == 0) {
+//                customerMenu(sc, customer);
+//                return;
+//            }
+//            product = findProduct(choice, category);
+//        }
+//        showAdListOption();
+//        int type = getChoice(sc, 4);
+//        switch (type) {
+//            case 1 -> {
+//                addToSavedBox(customer, product);
+//                customerMenu(sc, customer);
+//            }
+//            case 2 -> {
+//                buyAd(sc, customer, product);
+//                deliverProduct(sc, customer, product);
+//                customerMenu(sc, customer);
+//            }
+//            case 3 -> {
+//                Seller seller = product.getSeller();
+//                Main.getRunManage().getChatRoomManage().checkExistenceChat(sc, customer, seller);
+//                customerMenu(sc, customer);
+//            }
+//            default -> showAds(sc, customer);
+//        }
+//    }
