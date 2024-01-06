@@ -290,6 +290,33 @@ public class CustomerManage {
         System.out.println("Successfully done.");
     }
 
+    private int[] handlePriceFilter(Scanner sc, Customer customer) {
+        System.out.println("Do you want to filter product with price?");
+        System.out.println("1. Yes");
+        System.out.println("2. No");
+        System.out.println("0. Back");
+        int[] filter = new int[2];
+        filter[0] = -1;
+        filter[1]= Integer.MAX_VALUE;
+        int choice = getChoice(sc, 3);
+        switch (choice) {
+            case 1 -> {
+                System.out.print("Enter min price range: ");
+                int temp = sc.nextInt();
+                filter[0] = temp;
+                System.out.print("Enter max price range: ");
+                temp = sc.nextInt();
+                filter[1] = temp;
+                return filter;
+            }
+            case 2 -> {
+                return filter;
+            }
+            default -> customerMenu(sc, customer);
+        }
+        return filter;
+    }
+
     public void showAdsList() {
         if (products.isEmpty()) {
             System.out.println("Product box is empty");
@@ -308,12 +335,15 @@ public class CustomerManage {
             customerMenu(sc, customer);
             return 0;
         }
+        int[] filter = handlePriceFilter(sc, customer);
         int i = 1;
         System.out.println("===============================================   Ads list:  =================================================");
         for (Product product : products) {
             if (adsCategory.matches(product.getAdsCategory())) {
-                System.out.println(i + ") " + product);
-                ++i;
+                if (product.getPrice() >= filter[0] && product.getPrice() <= filter[1] ) {
+                    System.out.println(i + ") " + product);
+                    ++i;
+                }
             }
         }
         System.out.println("0) Back");
