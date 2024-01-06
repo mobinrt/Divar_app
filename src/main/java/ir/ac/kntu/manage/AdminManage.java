@@ -174,19 +174,21 @@ public class AdminManage {
         }
         Delivery delivery = findClosestDelivery(product);
         int distance = (int) delivery.calculateDistance(delivery, product.getSeller());
-        makeUnavailableDelivery(distance, product, delivery);
+        distance += (int) delivery.calculateDistance(product.getSeller(), product.getCustomer());
+        makeDeliveryUnavailable(distance, product, delivery);
         delivery.setX(product.getSeller().getX());
         delivery.setY(product.getSeller().getY());
         delivery.setLocation();
     }
 
-    public void makeUnavailableDelivery(int distanceInKm, Product product, Delivery delivery) {
+    public void makeDeliveryUnavailable(int distanceInKm, Product product, Delivery delivery) {
         product.setWaitingToSend(false);
         product.setReadyToSend(false);
         product.setSold(false);
         deliveryReq.remove(product);
         delivery.setAvailable(false);
         product.setSending(true);
+        System.out.println(delivery);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -217,7 +219,6 @@ public class AdminManage {
                 }
             }
         }
-        System.out.println(finalDelivery);
         return finalDelivery;
     }
 

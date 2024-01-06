@@ -1,12 +1,13 @@
 package ir.ac.kntu.manage;
 
 import ir.ac.kntu.Main;
+import ir.ac.kntu.util.Product;
 import ir.ac.kntu.util.enums.UsersRole;
-import ir.ac.kntu.util.users.Admin;
-import ir.ac.kntu.util.users.MainAdmin;
-import ir.ac.kntu.util.users.User;
+import ir.ac.kntu.util.users.*;
 
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainAdminManage extends AdminManage {
     @Override
@@ -102,6 +103,43 @@ public class MainAdminManage extends AdminManage {
         return findUser(choice, usersRole);
     }
 
+    @Override
+    public void makeDeliveryUnavailable(int distanceInKm, Product product, Delivery delivery) {
+        super.makeDeliveryUnavailable(distanceInKm, product, delivery);
+        super.getDeliveryReq().remove(product);
+    }
+
+    @Override
+    public void acceptReq(Scanner sc, Admin admin) {
+        showReqList(sc, admin, getReq());
+        System.out.println("Which product do you want to accept?");
+        int choice = getChoice(sc, getReq().size() + 1);
+        if (choice == 0) {
+            reqListOption(sc, admin);
+            return;
+        }
+        Product product = getReq().get(--choice);
+        product.setIsVisible(true);
+        Main.getRunManage().getCustomerManage().getProducts().add(product);
+        getReq().remove(product);
+        super.getReq().remove(product);
+    }
+
+    @Override
+    public void deniedReq(Scanner sc, Admin admin) {
+        showReqList(sc, admin, getReq());
+        System.out.println("Which product do you want to delete?");
+        int choice = getChoice(sc, getReq().size() + 1);
+        if (choice == 0) {
+            reqListOption(sc, admin);
+            return;
+        }
+        Product deleteProduct = getReq().get(--choice);
+        Seller seller = getReq().get(choice).getSeller();
+        seller.getProducts().remove(deleteProduct);
+        getReq().remove(deleteProduct);
+        super.getReq().remove(deleteProduct);
+    }
 
     @Override
     public void showAdminMenu() {

@@ -30,7 +30,7 @@ public class Delivery extends User {
                 "Phone Number: " + getPhoneNumber() + ", " +
                 "Email: " + getEmail() + ", " +
                 "Wallet: " + getWallet() +
-                "Location" + location() + " }" +
+                "Location: " + location() + " }" +
                 "(" + available() + ")";
     }
 
@@ -42,8 +42,8 @@ public class Delivery extends User {
 
     private String location() {
         if (isAvailable)
-            return "unAvailable";
-        return "[" + getX() + ", " + getY() + "]";
+            return "[" + getX() + ", " + getY() + "]";
+        return "unAvailable";
     }
 
     public VehicleType getVehicleType() {
