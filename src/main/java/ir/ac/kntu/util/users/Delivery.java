@@ -29,7 +29,7 @@ public class Delivery extends User {
                 "Password: " + getPassword() + ", " +
                 "Phone Number: " + getPhoneNumber() + ", " +
                 "Email: " + getEmail() + ", " +
-                "Wallet: " + getWallet() +
+                "Wallet: " + getWallet() + ", " +
                 "Location: " + location() + " }" +
                 "(" + available() + ")";
     }
@@ -37,7 +37,7 @@ public class Delivery extends User {
     private String available() {
         if (isAvailable)
             return "free at the moment.";
-        return "hase product to deliver.";
+        return "product to deliver.";
     }
 
     private String location() {

@@ -45,15 +45,6 @@ public class CustomerManage {
         }
     }
 
-    private void swapRoleCustomer(ChatRoom chatRoom, Customer currentCustomer) {
-        if (!chatRoom.getSender().equals(currentCustomer)) {
-            User userReceiver = chatRoom.getSender();
-            User userSender = chatRoom.getReceiver();
-            chatRoom.setSender(userSender);
-            chatRoom.setReceiver(userReceiver);
-        }
-    }
-
     private void savedBoxOption(Scanner sc, Customer customer) {
         if (customer.getSavedBox().isEmpty()) {
             System.out.println("Saved box is empty");
@@ -67,12 +58,8 @@ public class CustomerManage {
             return;
         }
         Product product = customer.getSavedBox().get(--choice);
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Buy");
-        System.out.println("2. Delete");
-        System.out.println("0. Back");
-        System.out.println("==============================================================================================================");
-        int type = getChoice(sc, 3);
+        savedBoxMenu();
+        int type = getChoice(sc, 5);
         switch (type) {
             case 1 -> {
                 buyAd(sc, customer, product);
@@ -81,6 +68,14 @@ public class CustomerManage {
             }
             case 2 -> {
                 customer.getSavedBox().remove(choice);
+                customerMenu(sc, customer);
+            }
+            case 3 -> {
+                Main.getRunManage().getChatRoomManage().chatBox(sc, customer);
+                customerMenu(sc, customer);
+            }
+            case 5 -> {
+                Main.getRunManage().getFeedbackManage().handleFeedback(sc, customer, product);
                 customerMenu(sc, customer);
             }
             default -> customerMenu(sc, customer);
@@ -383,6 +378,16 @@ public class CustomerManage {
         System.out.println("==============================================================================================================");
         System.out.println("1. Check wallet");
         System.out.println("2. Charge wallet");
+        System.out.println("0. Back");
+        System.out.println("==============================================================================================================");
+    }
+
+    private void savedBoxMenu() {
+        System.out.println("==============================================================================================================");
+        System.out.println("1. Buy");
+        System.out.println("2. Delete");
+        System.out.println("3. Chat with seller");
+        System.out.println("4. Feedbacks");
         System.out.println("0. Back");
         System.out.println("==============================================================================================================");
     }

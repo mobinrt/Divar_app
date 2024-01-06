@@ -226,7 +226,7 @@ public class RunManage {
      * @param bound - limit the top
      * @return int
      */
-    private int getChoice(Scanner scan, int bound) {
+    public int getChoice(Scanner scan, int bound) {
         System.out.print("Enter your choice: ");
         int choice = scan.nextInt();
         if (choice >= 0 && choice < bound) {

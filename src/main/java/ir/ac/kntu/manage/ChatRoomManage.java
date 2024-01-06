@@ -19,30 +19,34 @@ public class ChatRoomManage {
         returnChat = new HashMap<>();
     }
 
-    public void chatBox(Scanner sc, User sender) {
-        if (sender.getUsers().isEmpty()) {
+    public void chatBox(Scanner sc, User currentUser) {
+        if (currentUser.getUsers().isEmpty()) {
             System.out.println("There is no chat!");
             return;
         }
-        showAllChats(sender);
-        System.out.print("Enter your choice: ");
-        int choice = sc.nextInt();
+        showAllChats(currentUser);
+        int choice = Main.getRunManage().getChoice(sc, currentUser.getUsers().size() + 1);
         if (choice == 0)
             return;
-        User user = sender.getUsers().get(--choice);
-        ChatRoom chatRoom = returnChatRoomByReceiver.get(user);
-        chatPage(sender, returnChat.get(chatRoom));
-        sendMsg(sc, chatRoom);
+
+        User user = currentUser.getUsers().get(--choice);
+        for (ChatRoom chatRoom : currentUser.getAllChats()) {
+            if (chatRoom.getSender().equals(user)) {
+                swapRole(chatRoom, user, currentUser);
+                chatPage(chatRoom);
+                sendMsg(sc, chatRoom);
+            }
+            if (chatRoom.getReceiver().equals(user)) {
+                chatPage(chatRoom);
+                sendMsg(sc, chatRoom);
+            }
+        }
     }
 
-//    private void swapRoleSeller(, User currentUser) {
-//        if (!chatRoom.getSender().equals(currentUser)) {
-//            User userReceiver = chatRoom.getSender();
-//            User userSender = chatRoom.getReceiver();
-//            chatRoom.setSender(userReceiver);
-//            chatRoom.setReceiver(userSender);
-//        }
-//    }
+    private void swapRole(ChatRoom chatRoom, User receiver, User crrentUser) {
+        chatRoom.setSender(crrentUser);
+        chatRoom.setReceiver(receiver);
+    }
 
     public void checkExistenceChat(Scanner sc, Customer sender, Seller receiver) {
         ChatRoom chatRoom;
@@ -54,7 +58,7 @@ public class ChatRoomManage {
             Seller seller = (Seller) user;
             if (receiver.equals(seller)) {
                 chatRoom = returnChatRoomByReceiver.get(receiver);
-                chatPage(sender, returnChat.get(chatRoom));
+                chatPage(chatRoom);
                 sendMsg(sc, chatRoom);
                 return;
             }
@@ -65,7 +69,8 @@ public class ChatRoomManage {
     private void createChatRoom(Scanner sc, Customer sender, Seller receiver) {
         ChatRoom chatRoom;
         chatRoom = new ChatRoom(sender, receiver);
-//        chatRoom.getAllChats().add(chatRoom);
+        sender.getAllChats().add(chatRoom);
+        receiver.getAllChats().add(chatRoom);
         sender.getUsers().add(receiver);
         receiver.getUsers().add(sender);
         returnChatRoomByReceiver.put(chatRoom.getReceiver(), chatRoom);
@@ -91,31 +96,19 @@ public class ChatRoomManage {
     }
 
     private void sendMsg(Scanner sc, ChatRoom chatRoom) {
-        sendAndSaveMsg(sc, chatRoom);
+        sc.nextLine();
+        System.out.print("Enter massage(Enter 0 for back): ");
+        String msg = sc.nextLine();
+        if (msg.matches("0"))
+            return;
+        chatRoom.getMsg().add(chatRoom.getSender().getUserName() + ": " + msg);
         System.out.println("=============================================================================================================");
     }
 
-    private void chatPage(User sender, ArrayList<String> text) {
+    private void chatPage(ChatRoom chatRoom) {
         System.out.println("===========================================   Chat page:  ====================================================");
-        for (String msg : text) {
-            System.out.println(sender.getUserName() + ": " + msg);
+        for (String msg : chatRoom.getMsg()) {
+            System.out.println(msg);
         }
-    }
-
-    private void sendAndSaveMsg(Scanner sc, ChatRoom chatRoom) {
-        sc.nextLine();
-        System.out.print("Enter massage(Enter 0 for back): ");
-        String msg = sc.next();
-        if (msg.matches("0"))
-            return;
-        chatRoom.getMsg().add(msg);
-    }
-
-    public Map<User, ChatRoom> getReturnChatRoomByReceiver() {
-        return returnChatRoomByReceiver;
-    }
-
-    public Map<ChatRoom, ArrayList<String>> getReturnChat() {
-        return returnChat;
     }
 }

@@ -2,6 +2,7 @@ package ir.ac.kntu.util.users;
 
 import ir.ac.kntu.Main;
 import ir.ac.kntu.manage.RunManage;
+import ir.ac.kntu.util.ChatRoom;
 import ir.ac.kntu.util.enums.UsersRole;
 
 import java.awt.*;
@@ -20,6 +21,7 @@ public class User {
     private final Point[][] location = new Point[1][1];
     private boolean isMainAdmin;
     private final ArrayList<User> users;
+    private final ArrayList<ChatRoom> allChats;
 
     public User(String userName, String password, String phoneNumber, String email) {
         this.userName = userName;
@@ -30,6 +32,7 @@ public class User {
         isMainAdmin = false;
         setRole(UsersRole.USER);
         users = new ArrayList<>();
+        allChats = new ArrayList<>();
     }
 
     public void editUserInfo(Scanner sc, User currentUser) {
@@ -198,5 +201,9 @@ public class User {
 
     public ArrayList<User> getUsers() {
         return users;
+    }
+
+    public ArrayList<ChatRoom> getAllChats() {
+        return allChats;
     }
 }

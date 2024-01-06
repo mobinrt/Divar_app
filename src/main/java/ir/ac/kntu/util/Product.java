@@ -2,6 +2,7 @@ package ir.ac.kntu.util;
 
 import ir.ac.kntu.util.users.Customer;
 import ir.ac.kntu.util.users.Seller;
+import ir.ac.kntu.util.users.User;
 
 public class Product {
     private final String adsCategory;
@@ -43,6 +44,30 @@ public class Product {
         if (product.isWaitingToSend())
             return "Waiting to send";
         return "";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Product product = (Product) o;
+        if (!adsCategory.equals(product.adsCategory))
+            return false;
+        if (!name.equals(product.name))
+            return false;
+        return seller.equals(product.seller);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        int prime = 17;
+        result = result * prime + adsCategory.hashCode();
+        result = result * prime + name.hashCode();
+        result = result * prime + seller.hashCode();
+        return result;
     }
 
     @Override

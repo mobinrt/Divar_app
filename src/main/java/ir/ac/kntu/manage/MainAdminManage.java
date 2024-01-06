@@ -106,7 +106,7 @@ public class MainAdminManage extends AdminManage {
     @Override
     public void makeDeliveryUnavailable(int distanceInKm, Product product, Delivery delivery) {
         super.makeDeliveryUnavailable(distanceInKm, product, delivery);
-        super.getDeliveryReq().remove(product);
+        Main.getRunManage().getAdminManage().getDeliveryReq().remove(product);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class MainAdminManage extends AdminManage {
         product.setIsVisible(true);
         Main.getRunManage().getCustomerManage().getProducts().add(product);
         getReq().remove(product);
-        super.getReq().remove(product);
+        Main.getRunManage().getAdminManage().getReq().remove(product);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class MainAdminManage extends AdminManage {
         Seller seller = getReq().get(choice).getSeller();
         seller.getProducts().remove(deleteProduct);
         getReq().remove(deleteProduct);
-        super.getReq().remove(deleteProduct);
+        Main.getRunManage().getAdminManage().getReq().remove(deleteProduct);
     }
 
     @Override

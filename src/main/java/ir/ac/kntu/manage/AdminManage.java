@@ -176,8 +176,8 @@ public class AdminManage {
         int distance = (int) delivery.calculateDistance(delivery, product.getSeller());
         distance += (int) delivery.calculateDistance(product.getSeller(), product.getCustomer());
         makeDeliveryUnavailable(distance, product, delivery);
-        delivery.setX(product.getSeller().getX());
-        delivery.setY(product.getSeller().getY());
+        delivery.setX(product.getCustomer().getX());
+        delivery.setY(product.getCustomer().getY());
         delivery.setLocation();
     }
 
