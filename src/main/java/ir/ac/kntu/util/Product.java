@@ -137,4 +137,8 @@ public class Product {
     public Customer getCustomer() {
         return customer;
     }
+
+    public String getName() {
+        return name;
+    }
 }
