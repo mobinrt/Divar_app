@@ -341,7 +341,7 @@ public class AdminManage {
         System.out.println("4. Deliveries");
         System.out.println("5. All ads");
         System.out.println("6. Requests");
-        System.out.println("7. Product deliver");
+        System.out.println("7. Deliver product");
         System.out.println("0. Exit");
         System.out.println("==============================================================================================================");
     }

@@ -22,6 +22,7 @@ public class RunManage {
         users.add(new MainAdmin("a", "a", "a", "a"));
         users.add(new Admin("aa", "a", "a", "a"));
         users.add(new Seller("s", "s", "s", "s"));
+        users.add(new Seller("ss", "s", "s", "s"));
         users.add(new Customer("c", "c", "c", "c"));
         users.add(new Delivery("d", "d", "d", "d", VehicleType.MOTOR));
         users.add(new Delivery("t", "t", "t", "t", VehicleType.TRUCK));

@@ -44,6 +44,6 @@ public class FeedbackManage {
     private void feedbackMenu() {
         System.out.println("1. show feedbacks");
         System.out.println("2. Add your feedback");
-        System.out.println("3. Back");
+        System.out.println("0. Back");
     }
 }

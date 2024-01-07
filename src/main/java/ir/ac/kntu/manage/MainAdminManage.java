@@ -149,7 +149,7 @@ public class MainAdminManage extends AdminManage {
         System.out.println("5. Admins");
         System.out.println("6. All ads");
         System.out.println("7. Requests");
-        System.out.println("8. Product deliver");
+        System.out.println("8. Deliver product");
         System.out.println("9. Salary pay");
         System.out.println("0. Exit");
         System.out.println("==============================================================================================================");

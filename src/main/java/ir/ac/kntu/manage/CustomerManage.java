@@ -18,7 +18,7 @@ public class CustomerManage {
 
     public void customerMenu(Scanner sc, Customer customer) {
         showCustomerMenu();
-        int choice = getChoice(sc, 6);
+        int choice = getChoice(sc, 7);
         switch (choice) {
             case 1 -> {
                 customerProfile(sc, customer);
@@ -26,7 +26,8 @@ public class CustomerManage {
             }
             case 2 -> {
                 sortByPrice(sc, customer);
-                handleUserAction(sc, customer);
+                Product product = handleAdSelection(sc, customer);
+                handleUserAction(sc, customer, product);
                 customerMenu(sc, customer);
             }
             case 3 -> {
@@ -41,8 +42,31 @@ public class CustomerManage {
                 Main.getRunManage().getChatRoomManage().chatBox(sc, customer);
                 customerMenu(sc, customer);
             }
+            case 6 -> {
+                searchProductBySeller(sc, customer);
+                customerMenu(sc, customer);
+            }
             default -> Main.getRunManage().run();
         }
+    }
+
+    private void searchProductBySeller(Scanner sc, Customer customer) {
+        sc.nextLine();
+        System.out.print("Enter seller name: ");
+        String name = sc.nextLine();
+        int i = 1;
+        for (Product product : products) {
+            if (product.getSeller().toString().contains(name)) {
+                System.out.println(i + ") " + product);
+                i++;
+            }
+        }
+        System.out.print("(Enter 0 for Back) ");
+        int choice = getChoice(sc, i + 1);
+        if (choice == 0)
+            return;
+        Product product = findProduct(choice, "", name);
+        handleUserAction(sc, customer, product);
     }
 
     private void savedBoxOption(Scanner sc, Customer customer) {
@@ -71,7 +95,7 @@ public class CustomerManage {
                 customerMenu(sc, customer);
             }
             case 3 -> {
-                Main.getRunManage().getChatRoomManage().chatBox(sc, customer);
+                Main.getRunManage().getChatRoomManage().checkExistenceChat(sc, customer, product.getSeller());
                 customerMenu(sc, customer);
             }
             case 5 -> {
@@ -116,17 +140,16 @@ public class CustomerManage {
                 customerMenu(sc, customer);
                 return null;
             }
-            product = findProduct(choice, category);
+            product = findProduct(choice, category, "");
+        }
+        if (product == null) {
+            customerMenu(sc, customer);
+            return null;
         }
         return product;
     }
 
-    private void handleUserAction(Scanner sc, Customer customer) {
-        Product product = handleAdSelection(sc, customer);
-        if (product == null) {
-            customerMenu(sc, customer);
-            return;
-        }
+    private void handleUserAction(Scanner sc, Customer customer, Product product) {
         showAdListOption();
         int type = getChoice(sc, 5);
         switch (type) {
@@ -145,10 +168,13 @@ public class CustomerManage {
         customerMenu(sc, customer);
     }
 
-    private Product findProduct(int choice, String category) {
+    private Product findProduct(int choice, String category, String name) {
         ArrayList<Product> temp = new ArrayList<>();
         for (Product product : products) {
-            if (category.matches(product.getAdsCategory())) {
+            if (category.matches(product.getAdsCategory()) && name.isEmpty()) {
+                temp.add(product);
+            }
+            if (category.isEmpty() && product.getSeller().toString().contains(name)) {
                 temp.add(product);
             }
         }
@@ -297,7 +323,7 @@ public class CustomerManage {
         System.out.println("0. Back");
         int[] filter = new int[2];
         filter[0] = -1;
-        filter[1]= Integer.MAX_VALUE;
+        filter[1] = Integer.MAX_VALUE;
         int choice = getChoice(sc, 3);
         switch (choice) {
             case 1 -> {
@@ -340,7 +366,7 @@ public class CustomerManage {
         System.out.println("===============================================   Ads list:  =================================================");
         for (Product product : products) {
             if (adsCategory.matches(product.getAdsCategory())) {
-                if (product.getPrice() >= filter[0] && product.getPrice() <= filter[1] ) {
+                if (product.getPrice() >= filter[0] && product.getPrice() <= filter[1]) {
                     System.out.println(i + ") " + product);
                     ++i;
                 }
@@ -381,6 +407,7 @@ public class CustomerManage {
         System.out.println("3. Saved box");
         System.out.println("4. History");
         System.out.println("5. Chats");
+        System.out.println("6. Find products by seller name");
         System.out.println("0. Exit");
         System.out.println("==============================================================================================================");
     }
