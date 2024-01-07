@@ -2,11 +2,12 @@ package ir.ac.kntu.util.users;
 
 import ir.ac.kntu.util.Feedback;
 import ir.ac.kntu.util.Product;
+import ir.ac.kntu.util.ShowHistory;
 import ir.ac.kntu.util.enums.UsersRole;
 
 import java.util.ArrayList;
 
-public class Seller extends User {
+public class Seller extends User implements ShowHistory {
     private ArrayList<Product> products;
     private final ArrayList<Product> history;
     private final ArrayList<Feedback> feedback;
@@ -37,6 +38,7 @@ public class Seller extends User {
         System.out.println("==============================================================================================================");
     }
 
+    @Override
     public void showHistory() {
         if (history.isEmpty()) {
             System.out.println("Seller history box is empty");
@@ -48,7 +50,6 @@ public class Seller extends User {
         }
         System.out.println("==============================================================================================================");
     }
-
 
     private String visibleProduct(Product product) {
         if (product.getIsVisible()) {

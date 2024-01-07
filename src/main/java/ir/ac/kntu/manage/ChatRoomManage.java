@@ -5,18 +5,15 @@ import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.UsersRole;
 import ir.ac.kntu.util.users.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class ChatRoomManage {
     private final Map<User, ChatRoom> returnChatRoomByReceiver;
-    private final Map<ChatRoom, ArrayList<String>> returnChat;
 
     public ChatRoomManage() {
         returnChatRoomByReceiver = new HashMap<>();
-        returnChat = new HashMap<>();
     }
 
     public void chatBox(Scanner sc, User currentUser) {
@@ -74,7 +71,6 @@ public class ChatRoomManage {
         sender.getUsers().add(receiver);
         receiver.getUsers().add(sender);
         returnChatRoomByReceiver.put(chatRoom.getReceiver(), chatRoom);
-        returnChat.put(chatRoom, chatRoom.getMsg());
         sendMsg(sc, chatRoom);
     }
 

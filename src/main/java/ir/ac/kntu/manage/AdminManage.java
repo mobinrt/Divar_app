@@ -2,9 +2,7 @@ package ir.ac.kntu.manage;
 
 import ir.ac.kntu.Main;
 import ir.ac.kntu.util.*;
-import ir.ac.kntu.util.enums.AdsCategory;
-import ir.ac.kntu.util.enums.UsersRole;
-import ir.ac.kntu.util.enums.VehicleType;
+import ir.ac.kntu.util.enums.*;
 import ir.ac.kntu.util.users.*;
 
 import java.util.ArrayList;
@@ -176,6 +174,7 @@ public class AdminManage {
         int distance = (int) delivery.calculateDistance(delivery, product.getSeller());
         distance += (int) delivery.calculateDistance(product.getSeller(), product.getCustomer());
         makeDeliveryUnavailable(distance, product, delivery);
+        delivery.getHistory().add(product);
         delivery.setX(product.getCustomer().getX());
         delivery.setY(product.getCustomer().getY());
         delivery.setLocation();

@@ -7,17 +7,12 @@ import java.util.*;
 public class ChatRoom {
     private User sender;
     private User receiver;
-    private ArrayList<String> msg;
+    private final ArrayList<String> msg;
 
     public ChatRoom(User sender, User receiver) {
         this.sender = sender;
         this.receiver = receiver;
         msg = new ArrayList<>();
-    }
-
-    public ChatRoom(User sender, User receiver, ArrayList<String> msg) {
-        this(sender, receiver);
-        this.msg = msg;
     }
 
     @Override

@@ -1,11 +1,12 @@
 package ir.ac.kntu.util.users;
 
 import ir.ac.kntu.util.Product;
+import ir.ac.kntu.util.ShowHistory;
 import ir.ac.kntu.util.enums.UsersRole;
 
 import java.util.ArrayList;
 
-public class Customer extends User {
+public class Customer extends User implements ShowHistory {
     private final ArrayList<Product> savedBox;
     private final ArrayList<Product> history;
 
@@ -31,6 +32,7 @@ public class Customer extends User {
         System.out.println("==============================================================================================================");
     }
 
+    @Override
     public void showHistory() {
         if (history.isEmpty()) {
             System.out.println("History box is empty");

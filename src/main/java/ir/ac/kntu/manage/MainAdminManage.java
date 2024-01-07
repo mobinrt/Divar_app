@@ -6,8 +6,6 @@ import ir.ac.kntu.util.enums.UsersRole;
 import ir.ac.kntu.util.users.*;
 
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainAdminManage extends AdminManage {
     @Override

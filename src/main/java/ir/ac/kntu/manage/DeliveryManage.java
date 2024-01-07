@@ -13,12 +13,17 @@ public class DeliveryManage {
 
     public void menu(Scanner sc, Delivery delivery) {
         showDeliveryMenu();
-        int choice = getChoice(sc, 2);
-        if (choice == 1) {
-            profile(sc, delivery);
-            menu(sc, delivery);
-        } else {
-            Main.getRunManage().run();
+        int choice = getChoice(sc, 3);
+        switch (choice) {
+            case 1 -> {
+                profile(sc, delivery);
+                menu(sc, delivery);
+            }
+            case 2 -> {
+                delivery.showHistory();
+                menu(sc, delivery);
+            }
+            default -> Main.getRunManage().run();
         }
     }
 
@@ -114,8 +119,8 @@ public class DeliveryManage {
     private void showDeliveryMenu() {
         System.out.println("==============================================================================================================");
         System.out.println("1. Profile");
+        System.out.println("2. History");
         System.out.println("0. Exit");
-        // delivered product
         System.out.println("==============================================================================================================");
 
     }
