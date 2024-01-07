@@ -22,15 +22,9 @@ public class RunManage {
         users.add(new MainAdmin("a", "a", "a", "a"));
         users.add(new Admin("aa", "a", "a", "a"));
         users.add(new Seller("s", "s", "s", "s"));
-        users.add(new Seller("ss", "s", "s", "s"));
         users.add(new Customer("c", "c", "c", "c"));
-        users.add(new Customer("cc", "c", "c", "c"));
         users.add(new Delivery("d", "d", "d", "d", VehicleType.MOTOR));
-        users.add(new Delivery("dd", "dd", "dd", "dd", VehicleType.MOTOR));
-        users.add(new Delivery("ddd", "ddd", "ddd", "ddd", VehicleType.MOTOR));
         users.add(new Delivery("t", "t", "t", "t", VehicleType.TRUCK));
-        users.add(new Delivery("tt", "tt", "tt", "tt", VehicleType.TRUCK));
-        users.add(new Delivery("ttt", "ttt", "ttt", "ttt", VehicleType.TRUCK));
     }
 
     public void run() {
