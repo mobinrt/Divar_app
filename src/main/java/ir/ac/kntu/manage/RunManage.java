@@ -1,5 +1,6 @@
 package ir.ac.kntu.manage;
 
+import ir.ac.kntu.manage.user.*;
 import ir.ac.kntu.util.enums.UsersRole;
 import ir.ac.kntu.util.enums.VehicleType;
 import ir.ac.kntu.util.users.*;
@@ -44,7 +45,10 @@ public class RunManage {
                         user.getPhoneNumber(), user.getEmail());
                 handleUserMenu(sc, user);
             }
-            case 3 -> guest(sc);
+            case 3 -> {
+                customerManage.showAdsList();
+                guest(sc);
+            }
             default -> System.exit(0);
         }
         sc.close();
@@ -76,19 +80,19 @@ public class RunManage {
 
     private void handleUserMenu(Scanner sc, User user) {
         if (user instanceof MainAdmin mainAdmin) {
-            mainAdminManage.adminMenu(sc, mainAdmin);
+            mainAdminManage.menu(sc, mainAdmin);
             return;
         }
         if (user instanceof Admin currentAdmin) {
-            adminManage.adminMenu(sc, currentAdmin);
+            adminManage.menu(sc, currentAdmin);
             return;
         }
         if (user instanceof Customer currentCustomer) {
-            customerManage.customerMenu(sc, currentCustomer);
+            customerManage.menu(sc, currentCustomer);
             return;
         }
         if (user instanceof Seller currenrSeller) {
-            sellerManage.sellerMenu(sc, currenrSeller);
+            sellerManage.menu(sc, currenrSeller);
             return;
         }
         if (user instanceof Delivery currentDelivery) {
@@ -163,7 +167,6 @@ public class RunManage {
     }
 
     private void guest(Scanner sc) {
-        customerManage.showAdsList();
         System.out.print("Enter zero if you want to back: ");
         int back;
         do {
@@ -195,25 +198,28 @@ public class RunManage {
                 user = new Customer(userName, password, phoneNumber, email);
                 user.setRole(UsersRole.CUSTOMER);
             }
-            case 4 -> {
-                System.out.println("Witch one is your widget?");
-                System.out.println("1. " + VehicleType.MOTOR);
-                System.out.println("2. " + VehicleType.TRUCK);
-                System.out.println("0. Back");
-                int type = getChoice(sc, 3);
-                if (type == 1) {
-                    user = new Delivery(userName, password, phoneNumber, email, VehicleType.MOTOR);
-                    user.setRole(UsersRole.DELIVERY);
-                } else if (type == 2) {
-                    user = new Delivery(userName, password, phoneNumber, email, VehicleType.TRUCK);
-                    user.setRole(UsersRole.DELIVERY);
-                } else
-                    return getRole(sc, userName, password, phoneNumber, email);
-            }
+            case 4 -> deliverySignUp(sc, userName, password, phoneNumber, email);
             default -> run();
         }
         assert user != null;
         return user;
+    }
+
+    private void deliverySignUp(Scanner sc, String userName, String password, String phoneNumber, String email) {
+        User user;
+        System.out.println("Witch one is your widget?");
+        System.out.println("1. " + VehicleType.MOTOR);
+        System.out.println("2. " + VehicleType.TRUCK);
+        System.out.println("0. Back");
+        int type = getChoice(sc, 3);
+        if (type == 1) {
+            user = new Delivery(userName, password, phoneNumber, email, VehicleType.MOTOR);
+            user.setRole(UsersRole.DELIVERY);
+        } else if (type == 2) {
+            user = new Delivery(userName, password, phoneNumber, email, VehicleType.TRUCK);
+            user.setRole(UsersRole.DELIVERY);
+        } else
+            getRole(sc, userName, password, phoneNumber, email);
     }
 
     /**

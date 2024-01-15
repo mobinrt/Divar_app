@@ -1,4 +1,4 @@
-package ir.ac.kntu.manage;
+package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
 import ir.ac.kntu.util.Product;
@@ -7,72 +7,76 @@ import ir.ac.kntu.util.users.*;
 
 import java.util.Scanner;
 
-public class MainAdminManage extends AdminManage {
+public class MainAdminManage extends AdminManage implements Menu {
     @Override
-    public void adminMenu(Scanner sc, Admin admin) {
+    public void menu(Scanner sc, User user) {
+        MainAdmin mainAdmin = (MainAdmin) user;
         showAdminMenu();
         int choice = getChoice(sc, 10);
-        MainAdmin mainAdmin = (MainAdmin) admin;
         switch (choice) {
             case 1 -> {
-                adminProfile(sc, mainAdmin);
-                adminMenu(sc, admin);
+                profile(sc, mainAdmin);
+                menu(sc, mainAdmin);
             }
             case 2 -> {
                 generalEdit(sc, mainAdmin, UsersRole.CUSTOMER);
-                adminMenu(sc, admin);
+                menu(sc, mainAdmin);
             }
             case 3 -> {
                 sellerEdit(sc, mainAdmin);
-                adminMenu(sc, admin);
+                menu(sc, mainAdmin);
             }
             case 4 -> {
                 generalEdit(sc, mainAdmin, UsersRole.DELIVERY);
-                adminMenu(sc, admin);
+                menu(sc, mainAdmin);
             }
             case 5 -> {
                 generalEdit(sc, mainAdmin, UsersRole.ADMIN);
-                adminMenu(sc, admin);
+                menu(sc, mainAdmin);
             }
             case 6 -> {
                 adsEdit(sc, mainAdmin);
-                adminMenu(sc, admin);
+                menu(sc, mainAdmin);
             }
             case 7 -> {
                 reqListOption(sc, mainAdmin);
-                adminMenu(sc, admin);
+                menu(sc, mainAdmin);
             }
             case 8 -> {
                 deliverProduct(sc, mainAdmin);
-                adminMenu(sc, admin);
+                menu(sc, mainAdmin);
             }
             case 9 -> {
                 salaryPay(sc, mainAdmin);
-                adminMenu(sc, admin);
+                menu(sc, mainAdmin);
             }
             default -> Main.getRunManage().run();
         }
     }
 
-    private void salaryPay(Scanner sc, MainAdmin mainAdmin) {
+    private void salaryPayText() {
         System.out.println("Witch type of user you want to pay?");
         System.out.println("1. " + UsersRole.DELIVERY);
         System.out.println("2. " + UsersRole.ADMIN);
         System.out.println("0. Back");
+    }
+
+    private void salaryPay(Scanner sc, MainAdmin mainAdmin) {
+        salaryPayText();
         int choice = getChoice(sc, 3);
         UsersRole usersRole;
         switch (choice) {
             case 1 -> {
                 usersRole = UsersRole.DELIVERY;
                 salaryPay(sc, mainAdmin, usersRole);
-                adminMenu(sc, mainAdmin);
+                menu(sc, mainAdmin);
             }
             case 2 -> {
                 usersRole = UsersRole.ADMIN;
                 salaryPay(sc, mainAdmin, usersRole);
-                adminMenu(sc, mainAdmin);
+                menu(sc, mainAdmin);
             }
-            case 3 -> adminMenu(sc, mainAdmin);
+            case 3 -> menu(sc, mainAdmin);
         }
     }
 
@@ -97,7 +101,7 @@ public class MainAdminManage extends AdminManage {
         System.out.println("Select one of the user to pay or press zero to back");
         int choice = getChoice(sc, length);
         if (choice == 0)
-            adminMenu(sc, mainAdmin);
+            menu(sc, mainAdmin);
         return findUser(choice, usersRole);
     }
 

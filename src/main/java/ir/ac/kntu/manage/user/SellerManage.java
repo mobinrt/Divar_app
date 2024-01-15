@@ -1,44 +1,47 @@
-package ir.ac.kntu.manage;
+package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
 import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.AdsCategory;
 import ir.ac.kntu.util.users.Seller;
+import ir.ac.kntu.util.users.User;
 
 import java.util.Scanner;
 
-public class SellerManage {
+public class SellerManage implements Menu {
     /**
-     * @param sc     - scan input
-     * @param seller - online seller
+     * @param sc   - scan input
+     * @param user - online seller
      */
-    public void sellerMenu(Scanner sc, Seller seller) {
+    @Override
+    public void menu(Scanner sc, User user) {
+        Seller seller = (Seller) user;
         showSellerMenu();
         int choice = getChoice(sc, 7);
         switch (choice) {
             case 1 -> {
-                sellerProfile(sc, seller);
-                sellerMenu(sc, seller);
+                profile(sc, seller);
+                menu(sc, seller);
             }
             case 2 -> {
                 seller.showAvailableAds();
-                sellerMenu(sc, seller);
+                menu(sc, seller);
             }
             case 3 -> {
                 addAd(sc, seller);
-                sellerMenu(sc, seller);
+                menu(sc, seller);
             }
             case 4 -> {
                 seller.showHistory();
-                sellerMenu(sc, seller);
+                menu(sc, seller);
             }
             case 5 -> {
                 Main.getRunManage().getChatRoomManage().chatBox(sc, seller);
-                sellerMenu(sc, seller);
+                menu(sc, seller);
             }
             case 6 -> {
                 showFeedbacks(seller);
-                sellerMenu(sc, seller);
+                menu(sc, seller);
             }
             default -> Main.getRunManage().run();
         }
@@ -77,61 +80,49 @@ public class SellerManage {
         Main.getRunManage().getMainAdminManage().addProductToReq(product);
     }
 
-    private void sellerProfile(Scanner sc, Seller seller) {
+    @Override
+    public void profile(Scanner sc, User user) {
+        Seller seller = (Seller) user;
         showProfileOption();
         int choice = getChoice(sc, 4);
         switch (choice) {
             case 1 -> {
                 System.out.println(seller.toString());
-                sellerProfile(sc, seller);
+                profile(sc, seller);
             }
             case 2 -> {
                 seller.editUserInfo(sc, seller);
-                sellerProfile(sc, seller);
+                profile(sc, seller);
             }
             case 3 -> {
-                sellerWalletMenu(sc, seller);
-                sellerProfile(sc, seller);
+                walletMenu(sc, seller);
+                profile(sc, seller);
             }
-            default -> sellerMenu(sc, seller);
+            default -> menu(sc, seller);
         }
     }
 
-    private void sellerWalletMenu(Scanner sc, Seller seller) {
+    @Override
+    public void walletMenu(Scanner sc, User user) {
+        Seller seller = (Seller) user;
         showWalletOption();
         int choice = getChoice(sc, 3);
         switch (choice) {
             case 1 -> {
                 System.out.println("Your wallet: " + seller.getWallet());
-                sellerWalletMenu(sc, seller);
+                walletMenu(sc, seller);
             }
             case 2 -> {
-                System.out.println("How much do you want to withdraw money? if you want to back press zero.");
-                System.out.print("Enter: ");
-                int withDraw = sc.nextInt();
-                while (withDraw > seller.getWallet()) {
-                    System.out.println("You don't have enough money!!");
-                    System.out.println("How much do you want to withdraw money? if you want to back press zero.");
-                    System.out.print("Enter: ");
-                    withDraw = sc.nextInt();
-                }
-                seller.setWallet(seller.getWallet() - withDraw);
-                System.out.println("Successfully done.");
-                System.out.println("==============================================================================================================");
-                sellerWalletMenu(sc, seller);
+                withdrawMoney(sc, seller);
+                walletMenu(sc, seller);
             }
-            default -> sellerProfile(sc, seller);
+            default -> profile(sc, seller);
         }
     }
 
     private String showAdsCategory(Scanner sc, Seller seller) {
         String adsCategory = null;
-        System.out.println("1. " + AdsCategory.PHONE.name());
-        System.out.println("2. " + AdsCategory.HOME_STUFF.name());
-        System.out.println("3. " + AdsCategory.STATIONARY.name());
-        System.out.println("4. " + AdsCategory.CLOTHE.name());
-        System.out.println("5. " + AdsCategory.CAR.name());
-        System.out.println("0. Back");
+        showAdsCategory();
         int choice = getChoice(sc, 6);
         switch (choice) {
             case 1 -> adsCategory = AdsCategory.PHONE.name();
@@ -139,9 +130,18 @@ public class SellerManage {
             case 3 -> adsCategory = AdsCategory.STATIONARY.name();
             case 4 -> adsCategory = AdsCategory.CLOTHE.name();
             case 5 -> adsCategory = AdsCategory.CAR.name();
-            default -> sellerMenu(sc, seller);
+            default -> menu(sc, seller);
         }
         return adsCategory;
+    }
+
+    private void showAdsCategory() {
+        System.out.println("1. " + AdsCategory.PHONE.name());
+        System.out.println("2. " + AdsCategory.HOME_STUFF.name());
+        System.out.println("3. " + AdsCategory.STATIONARY.name());
+        System.out.println("4. " + AdsCategory.CLOTHE.name());
+        System.out.println("5. " + AdsCategory.CAR.name());
+        System.out.println("0. Back");
     }
 
     private int getChoice(Scanner scan, int bound) {

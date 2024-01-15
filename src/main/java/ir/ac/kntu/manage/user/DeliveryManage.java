@@ -1,4 +1,4 @@
-package ir.ac.kntu.manage;
+package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
 import ir.ac.kntu.util.*;
@@ -9,9 +9,10 @@ import ir.ac.kntu.util.users.User;
 
 import java.util.Scanner;
 
-public class DeliveryManage {
-
-    public void menu(Scanner sc, Delivery delivery) {
+public class DeliveryManage implements Menu {
+    @Override
+    public void menu(Scanner sc, User user) {
+        Delivery delivery = (Delivery) user;
         showDeliveryMenu();
         int choice = getChoice(sc, 3);
         switch (choice) {
@@ -26,8 +27,9 @@ public class DeliveryManage {
             default -> Main.getRunManage().run();
         }
     }
-
-    private void profile(Scanner sc, Delivery delivery) {
+@Override
+    public void profile(Scanner sc, User user) {
+        Delivery delivery = (Delivery) user;
         showProfileOption();
         int choice = getChoice(sc, 4);
         switch (choice) {
@@ -47,7 +49,9 @@ public class DeliveryManage {
         }
     }
 
-    private void walletMenu(Scanner sc, Delivery delivery) {
+    @Override
+    public void walletMenu(Scanner sc, User user) {
+        Delivery delivery = (Delivery) user;
         showWalletOption();
         int choice = getChoice(sc, 3);
         switch (choice) {
@@ -56,19 +60,8 @@ public class DeliveryManage {
                 walletMenu(sc, delivery);
             }
             case 2 -> {
-                System.out.println("How much do you want to withdraw money? if you want to back press zero.");
-                System.out.print("Enter: ");
-                int withDraw = sc.nextInt();
-                while (withDraw > delivery.getWallet()) {
-                    System.out.println("You don't have enough money!!");
-                    System.out.println("How much do you want to withdraw money? if you want to back press zero.");
-                    System.out.print("Enter: ");
-                    withDraw = sc.nextInt();
-                }
-                delivery.setWallet(delivery.getWallet() - withDraw);
-                System.out.println("Successfully done.");
-                System.out.println("==============================================================================================================");
-                walletMenu(sc, delivery);
+                withdrawMoney(sc, delivery);
+                walletMenu(sc, user);
             }
             default -> profile(sc, delivery);
         }

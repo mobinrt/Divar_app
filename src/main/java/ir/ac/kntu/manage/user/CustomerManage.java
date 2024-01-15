@@ -1,4 +1,4 @@
-package ir.ac.kntu.manage;
+package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
 import ir.ac.kntu.util.*;
@@ -9,42 +9,44 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
 
-public class CustomerManage {
+public class CustomerManage implements Menu {
     private final ArrayList<Product> products;
 
     public CustomerManage() {
         products = new ArrayList<>();
     }
 
-    public void customerMenu(Scanner sc, Customer customer) {
+    @Override
+    public void menu(Scanner sc, User user) {
+        Customer customer = (Customer) user;
         showCustomerMenu();
         int choice = getChoice(sc, 7);
         switch (choice) {
             case 1 -> {
-                customerProfile(sc, customer);
-                customerMenu(sc, customer);
+                profile(sc, customer);
+                menu(sc, customer);
             }
             case 2 -> {
                 sortByPrice(sc, customer);
                 Product product = handleAdSelection(sc, customer);
                 handleUserAction(sc, customer, product);
-                customerMenu(sc, customer);
+                menu(sc, customer);
             }
             case 3 -> {
                 savedBoxOption(sc, customer);
-                customerMenu(sc, customer);
+                menu(sc, customer);
             }
             case 4 -> {
                 customer.showHistory();
-                customerMenu(sc, customer);
+                menu(sc, customer);
             }
             case 5 -> {
                 Main.getRunManage().getChatRoomManage().chatBox(sc, customer);
-                customerMenu(sc, customer);
+                menu(sc, customer);
             }
             case 6 -> {
                 searchProductBySeller(sc, customer);
-                customerMenu(sc, customer);
+                menu(sc, customer);
             }
             default -> Main.getRunManage().run();
         }
@@ -72,13 +74,13 @@ public class CustomerManage {
     private void savedBoxOption(Scanner sc, Customer customer) {
         if (customer.getSavedBox().isEmpty()) {
             System.out.println("Saved box is empty");
-            customerMenu(sc, customer);
+            menu(sc, customer);
             return;
         }
         customer.showSavedBox();
         int choice = getChoice(sc, customer.getSavedBox().size() + 1);
         if (choice == 0) {
-            customerMenu(sc, customer);
+            menu(sc, customer);
             return;
         }
         Product product = customer.getSavedBox().get(--choice);
@@ -88,21 +90,21 @@ public class CustomerManage {
             case 1 -> {
                 buyAd(sc, customer, product);
                 deliverProduct(sc, customer, product);
-                customerMenu(sc, customer);
+                menu(sc, customer);
             }
             case 2 -> {
                 customer.getSavedBox().remove(choice);
-                customerMenu(sc, customer);
+                menu(sc, customer);
             }
             case 3 -> {
                 Main.getRunManage().getChatRoomManage().checkExistenceChat(sc, customer, product.getSeller());
-                customerMenu(sc, customer);
+                menu(sc, customer);
             }
             case 5 -> {
                 Main.getRunManage().getFeedbackManage().handleFeedback(sc, customer, product);
-                customerMenu(sc, customer);
+                menu(sc, customer);
             }
-            default -> customerMenu(sc, customer);
+            default -> menu(sc, customer);
         }
     }
 
@@ -116,7 +118,7 @@ public class CustomerManage {
         switch (choice) {
             case 1 -> products.sort(Comparator.comparing(Product::getPrice));
             case 2 -> products.sort(Comparator.comparing(Product::getPrice).reversed());
-            default -> customerMenu(sc, customer);
+            default -> menu(sc, customer);
         }
     }
 
@@ -129,7 +131,7 @@ public class CustomerManage {
             System.out.println("Select one of the ads to remove or press zero to back: ");
             choice = getChoice(sc, products.size() + 1);
             if (choice == 0) {
-                customerMenu(sc, customer);
+                menu(sc, customer);
                 return null;
             }
             return products.get(--choice);
@@ -137,13 +139,13 @@ public class CustomerManage {
             int length = showAdsListByCategory(category, sc, customer);
             choice = getChoice(sc, length + 1);
             if (choice == 0) {
-                customerMenu(sc, customer);
+                menu(sc, customer);
                 return null;
             }
             product = findProduct(choice, category, "");
         }
         if (product == null) {
-            customerMenu(sc, customer);
+            menu(sc, customer);
             return null;
         }
         return product;
@@ -163,9 +165,9 @@ public class CustomerManage {
                 Main.getRunManage().getChatRoomManage().checkExistenceChat(sc, customer, receiver);
             }
             case 4 -> Main.getRunManage().getFeedbackManage().handleFeedback(sc, customer, product);
-            default -> customerMenu(sc, customer);
+            default -> menu(sc, customer);
         }
-        customerMenu(sc, customer);
+        menu(sc, customer);
     }
 
     private Product findProduct(int choice, String category, String name) {
@@ -271,39 +273,43 @@ public class CustomerManage {
         }
     }
 
-    private void customerProfile(Scanner sc, Customer customer) {
+    @Override
+    public void profile(Scanner sc, User user) {
+        Customer customer = (Customer) user;
         showProfileOption();
         int choice = getChoice(sc, 4);
         switch (choice) {
             case 1 -> {
                 System.out.println(customer.toString());
-                customerProfile(sc, customer);
+                profile(sc, customer);
             }
             case 2 -> {
                 customer.editUserInfo(sc, customer);
-                customerProfile(sc, customer);
+                profile(sc, customer);
             }
             case 3 -> {
-                customerWalletMenu(sc, customer);
-                customerProfile(sc, customer);
+                walletMenu(sc, customer);
+                profile(sc, customer);
             }
-            default -> customerMenu(sc, customer);
+            default -> menu(sc, customer);
         }
     }
 
-    private void customerWalletMenu(Scanner sc, Customer customer) {
+    @Override
+    public void walletMenu(Scanner sc, User user) {
+        Customer customer = (Customer) user;
         walletOption();
         int choice = getChoice(sc, 3);
         switch (choice) {
             case 1 -> {
                 System.out.println("wallet: " + customer.getWallet());
-                customerWalletMenu(sc, customer);
+                walletMenu(sc, customer);
             }
             case 2 -> {
                 chargeWallet(sc, customer);
-                customerWalletMenu(sc, customer);
+                walletMenu(sc, customer);
             }
-            default -> customerProfile(sc, customer);
+            default -> profile(sc, customer);
         }
     }
 
@@ -338,7 +344,7 @@ public class CustomerManage {
             case 2 -> {
                 return filter;
             }
-            default -> customerMenu(sc, customer);
+            default -> menu(sc, customer);
         }
         return filter;
     }
@@ -358,7 +364,7 @@ public class CustomerManage {
     private int showAdsListByCategory(String adsCategory, Scanner sc, Customer customer) {
         if (products.isEmpty()) {
             System.out.println("Product box is empty");
-            customerMenu(sc, customer);
+            menu(sc, customer);
             return 0;
         }
         int[] filter = handlePriceFilter(sc, customer);
@@ -395,7 +401,7 @@ public class CustomerManage {
             case 5 -> adsCategory = AdsCategory.CAR.name();
             case 6 -> {
             }
-            default -> customerMenu(sc, customer);
+            default -> menu(sc, customer);
         }
         return adsCategory;
     }

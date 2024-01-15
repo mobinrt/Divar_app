@@ -1,4 +1,4 @@
-package ir.ac.kntu.manage;
+package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
 import ir.ac.kntu.util.*;
@@ -10,7 +10,7 @@ import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class AdminManage {
+public class AdminManage implements Menu {
     private final ArrayList<Product> req;
     private final ArrayList<Product> deliveryReq;
 
@@ -19,95 +19,88 @@ public class AdminManage {
         deliveryReq = new ArrayList<>();
     }
 
-    public void addProductToReq(Product product) {
-        req.add(product);
-    }
-
     /**
-     * @param sc    - scan input
-     * @param admin - current admin
+     * @param sc   - scan input
+     * @param user - current admin
      */
-    public void adminMenu(Scanner sc, Admin admin) {
+    @Override
+    public void menu(Scanner sc, User user) {
+        Admin admin = (Admin) user;
         showAdminMenu();
         int choice = getChoice(sc, 8);
         switch (choice) {
             case 1 -> {
-                adminProfile(sc, admin);
-                adminMenu(sc, admin);
+                profile(sc, admin);
+                menu(sc, admin);
             }
             case 2 -> {
                 generalEdit(sc, admin, UsersRole.CUSTOMER);
-                adminMenu(sc, admin);
+                menu(sc, admin);
             }
             case 3 -> {
                 sellerEdit(sc, admin);
-                adminMenu(sc, admin);
+                menu(sc, admin);
             }
             case 4 -> {
                 generalEdit(sc, admin, UsersRole.DELIVERY);
-                adminMenu(sc, admin);
+                menu(sc, admin);
             }
             case 5 -> {
                 adsEdit(sc, admin);
-                adminMenu(sc, admin);
+                menu(sc, admin);
             }
             case 6 -> {
                 reqListOption(sc, admin);
-                adminMenu(sc, admin);
+                menu(sc, admin);
             }
             case 7 -> {
                 deliverProduct(sc, admin);
-                adminMenu(sc, admin);
+                menu(sc, admin);
             }
             default -> Main.getRunManage().run();
         }
     }
 
+    public void addProductToReq(Product product) {
+        req.add(product);
+    }
 
-    public void adminProfile(Scanner sc, Admin admin) {
+    @Override
+    public void profile(Scanner sc, User user) {
+        Admin admin = (Admin) user;
         showProfileOption();
         int choice = getChoice(sc, 4);
         switch (choice) {
             case 1 -> {
                 System.out.println(admin.toString());
-                adminProfile(sc, admin);
+                profile(sc, admin);
             }
             case 2 -> {
                 admin.editUserInfo(sc, admin);
-                adminProfile(sc, admin);
+                profile(sc, admin);
             }
             case 3 -> {
-                adminWalletMenu(sc, admin);
-                adminProfile(sc, admin);
+                walletMenu(sc, admin);
+                profile(sc, admin);
             }
-            default -> adminMenu(sc, admin);
+            default -> menu(sc, admin);
         }
     }
 
-    public void adminWalletMenu(Scanner sc, Admin admin) {
+    public void walletMenu(Scanner sc, User user) {
+        Admin admin = (Admin) user;
         showWalletOption();
         int choice = getChoice(sc, 3);
         switch (choice) {
             case 1 -> {
                 System.out.println("Your wallet: " + admin.getWallet());
-                adminWalletMenu(sc, admin);
+                walletMenu(sc, admin);
             }
             case 2 -> {
-                System.out.println("How much do you want to withdraw money? if you want to back press zero.");
-                System.out.print("Enter: ");
-                int withDraw = sc.nextInt();
-                while (withDraw > admin.getWallet()) {
-                    System.out.println("You don't have enough money!!");
-                    System.out.println("How much do you want to withdraw money? if you want to back press zero.");
-                    System.out.print("Enter: ");
-                    withDraw = sc.nextInt();
-                }
-                admin.setWallet(admin.getWallet() - withDraw);
-                System.out.println("Successfully done.");
-                System.out.println("==============================================================================================================");
-                adminWalletMenu(sc, admin);
+                withdrawMoney(sc, admin);
+                walletMenu(sc, admin);
             }
-            default -> adminProfile(sc, admin);
+            default -> profile(sc, admin);
         }
     }
 
@@ -116,7 +109,7 @@ public class AdminManage {
         System.out.println("Select one of the customers to remove or press zero to back");
         int choice = getChoice(sc, length);
         if (choice == 0) {
-            adminMenu(sc, admin);
+            menu(sc, admin);
             return;
         }
         User user = findUser(choice, userRole);
@@ -130,7 +123,7 @@ public class AdminManage {
         System.out.println("Select one of the sellers to remove or press zero to back");
         int choice = getChoice(sc, length);
         if (choice == 0) {
-            adminMenu(sc, admin);
+            menu(sc, admin);
             return;
         }
         User removeUser = findUser(choice, UsersRole.SELLER);
@@ -230,7 +223,7 @@ public class AdminManage {
         System.out.println("Select one of the ads to remove or press zero to back");
         int choice = getChoice(sc, Main.getRunManage().getCustomerManage().getProducts().size() + 1);
         if (choice == 0) {
-            adminMenu(sc, admin);
+            menu(sc, admin);
             return;
         }
         Product product = Main.getRunManage().getCustomerManage().getProducts().remove(--choice);
@@ -256,7 +249,7 @@ public class AdminManage {
                 showReqList(sc, admin, getReq());
                 reqListOption(sc, admin);
             }
-            default -> adminMenu(sc, admin);
+            default -> menu(sc, admin);
         }
     }
 
@@ -291,7 +284,7 @@ public class AdminManage {
     public void showReqList(Scanner sc, Admin admin, ArrayList<Product> req) {
         if (req.isEmpty()) {
             System.out.println("Requests box is empty");
-            adminMenu(sc, admin);
+            menu(sc, admin);
             return;
         }
         System.out.println("===============================================   Requests:  ==================================================");

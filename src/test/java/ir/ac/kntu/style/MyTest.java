@@ -1,12 +1,5 @@
 package ir.ac.kntu.style;
 
-import ir.ac.kntu.manage.SellerManage;
-
-import java.io.ByteArrayInputStream;
-
-import java.util.Scanner;
-
-import ir.ac.kntu.util.users.Seller;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -26,7 +19,3 @@ public class MyTest {
 //        assertEquals("Product Name", seller.getProducts().get(0).getName());
     }
 }
-
-
-
-
