@@ -1,6 +1,7 @@
 package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
+import ir.ac.kntu.manage.Choice;
 import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.AdsCategory;
 import ir.ac.kntu.util.enums.VehicleType;
@@ -9,7 +10,7 @@ import ir.ac.kntu.util.users.User;
 
 import java.util.Scanner;
 
-public class DeliveryManage implements Menu {
+public class DeliveryManage implements Menu, Choice {
     @Override
     public void menu(Scanner sc, User user) {
         Delivery delivery = (Delivery) user;
@@ -27,7 +28,8 @@ public class DeliveryManage implements Menu {
             default -> Main.getRunManage().run();
         }
     }
-@Override
+
+    @Override
     public void profile(Scanner sc, User user) {
         Delivery delivery = (Delivery) user;
         showProfileOption();
@@ -79,17 +81,6 @@ public class DeliveryManage implements Menu {
             return true;
         }
         return false;
-    }
-
-    private int getChoice(Scanner scan, int bound) {
-        System.out.print("Enter your choice: ");
-        int choice = scan.nextInt();
-        if (choice >= 0 && choice < bound) {
-            return choice;
-        } else {
-            System.out.println("Invalid input!");
-            return getChoice(scan, bound);
-        }
     }
 
     private void showProfileOption() {

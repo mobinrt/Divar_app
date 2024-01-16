@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class ChatRoomManage {
+public class ChatRoomManage implements Choice {
     private final Map<User, ChatRoom> returnChatRoomByReceiver;
 
     public ChatRoomManage() {
@@ -22,7 +22,7 @@ public class ChatRoomManage {
             return;
         }
         showAllChats(currentUser);
-        int choice = Main.getRunManage().getChoice(sc, currentUser.getUsers().size() + 1);
+        int choice = getChoice(sc, currentUser.getUsers().size() + 1);
         if (choice == 0)
             return;
 

@@ -8,7 +8,7 @@ import ir.ac.kntu.util.users.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class RunManage {
+public class RunManage implements Choice {
     private final AdminManage adminManage = new AdminManage();
     private final SellerManage sellerManage = new SellerManage();
     private final CustomerManage customerManage = new CustomerManage();
@@ -220,22 +220,6 @@ public class RunManage {
             user.setRole(UsersRole.DELIVERY);
         } else
             getRole(sc, userName, password, phoneNumber, email);
-    }
-
-    /**
-     * @param scan  - scan input
-     * @param bound - limit the top
-     * @return int
-     */
-    public int getChoice(Scanner scan, int bound) {
-        System.out.print("Enter your choice: ");
-        int choice = scan.nextInt();
-        if (choice >= 0 && choice < bound) {
-            return choice;
-        } else {
-            System.out.println("Invalid input!");
-            return getChoice(scan, bound);
-        }
     }
 
     private void showSignMenu() {

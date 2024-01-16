@@ -1,6 +1,7 @@
 package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
+import ir.ac.kntu.manage.Choice;
 import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.AdsCategory;
 import ir.ac.kntu.util.users.Seller;
@@ -8,7 +9,7 @@ import ir.ac.kntu.util.users.User;
 
 import java.util.Scanner;
 
-public class SellerManage implements Menu {
+public class SellerManage implements Menu, Choice {
     /**
      * @param sc   - scan input
      * @param user - online seller
@@ -142,17 +143,6 @@ public class SellerManage implements Menu {
         System.out.println("4. " + AdsCategory.CLOTHE.name());
         System.out.println("5. " + AdsCategory.CAR.name());
         System.out.println("0. Back");
-    }
-
-    private int getChoice(Scanner scan, int bound) {
-        System.out.print("Enter your choice: ");
-        int choice = scan.nextInt();
-        if (choice >= 0 && choice < bound) {
-            return choice;
-        } else {
-            System.out.println("Invalid input!");
-            return getChoice(scan, bound);
-        }
     }
 
     private void showSellerMenu() {

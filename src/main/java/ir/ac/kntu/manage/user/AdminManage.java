@@ -1,6 +1,7 @@
 package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
+import ir.ac.kntu.manage.Choice;
 import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.*;
 import ir.ac.kntu.util.users.*;
@@ -10,7 +11,7 @@ import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class AdminManage implements Menu {
+public class AdminManage implements Menu, Choice {
     private final ArrayList<Product> req;
     private final ArrayList<Product> deliveryReq;
 
@@ -87,6 +88,7 @@ public class AdminManage implements Menu {
         }
     }
 
+    @Override
     public void walletMenu(Scanner sc, User user) {
         Admin admin = (Admin) user;
         showWalletOption();
@@ -293,17 +295,6 @@ public class AdminManage implements Menu {
         }
         System.out.println("0. Back");
         System.out.println("==============================================================================================================");
-    }
-
-    public int getChoice(Scanner scan, int bound) {
-        System.out.print("Enter your choice: ");
-        int choice = scan.nextInt();
-        if (choice >= 0 && choice < bound) {
-            return choice;
-        } else {
-            System.out.println("Invalid input!");
-            return getChoice(scan, bound);
-        }
     }
 
     public int showUsersList(UsersRole role) {

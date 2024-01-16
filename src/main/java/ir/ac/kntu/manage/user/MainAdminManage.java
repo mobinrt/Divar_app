@@ -1,13 +1,14 @@
 package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
+import ir.ac.kntu.manage.Choice;
 import ir.ac.kntu.util.Product;
 import ir.ac.kntu.util.enums.UsersRole;
 import ir.ac.kntu.util.users.*;
 
 import java.util.Scanner;
 
-public class MainAdminManage extends AdminManage implements Menu {
+public class MainAdminManage extends AdminManage implements Menu, Choice {
     @Override
     public void menu(Scanner sc, User user) {
         MainAdmin mainAdmin = (MainAdmin) user;

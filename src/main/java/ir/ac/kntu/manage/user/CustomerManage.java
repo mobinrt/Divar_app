@@ -1,6 +1,7 @@
 package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
+import ir.ac.kntu.manage.Choice;
 import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.AdsCategory;
 import ir.ac.kntu.util.users.*;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
 
-public class CustomerManage implements Menu {
+public class CustomerManage implements Menu, Choice {
     private final ArrayList<Product> products;
 
     public CustomerManage() {
@@ -72,12 +73,9 @@ public class CustomerManage implements Menu {
     }
 
     private void savedBoxOption(Scanner sc, Customer customer) {
-        if (customer.getSavedBox().isEmpty()) {
-            System.out.println("Saved box is empty");
-            menu(sc, customer);
-            return;
-        }
         customer.showSavedBox();
+        if (customer.getSavedBox().isEmpty())
+            return;
         int choice = getChoice(sc, customer.getSavedBox().size() + 1);
         if (choice == 0) {
             menu(sc, customer);
@@ -109,11 +107,7 @@ public class CustomerManage implements Menu {
     }
 
     private void sortByPrice(Scanner sc, Customer customer) {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Ascending sort by product price");
-        System.out.println("2. Descending Acceding sort by product price");
-        System.out.println("0. Back");
-        System.out.println("==============================================================================================================");
+        sortByPriceMenu();
         int choice = getChoice(sc, 3);
         switch (choice) {
             case 1 -> products.sort(Comparator.comparing(Product::getPrice));
@@ -125,8 +119,8 @@ public class CustomerManage implements Menu {
     private Product handleAdSelection(Scanner sc, Customer customer) {
         int choice;
         Product product;
-        String category = showAdsCategory(sc, customer);
-        if (category.matches("")) {
+        String category = equipAdsCategory(sc, customer);
+        if (category.isEmpty()) {
             showAdsList();
             System.out.println("Select one of the ads to remove or press zero to back: ");
             choice = getChoice(sc, products.size() + 1);
@@ -136,7 +130,7 @@ public class CustomerManage implements Menu {
             }
             return products.get(--choice);
         } else {
-            int length = showAdsListByCategory(category, sc, customer);
+            int length = showAdsListByCategory(sc, category, customer);
             choice = getChoice(sc, length + 1);
             if (choice == 0) {
                 menu(sc, customer);
@@ -189,10 +183,7 @@ public class CustomerManage implements Menu {
     }
 
     private void buyAd(Scanner sc, Customer customer, Product product) {
-        while (product.getPrice() > customer.getWallet()) {
-            System.out.println("Charge your account. you do not have enough money to buy this product.");
-            chargeWallet(sc, customer);
-        }
+        outOfBudget(sc, customer, product.getPrice());
         customer.setWallet(customer.getWallet() - product.getPrice());
         product.getSeller().setWallet((product.getPrice() * 9) / 10);
         MainAdmin mainAdmin = findMainAdmin();
@@ -209,39 +200,49 @@ public class CustomerManage implements Menu {
         System.out.println("===========================================================================================================");
     }
 
+    private void outOfBudget(Scanner sc, Customer customer, double need) {
+        while (need > customer.getWallet()) {
+            System.out.println("Charge your account. you do not have enough money.");
+            chargeWallet(sc, customer);
+        }
+    }
+
     private void deliverProduct(Scanner sc, Customer customer, Product product) {
         if (product.getAdsCategory().matches(AdsCategory.CAR.toString()))
             return;
-        System.out.println("Do you want to deliver product?");
-        System.out.println("1. Yes");
-        System.out.println("2. No");
+        wishToDeliver();
         int choice = getChoice(sc, 3);
         if (choice == 2) {
             product.setSold(true);
             return;
         }
-        if (customer.getX() < 0 || customer.getY() < 0) {
-            System.out.println("you don't set your location.");
-            customer.setLocation(sc, customer);
-        }
+        setLocation(sc, customer);
         AdsCategory adsCategory = AdsCategory.valueOf(product.getAdsCategory());
         deliverPay(sc, customer, product, adsCategory);
     }
 
-    private void deliverPay(Scanner sc, Customer customer, Product product, AdsCategory adsCategory) {
-        int charge = (int) customer.calculateDistance(customer, product.getSeller());
-        System.out.println("It costs " + (charge * adsCategory.getBaseCharge()) + ". Are you sure?");
+    private void setLocation(Scanner sc, Customer customer) {
+        if (customer.getX() < 0 || customer.getY() < 0) {
+            System.out.println("you don't set your location.");
+            customer.setLocation(sc, customer);
+        }
+    }
+
+    private void wishToDeliver() {
+        System.out.println("Do you want to deliver product?");
         System.out.println("1. Yes");
         System.out.println("2. No");
+    }
+
+    private void deliverPay(Scanner sc, Customer customer, Product product, AdsCategory adsCategory) {
+        int charge = (int) customer.calculateDistance(customer, product.getSeller());
+        makeSureToDeliver(charge, adsCategory);
         int temp = getChoice(sc, 2);
         if (temp == 2) {
             product.setSold(true);
             return;
         }
-        while (customer.getWallet() < (charge * adsCategory.getBaseCharge())) {
-            System.out.println("Charge your account. you do not have enough money to buy this product.");
-            chargeWallet(sc, customer);
-        }
+        outOfBudget(sc, customer, (charge * adsCategory.getBaseCharge()));
         MainAdmin mainAdmin = findMainAdmin();
         assert mainAdmin != null;
         mainAdmin.setWallet(charge * adsCategory.getBaseCharge());
@@ -255,6 +256,12 @@ public class CustomerManage implements Menu {
             return;
         }
         product.setWaitingToSend(true);
+    }
+
+    private void makeSureToDeliver(int charge, AdsCategory adsCategory) {
+        System.out.println("It costs " + (charge * adsCategory.getBaseCharge()) + ". Are you sure?");
+        System.out.println("1. Yes");
+        System.out.println("2. No");
     }
 
     private MainAdmin findMainAdmin() {
@@ -323,22 +330,14 @@ public class CustomerManage implements Menu {
     }
 
     private int[] handlePriceFilter(Scanner sc, Customer customer) {
-        System.out.println("Do you want to filter product with price?");
-        System.out.println("1. Yes");
-        System.out.println("2. No");
-        System.out.println("0. Back");
+        priceFilterOption();
         int[] filter = new int[2];
         filter[0] = -1;
         filter[1] = Integer.MAX_VALUE;
         int choice = getChoice(sc, 3);
         switch (choice) {
             case 1 -> {
-                System.out.print("Enter min price range: ");
-                int temp = sc.nextInt();
-                filter[0] = temp;
-                System.out.print("Enter max price range: ");
-                temp = sc.nextInt();
-                filter[1] = temp;
+                inputPriceFilter(sc, filter);
                 return filter;
             }
             case 2 -> {
@@ -347,6 +346,15 @@ public class CustomerManage implements Menu {
             default -> menu(sc, customer);
         }
         return filter;
+    }
+
+    private void inputPriceFilter(Scanner sc, int[] filter) {
+        System.out.print("Enter min price range: ");
+        int temp = sc.nextInt();
+        filter[0] = temp;
+        System.out.print("Enter max price range: ");
+        temp = sc.nextInt();
+        filter[1] = temp;
     }
 
     public void showAdsList() {
@@ -361,7 +369,7 @@ public class CustomerManage implements Menu {
         System.out.println("==============================================================================================================");
     }
 
-    private int showAdsListByCategory(String adsCategory, Scanner sc, Customer customer) {
+    private int showAdsListByCategory(Scanner sc, String adsCategory, Customer customer) {
         if (products.isEmpty()) {
             System.out.println("Product box is empty");
             menu(sc, customer);
@@ -383,15 +391,9 @@ public class CustomerManage implements Menu {
         return i;
     }
 
-    private String showAdsCategory(Scanner sc, Customer customer) {
+    private String equipAdsCategory(Scanner sc, Customer customer) {
         String adsCategory = "";
-        System.out.println("1. " + AdsCategory.PHONE.name());
-        System.out.println("2. " + AdsCategory.HOME_STUFF.name());
-        System.out.println("3. " + AdsCategory.STATIONARY.name());
-        System.out.println("4. " + AdsCategory.CLOTHE.name());
-        System.out.println("5. " + AdsCategory.CAR.name());
-        System.out.println("6. All category");
-        System.out.println("0. Back");
+        showAdsCategory();
         int choice = getChoice(sc, 7);
         switch (choice) {
             case 1 -> adsCategory = AdsCategory.PHONE.name();
@@ -404,6 +406,23 @@ public class CustomerManage implements Menu {
             default -> menu(sc, customer);
         }
         return adsCategory;
+    }
+
+    private void priceFilterOption() {
+        System.out.println("Do you want to filter product with price?");
+        System.out.println("1. Yes");
+        System.out.println("2. No");
+        System.out.println("0. Back");
+    }
+
+    private void showAdsCategory() {
+        System.out.println("1. " + AdsCategory.PHONE.name());
+        System.out.println("2. " + AdsCategory.HOME_STUFF.name());
+        System.out.println("3. " + AdsCategory.STATIONARY.name());
+        System.out.println("4. " + AdsCategory.CLOTHE.name());
+        System.out.println("5. " + AdsCategory.CAR.name());
+        System.out.println("6. All category");
+        System.out.println("0. Back");
     }
 
     private void showCustomerMenu() {
@@ -455,15 +474,12 @@ public class CustomerManage implements Menu {
         System.out.println("==============================================================================================================");
     }
 
-    private int getChoice(Scanner scan, int bound) {
-        System.out.print("Enter your choice: ");
-        int choice = scan.nextInt();
-        if (choice >= 0 && choice < bound) {
-            return choice;
-        } else {
-            System.out.println("Invalid input!");
-            return getChoice(scan, bound);
-        }
+    private void sortByPriceMenu() {
+        System.out.println("==============================================================================================================");
+        System.out.println("1. Ascending sort by product price");
+        System.out.println("2. Descending Acceding sort by product price");
+        System.out.println("0. Back");
+        System.out.println("==============================================================================================================");
     }
 
     public ArrayList<Product> getProducts() {

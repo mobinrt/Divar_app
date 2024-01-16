@@ -24,7 +24,11 @@ public class Customer extends User implements ShowHistory {
     }
 
     public void showSavedBox() {
-        System.out.println("===============================================   Saved box:  ================================================");
+        if (getSavedBox().isEmpty()) {
+            System.out.println("Saved box is empty");
+            return;
+        }
+            System.out.println("===============================================   Saved box:  ================================================");
         for (Product product : savedBox) {
             System.out.println(savedBox.indexOf(product) + 1 + ") " + product);
         }
