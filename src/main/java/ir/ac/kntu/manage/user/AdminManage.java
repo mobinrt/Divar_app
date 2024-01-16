@@ -222,7 +222,6 @@ public class AdminManage implements Menu, Choice {
 
     public void adsEdit(Scanner sc, Admin admin) {
         Main.getRunManage().getCustomerManage().showAdsList();
-        System.out.println("Select one of the ads to remove or press zero to back");
         int choice = getChoice(sc, Main.getRunManage().getCustomerManage().getProducts().size() + 1);
         if (choice == 0) {
             menu(sc, admin);

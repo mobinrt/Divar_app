@@ -122,7 +122,6 @@ public class CustomerManage implements Menu, Choice {
         String category = equipAdsCategory(sc, customer);
         if (category.isEmpty()) {
             showAdsList();
-            System.out.println("Select one of the ads to remove or press zero to back: ");
             choice = getChoice(sc, products.size() + 1);
             if (choice == 0) {
                 menu(sc, customer);
@@ -180,6 +179,7 @@ public class CustomerManage implements Menu, Choice {
     private void addToSavedBox(Customer customer, Product product) {
         customer.addToSavedBox(product);
         System.out.println("Successfully done.");
+        System.out.println("===========================================================================================================");
     }
 
     private void buyAd(Scanner sc, Customer customer, Product product) {
@@ -226,12 +226,6 @@ public class CustomerManage implements Menu, Choice {
             System.out.println("you don't set your location.");
             customer.setLocation(sc, customer);
         }
-    }
-
-    private void wishToDeliver() {
-        System.out.println("Do you want to deliver product?");
-        System.out.println("1. Yes");
-        System.out.println("2. No");
     }
 
     private void deliverPay(Scanner sc, Customer customer, Product product, AdsCategory adsCategory) {
@@ -367,6 +361,7 @@ public class CustomerManage implements Menu, Choice {
             System.out.println(products.indexOf(product) + 1 + ") " + product);
         }
         System.out.println("==============================================================================================================");
+        System.out.println("press zero if zero for back");
     }
 
     private int showAdsListByCategory(Scanner sc, String adsCategory, Customer customer) {
@@ -423,6 +418,12 @@ public class CustomerManage implements Menu, Choice {
         System.out.println("5. " + AdsCategory.CAR.name());
         System.out.println("6. All category");
         System.out.println("0. Back");
+    }
+
+    private void wishToDeliver() {
+        System.out.println("Do you want to deliver product?");
+        System.out.println("1. Yes");
+        System.out.println("2. No");
     }
 
     private void showCustomerMenu() {

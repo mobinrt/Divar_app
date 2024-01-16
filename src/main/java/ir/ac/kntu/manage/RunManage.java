@@ -167,7 +167,6 @@ public class RunManage implements Choice {
     }
 
     private void guest(Scanner sc) {
-        System.out.print("Enter zero if you want to back: ");
         int back;
         do {
             back = sc.nextInt();
@@ -207,10 +206,7 @@ public class RunManage implements Choice {
 
     private void deliverySignUp(Scanner sc, String userName, String password, String phoneNumber, String email) {
         User user;
-        System.out.println("Witch one is your widget?");
-        System.out.println("1. " + VehicleType.MOTOR);
-        System.out.println("2. " + VehicleType.TRUCK);
-        System.out.println("0. Back");
+        deliverySignUpOption();
         int type = getChoice(sc, 3);
         if (type == 1) {
             user = new Delivery(userName, password, phoneNumber, email, VehicleType.MOTOR);
@@ -220,6 +216,13 @@ public class RunManage implements Choice {
             user.setRole(UsersRole.DELIVERY);
         } else
             getRole(sc, userName, password, phoneNumber, email);
+    }
+
+    private void deliverySignUpOption() {
+        System.out.println("Witch one is your widget?");
+        System.out.println("1. " + VehicleType.MOTOR);
+        System.out.println("2. " + VehicleType.TRUCK);
+        System.out.println("0. Back");
     }
 
     private void showSignMenu() {
