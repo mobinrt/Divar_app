@@ -229,7 +229,7 @@ public class AdminManage implements UserSimilar, Choice {
             return;
         }
         Product product = Main.getRunManage().getCustomerManage().getProducts().remove(--choice);
-        Main.getRunManage().getCustomerManage().deleteProductFromSavedBox(product);
+        Main.getRunManage().getCustomerManage().staticMethod.deleteProductFromSavedBox(product);
         product.getSeller().getProducts().remove(product);
         System.out.println("Successfully done.");
         System.out.println("==============================================================================================================");

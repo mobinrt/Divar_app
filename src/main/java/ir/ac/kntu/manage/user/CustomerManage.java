@@ -14,9 +14,11 @@ import java.util.Scanner;
 
 public class CustomerManage implements UserSimilar, Choice {
     private final ArrayList<Product> products;
+    CustomerStaticMethod staticMethod;
 
     public CustomerManage() {
         products = new ArrayList<>();
+        staticMethod = new CustomerStaticMethod();
     }
 
     @Override
@@ -150,7 +152,7 @@ public class CustomerManage implements UserSimilar, Choice {
         ShowMenu.showMenuEnum(SavedBoxOptions.values());
         int type = getChoice(sc, 5);
         switch (type) {
-            case 1 -> addToSavedBox(customer, product);
+            case 1 -> staticMethod.addToSavedBox(customer, product);
             case 2 -> {
                 buyAd(sc, customer, product);
                 deliverProduct(sc, customer, product);
@@ -178,24 +180,18 @@ public class CustomerManage implements UserSimilar, Choice {
         return temp.get(--choice);
     }
 
-    private void addToSavedBox(Customer customer, Product product) {
-        customer.addToSavedBox(product);
-        System.out.println("Successfully done.");
-        System.out.println("===========================================================================================================");
-    }
-
     private void buyAd(Scanner sc, Customer customer, Product product) {
         outOfBudget(sc, customer, product.getPrice());
         customer.setWallet(customer.getWallet() - product.getPrice());
         product.getSeller().setWallet((product.getPrice() * 9) / 10);
-        MainAdmin mainAdmin = findMainAdmin();
+        MainAdmin mainAdmin = staticMethod.findMainAdmin();
         assert mainAdmin != null;
         mainAdmin.setWallet(product.getPrice() / 10);
         customer.getHistory().add(product);
         product.getSeller().getProducts().remove(product);
         product.getSeller().getHistory().add(product);
         customer.getSavedBox().remove(product);
-        deleteProductFromSavedBox(product);
+        staticMethod.deleteProductFromSavedBox(product);
         product.setCustomer(customer);
         products.remove(product);
         System.out.println("Successfully done.");
@@ -205,41 +201,36 @@ public class CustomerManage implements UserSimilar, Choice {
     private void outOfBudget(Scanner sc, Customer customer, double need) {
         while (need > customer.getWallet()) {
             System.out.println("Charge your account. you do not have enough money.");
-            chargeWallet(sc, customer);
+            staticMethod.chargeWallet(sc, customer);
         }
     }
 
     private void deliverProduct(Scanner sc, Customer customer, Product product) {
         if (product.getAdsCategory().matches(AdsCategory.CAR.toString()))
             return;
-        wishToDeliver();
+        staticMethod.wishToDeliver();
         int choice = getChoice(sc, 3);
         if (choice == 2) {
             product.setSold(true);
             return;
         }
-        setLocation(sc, customer);
+        staticMethod.setLocation(sc, customer);
         AdsCategory adsCategory = AdsCategory.valueOf(product.getAdsCategory());
         deliverPay(sc, customer, product, adsCategory);
     }
 
-    private void setLocation(Scanner sc, Customer customer) {
-        if (customer.getX() < 0 || customer.getY() < 0) {
-            System.out.println("you don't set your location.");
-            customer.setLocation(sc, customer);
-        }
-    }
+
 
     private void deliverPay(Scanner sc, Customer customer, Product product, AdsCategory adsCategory) {
         int charge = (int) customer.calculateDistance(customer, product.getSeller());
-        makeSureToDeliver(charge, adsCategory);
+        staticMethod.makeSureToDeliver(charge, adsCategory);
         int temp = getChoice(sc, 2);
         if (temp == 2) {
             product.setSold(true);
             return;
         }
         outOfBudget(sc, customer, (charge * adsCategory.getBaseCharge()));
-        MainAdmin mainAdmin = findMainAdmin();
+        MainAdmin mainAdmin = staticMethod.findMainAdmin();
         assert mainAdmin != null;
         mainAdmin.setWallet(charge * adsCategory.getBaseCharge());
         customer.setWallet(customer.getWallet() - (charge * adsCategory.getBaseCharge()));
@@ -254,27 +245,7 @@ public class CustomerManage implements UserSimilar, Choice {
         product.setWaitingToSend(true);
     }
 
-    private void makeSureToDeliver(int charge, AdsCategory adsCategory) {
-        System.out.println("It costs " + (charge * adsCategory.getBaseCharge()) + ". Are you sure?");
-        System.out.println("1. Yes");
-        System.out.println("2. No");
-    }
 
-    private MainAdmin findMainAdmin() {
-        for (User user : Main.getRunManage().getUsers()) {
-            if (user.isMainAdmin()) {
-                return (MainAdmin) user;
-            }
-        }
-        return null;
-    }
-
-    public void deleteProductFromSavedBox(Product deleteProduct) {
-        for (User user : Main.getRunManage().getUsers()) {
-            if (user instanceof Customer customer)
-                customer.getSavedBox().removeIf(product -> product.equals(deleteProduct));
-        }
-    }
 
     @Override
     public void profile(Scanner sc, User user) {
@@ -309,31 +280,24 @@ public class CustomerManage implements UserSimilar, Choice {
                 walletMenu(sc, customer);
             }
             case 2 -> {
-                chargeWallet(sc, customer);
+                staticMethod.chargeWallet(sc, customer);
                 walletMenu(sc, customer);
             }
             default -> profile(sc, customer);
         }
     }
 
-    private void chargeWallet(Scanner sc, Customer customer) {
-        System.out.println("How much do you want to charge your wallet?");
-        System.out.print("Enter: ");
-        double charge = sc.nextDouble();
-        charge += customer.getWallet();
-        customer.setWallet(charge);
-        System.out.println("Successfully done.");
-    }
+
 
     private int[] handlePriceFilter(Scanner sc, Customer customer) {
-        priceFilterOption();
+        staticMethod.priceFilterOption();
         int[] filter = new int[2];
         filter[0] = -1;
         filter[1] = Integer.MAX_VALUE;
         int choice = getChoice(sc, 3);
         switch (choice) {
             case 1 -> {
-                inputPriceFilter(sc, filter);
+                staticMethod.inputPriceFilter(sc, filter);
                 return filter;
             }
             case 2 -> {
@@ -344,14 +308,6 @@ public class CustomerManage implements UserSimilar, Choice {
         return filter;
     }
 
-    private void inputPriceFilter(Scanner sc, int[] filter) {
-        System.out.print("Enter min price range: ");
-        int temp = sc.nextInt();
-        filter[0] = temp;
-        System.out.print("Enter max price range: ");
-        temp = sc.nextInt();
-        filter[1] = temp;
-    }
 
     public void showAdsList() {
         if (products.isEmpty()) {
@@ -367,11 +323,11 @@ public class CustomerManage implements UserSimilar, Choice {
     }
 
     private int showAdsListByCategory(Scanner sc, String adsCategory, Customer customer) {
-        if (products.isEmpty()) {
-            System.out.println("Product box is empty");
-            menu(sc, customer);
-            return 0;
-        }
+//        if (products.isEmpty()) {
+//            System.out.println("Product box is empty");
+//            menu(sc, customer);
+//            return 0;
+//        }
         int[] filter = handlePriceFilter(sc, customer);
         int i = 1;
         System.out.println("===============================================   Ads list:  =================================================");
@@ -403,17 +359,6 @@ public class CustomerManage implements UserSimilar, Choice {
             default -> menu(sc, customer);
         }
         return adsCategory;
-    }
-
-    private void priceFilterOption() {
-        System.out.println("Do you want to filter product with price?");
-        ShowMenu.showMenu("Yes, No");
-    }
-
-    private void wishToDeliver() {
-        System.out.println("Do you want to deliver product?");
-        System.out.println("1. Yes");
-        System.out.println("2. No");
     }
 
     public ArrayList<Product> getProducts() {
