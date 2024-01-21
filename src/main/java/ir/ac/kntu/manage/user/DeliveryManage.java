@@ -2,6 +2,7 @@ package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
 import ir.ac.kntu.manage.Choice;
+import ir.ac.kntu.manage.ShowMenu;
 import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.AdsCategory;
 import ir.ac.kntu.util.enums.VehicleType;
@@ -10,11 +11,11 @@ import ir.ac.kntu.util.users.User;
 
 import java.util.Scanner;
 
-public class DeliveryManage implements Menu, Choice {
+public class DeliveryManage implements UserSimilar, Choice {
     @Override
     public void menu(Scanner sc, User user) {
         Delivery delivery = (Delivery) user;
-        showDeliveryMenu();
+        ShowMenu.showMenu("Profile, History");
         int choice = getChoice(sc, 3);
         switch (choice) {
             case 1 -> {
@@ -32,7 +33,7 @@ public class DeliveryManage implements Menu, Choice {
     @Override
     public void profile(Scanner sc, User user) {
         Delivery delivery = (Delivery) user;
-        showProfileOption();
+        ShowMenu.showMenu("Your information, Edit information, Wallet");
         int choice = getChoice(sc, 4);
         switch (choice) {
             case 1 -> {
@@ -54,7 +55,7 @@ public class DeliveryManage implements Menu, Choice {
     @Override
     public void walletMenu(Scanner sc, User user) {
         Delivery delivery = (Delivery) user;
-        showWalletOption();
+        ShowMenu.showMenu("Check wallet, Withdraw money");
         int choice = getChoice(sc, 3);
         switch (choice) {
             case 1 -> {
@@ -81,31 +82,5 @@ public class DeliveryManage implements Menu, Choice {
             return true;
         }
         return false;
-    }
-
-    private void showProfileOption() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. your information");
-        System.out.println("2. Edit information");
-        System.out.println("3. Wallet");
-        System.out.println("0. Back");
-        System.out.println("==============================================================================================================");
-    }
-
-    private void showWalletOption() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Check wallet");
-        System.out.println("2. Withdraw money");
-        System.out.println("0. Back");
-        System.out.println("==============================================================================================================");
-    }
-
-    private void showDeliveryMenu() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Profile");
-        System.out.println("2. History");
-        System.out.println("0. Exit");
-        System.out.println("==============================================================================================================");
-
     }
 }

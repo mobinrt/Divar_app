@@ -2,17 +2,18 @@ package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
 import ir.ac.kntu.manage.Choice;
+import ir.ac.kntu.manage.ShowMenu;
 import ir.ac.kntu.util.Product;
 import ir.ac.kntu.util.enums.UsersRole;
 import ir.ac.kntu.util.users.*;
 
 import java.util.Scanner;
 
-public class MainAdminManage extends AdminManage implements Menu, Choice {
+public class MainAdminManage extends AdminManage implements UserSimilar, Choice {
     @Override
     public void menu(Scanner sc, User user) {
         MainAdmin mainAdmin = (MainAdmin) user;
-        showAdminMenu();
+        ShowMenu.showMenu("Profile, Customers, Sellers, Deliveries, Admins, All ads, Requests, Deliver product, Salary pay");
         int choice = getChoice(sc, 10);
         switch (choice) {
             case 1 -> {
@@ -142,21 +143,5 @@ public class MainAdminManage extends AdminManage implements Menu, Choice {
         seller.getProducts().remove(deleteProduct);
         getReq().remove(deleteProduct);
         Main.getRunManage().getAdminManage().getReq().remove(deleteProduct);
-    }
-
-    @Override
-    public void showAdminMenu() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Profile");
-        System.out.println("2. Customers");
-        System.out.println("3. Sellers");
-        System.out.println("4. Deliveries");
-        System.out.println("5. Admins");
-        System.out.println("6. All ads");
-        System.out.println("7. Requests");
-        System.out.println("8. Deliver product");
-        System.out.println("9. Salary pay");
-        System.out.println("0. Exit");
-        System.out.println("==============================================================================================================");
     }
 }

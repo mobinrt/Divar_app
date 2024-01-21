@@ -2,6 +2,7 @@ package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
 import ir.ac.kntu.manage.Choice;
+import ir.ac.kntu.manage.ShowMenu;
 import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.AdsCategory;
 import ir.ac.kntu.util.users.Seller;
@@ -9,7 +10,7 @@ import ir.ac.kntu.util.users.User;
 
 import java.util.Scanner;
 
-public class SellerManage implements Menu, Choice {
+public class SellerManage implements UserSimilar, Choice {
     /**
      * @param sc   - scan input
      * @param user - online seller
@@ -17,7 +18,7 @@ public class SellerManage implements Menu, Choice {
     @Override
     public void menu(Scanner sc, User user) {
         Seller seller = (Seller) user;
-        showSellerMenu();
+        ShowMenu.showMenu("Profile, Available ads, Add ad, History, Massage, Feedbacks");
         int choice = getChoice(sc, 7);
         switch (choice) {
             case 1 -> {
@@ -84,7 +85,7 @@ public class SellerManage implements Menu, Choice {
     @Override
     public void profile(Scanner sc, User user) {
         Seller seller = (Seller) user;
-        showProfileOption();
+        ShowMenu.showMenu("Your information, Edit information, Wallet");
         int choice = getChoice(sc, 4);
         switch (choice) {
             case 1 -> {
@@ -106,7 +107,7 @@ public class SellerManage implements Menu, Choice {
     @Override
     public void walletMenu(Scanner sc, User user) {
         Seller seller = (Seller) user;
-        showWalletOption();
+        ShowMenu.showMenu("Check wallet, Withdraw money");
         int choice = getChoice(sc, 3);
         switch (choice) {
             case 1 -> {
@@ -123,7 +124,7 @@ public class SellerManage implements Menu, Choice {
 
     private String showAdsCategory(Scanner sc, Seller seller) {
         String adsCategory = null;
-        showAdsCategory();
+        ShowMenu.showMenuEnum(AdsCategory.values());
         int choice = getChoice(sc, 6);
         switch (choice) {
             case 1 -> adsCategory = AdsCategory.PHONE.name();
@@ -134,43 +135,5 @@ public class SellerManage implements Menu, Choice {
             default -> menu(sc, seller);
         }
         return adsCategory;
-    }
-
-    private void showAdsCategory() {
-        System.out.println("1. " + AdsCategory.PHONE.name());
-        System.out.println("2. " + AdsCategory.HOME_STUFF.name());
-        System.out.println("3. " + AdsCategory.STATIONARY.name());
-        System.out.println("4. " + AdsCategory.CLOTHE.name());
-        System.out.println("5. " + AdsCategory.CAR.name());
-        System.out.println("0. Back");
-    }
-
-    private void showSellerMenu() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Profile");
-        System.out.println("2. Available ads");
-        System.out.println("3. Add ad");
-        System.out.println("4. History");
-        System.out.println("5. Massage");
-        System.out.println("6. Feedbacks");
-        System.out.println("0. Exit");
-        System.out.println("==============================================================================================================");
-    }
-
-    private void showProfileOption() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. your information");
-        System.out.println("2. Edit information");
-        System.out.println("3. Wallet");
-        System.out.println("0. Back");
-        System.out.println("==============================================================================================================");
-    }
-
-    private void showWalletOption() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Check wallet");
-        System.out.println("2. Withdraw money");
-        System.out.println("0. Back");
-        System.out.println("==============================================================================================================");
     }
 }

@@ -1,6 +1,8 @@
 package ir.ac.kntu.manage;
 
 import ir.ac.kntu.manage.user.*;
+import ir.ac.kntu.util.enums.Start;
+import ir.ac.kntu.util.enums.UserSignup;
 import ir.ac.kntu.util.enums.UsersRole;
 import ir.ac.kntu.util.enums.VehicleType;
 import ir.ac.kntu.util.users.*;
@@ -32,7 +34,7 @@ public class RunManage implements Choice {
     public void run() {
         Scanner sc = new Scanner(System.in);
         User user;
-        showSignMenu();
+        ShowMenu.showMenuEnum(Start.values());
         int choice = getChoice(sc, 4);
         switch (choice) {
             case 1 -> {
@@ -180,7 +182,7 @@ public class RunManage implements Choice {
     }
 
     private User getRole(Scanner sc, String userName, String password, String phoneNumber, String email) {
-        showRoleMenu();
+        ShowMenu.showMenuEnum(UserSignup.values());
         User user = null;
         System.out.println("which one is your role?");
         int choice = getChoice(sc, 5);
@@ -220,28 +222,7 @@ public class RunManage implements Choice {
 
     private void deliverySignUpOption() {
         System.out.println("Witch one is your widget?");
-        System.out.println("1. " + VehicleType.MOTOR);
-        System.out.println("2. " + VehicleType.TRUCK);
-        System.out.println("0. Back");
-    }
-
-    private void showSignMenu() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Sign in");
-        System.out.println("2. Sign up");
-        System.out.println("3. Guest");
-        System.out.println("0. Exit");
-        System.out.println("==============================================================================================================");
-    }
-
-    private void showRoleMenu() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Admin");
-        System.out.println("2. Seller");
-        System.out.println("3. Customer");
-        System.out.println("4. Delivery");
-        System.out.println("0. Exit");
-        System.out.println("==============================================================================================================");
+        ShowMenu.showMenuEnum(VehicleType.values());
     }
 
     public AdminManage getAdminManage() {

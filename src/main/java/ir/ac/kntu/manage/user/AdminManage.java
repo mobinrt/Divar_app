@@ -2,6 +2,7 @@ package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
 import ir.ac.kntu.manage.Choice;
+import ir.ac.kntu.manage.ShowMenu;
 import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.*;
 import ir.ac.kntu.util.users.*;
@@ -11,7 +12,7 @@ import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class AdminManage implements Menu, Choice {
+public class AdminManage implements UserSimilar, Choice {
     private final ArrayList<Product> req;
     private final ArrayList<Product> deliveryReq;
 
@@ -27,7 +28,7 @@ public class AdminManage implements Menu, Choice {
     @Override
     public void menu(Scanner sc, User user) {
         Admin admin = (Admin) user;
-        showAdminMenu();
+        ShowMenu.showMenu("Profile, Customers, Sellers, Deliveries, All ads, Requests, Deliver product");
         int choice = getChoice(sc, 8);
         switch (choice) {
             case 1 -> {
@@ -69,7 +70,7 @@ public class AdminManage implements Menu, Choice {
     @Override
     public void profile(Scanner sc, User user) {
         Admin admin = (Admin) user;
-        showProfileOption();
+        ShowMenu.showMenu("Your information, Edit information, Wallet");
         int choice = getChoice(sc, 4);
         switch (choice) {
             case 1 -> {
@@ -91,7 +92,7 @@ public class AdminManage implements Menu, Choice {
     @Override
     public void walletMenu(Scanner sc, User user) {
         Admin admin = (Admin) user;
-        showWalletOption();
+        ShowMenu.showMenu("Check wallet, Withdraw money");
         int choice = getChoice(sc, 3);
         switch (choice) {
             case 1 -> {
@@ -235,7 +236,7 @@ public class AdminManage implements Menu, Choice {
     }
 
     public void reqListOption(Scanner sc, Admin admin) {
-        showReqListOption();
+        ShowMenu.showMenu("Accept request, Denied request, Show request list");
         int choice = getChoice(sc, 4);
         switch (choice) {
             case 1 -> {
@@ -305,45 +306,6 @@ public class AdminManage implements Menu, Choice {
             }
         }
         return i;
-    }
-
-    public void showProfileOption() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. your information");
-        System.out.println("2. Edit information");
-        System.out.println("3. Wallet");
-        System.out.println("0. Back");
-        System.out.println("==============================================================================================================");
-    }
-
-    public void showAdminMenu() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Profile");
-        System.out.println("2. Customers");
-        System.out.println("3. Sellers");
-        System.out.println("4. Deliveries");
-        System.out.println("5. All ads");
-        System.out.println("6. Requests");
-        System.out.println("7. Deliver product");
-        System.out.println("0. Exit");
-        System.out.println("==============================================================================================================");
-    }
-
-    public void showReqListOption() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Accept request");
-        System.out.println("2. Denied request");
-        System.out.println("3. Show request list");
-        System.out.println("0. Back");
-        System.out.println("==============================================================================================================");
-    }
-
-    public void showWalletOption() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Check wallet");
-        System.out.println("2. Withdraw money");
-        System.out.println("0. Back");
-        System.out.println("==============================================================================================================");
     }
 
     public ArrayList<Product> getReq() {

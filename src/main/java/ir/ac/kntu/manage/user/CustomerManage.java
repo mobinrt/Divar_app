@@ -2,15 +2,17 @@ package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
 import ir.ac.kntu.manage.Choice;
+import ir.ac.kntu.manage.ShowMenu;
 import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.AdsCategory;
+import ir.ac.kntu.util.enums.SavedBoxOptions;
 import ir.ac.kntu.util.users.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
 
-public class CustomerManage implements Menu, Choice {
+public class CustomerManage implements UserSimilar, Choice {
     private final ArrayList<Product> products;
 
     public CustomerManage() {
@@ -20,7 +22,7 @@ public class CustomerManage implements Menu, Choice {
     @Override
     public void menu(Scanner sc, User user) {
         Customer customer = (Customer) user;
-        showCustomerMenu();
+        ShowMenu.showMenu("Profile, Sales ads, Saved box, History, Chats, Search");
         int choice = getChoice(sc, 7);
         switch (choice) {
             case 1 -> {
@@ -64,7 +66,7 @@ public class CustomerManage implements Menu, Choice {
                 i++;
             }
         }
-        System.out.print("(Enter 0 for Back) ");
+        System.out.print("Enter 0 for Back ");
         int choice = getChoice(sc, i + 1);
         if (choice == 0)
             return;
@@ -82,7 +84,7 @@ public class CustomerManage implements Menu, Choice {
             return;
         }
         Product product = customer.getSavedBox().get(--choice);
-        savedBoxMenu();
+        ShowMenu.showMenuEnum(SavedBoxOptions.values());
         int type = getChoice(sc, 5);
         switch (type) {
             case 1 -> {
@@ -107,7 +109,7 @@ public class CustomerManage implements Menu, Choice {
     }
 
     private void sortByPrice(Scanner sc, Customer customer) {
-        sortByPriceMenu();
+        ShowMenu.showMenu("Ascending sort by product price, Descending Acceding sort by product price");
         int choice = getChoice(sc, 3);
         switch (choice) {
             case 1 -> products.sort(Comparator.comparing(Product::getPrice));
@@ -145,7 +147,7 @@ public class CustomerManage implements Menu, Choice {
     }
 
     private void handleUserAction(Scanner sc, Customer customer, Product product) {
-        showAdListOption();
+        ShowMenu.showMenuEnum(SavedBoxOptions.values());
         int type = getChoice(sc, 5);
         switch (type) {
             case 1 -> addToSavedBox(customer, product);
@@ -277,7 +279,7 @@ public class CustomerManage implements Menu, Choice {
     @Override
     public void profile(Scanner sc, User user) {
         Customer customer = (Customer) user;
-        showProfileOption();
+        ShowMenu.showMenu("Your information, Edit information, Wallet");
         int choice = getChoice(sc, 4);
         switch (choice) {
             case 1 -> {
@@ -299,7 +301,7 @@ public class CustomerManage implements Menu, Choice {
     @Override
     public void walletMenu(Scanner sc, User user) {
         Customer customer = (Customer) user;
-        walletOption();
+        ShowMenu.showMenu("Check wallet, Charge wallet");
         int choice = getChoice(sc, 3);
         switch (choice) {
             case 1 -> {
@@ -388,7 +390,7 @@ public class CustomerManage implements Menu, Choice {
 
     private String equipAdsCategory(Scanner sc, Customer customer) {
         String adsCategory = "";
-        showAdsCategory();
+        ShowMenu.showMenu("Phone, Home stuff, Stationary, Clothe, Car, All category");
         int choice = getChoice(sc, 7);
         switch (choice) {
             case 1 -> adsCategory = AdsCategory.PHONE.name();
@@ -405,82 +407,13 @@ public class CustomerManage implements Menu, Choice {
 
     private void priceFilterOption() {
         System.out.println("Do you want to filter product with price?");
-        System.out.println("1. Yes");
-        System.out.println("2. No");
-        System.out.println("0. Back");
-    }
-
-    private void showAdsCategory() {
-        System.out.println("1. " + AdsCategory.PHONE.name());
-        System.out.println("2. " + AdsCategory.HOME_STUFF.name());
-        System.out.println("3. " + AdsCategory.STATIONARY.name());
-        System.out.println("4. " + AdsCategory.CLOTHE.name());
-        System.out.println("5. " + AdsCategory.CAR.name());
-        System.out.println("6. All category");
-        System.out.println("0. Back");
+        ShowMenu.showMenu("Yes, No");
     }
 
     private void wishToDeliver() {
         System.out.println("Do you want to deliver product?");
         System.out.println("1. Yes");
         System.out.println("2. No");
-    }
-
-    private void showCustomerMenu() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Profile");
-        System.out.println("2. Sales ads");
-        System.out.println("3. Saved box");
-        System.out.println("4. History");
-        System.out.println("5. Chats");
-        System.out.println("6. Find products by seller name");
-        System.out.println("0. Exit");
-        System.out.println("==============================================================================================================");
-    }
-
-    private void showProfileOption() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Customer information");
-        System.out.println("2. Edit information");
-        System.out.println("3. Wallet");
-        System.out.println("0. Back");
-        System.out.println("==============================================================================================================");
-    }
-
-    private void showAdListOption() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Add to save box");
-        System.out.println("2. Buy");
-        System.out.println("3. Chat with seller");
-        System.out.println("4. Feedbacks");
-        System.out.println("0. Back");
-        System.out.println("==============================================================================================================");
-    }
-
-    private void walletOption() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Check wallet");
-        System.out.println("2. Charge wallet");
-        System.out.println("0. Back");
-        System.out.println("==============================================================================================================");
-    }
-
-    private void savedBoxMenu() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Buy");
-        System.out.println("2. Delete");
-        System.out.println("3. Chat with seller");
-        System.out.println("4. Feedbacks");
-        System.out.println("0. Back");
-        System.out.println("==============================================================================================================");
-    }
-
-    private void sortByPriceMenu() {
-        System.out.println("==============================================================================================================");
-        System.out.println("1. Ascending sort by product price");
-        System.out.println("2. Descending Acceding sort by product price");
-        System.out.println("0. Back");
-        System.out.println("==============================================================================================================");
     }
 
     public ArrayList<Product> getProducts() {

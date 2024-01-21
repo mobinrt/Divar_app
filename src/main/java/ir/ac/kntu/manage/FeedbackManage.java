@@ -7,9 +7,9 @@ import ir.ac.kntu.util.Product;
 
 import java.util.Scanner;
 
-public class FeedbackManage implements Choice{
+public class FeedbackManage implements Choice {
     public void handleFeedback(Scanner sc, Customer customer, Product product) {
-        feedbackMenu();
+        ShowMenu.showMenu("Show feedbacks, Add your feedback");
         int choice = getChoice(sc, 3);
         switch (choice) {
             case 1 -> Main.getRunManage().getSellerManage().showFeedbacks(product.getSeller());
@@ -27,13 +27,6 @@ public class FeedbackManage implements Choice{
         feedback.setText(text);
         product.getSeller().getFeedback().add(feedback);
         System.out.println("Successfully done.");
-        System.out.println("===========================================================================================================");
-    }
-    private void feedbackMenu() {
-        System.out.println("===========================================================================================================");
-        System.out.println("1. show feedbacks");
-        System.out.println("2. Add your feedback");
-        System.out.println("0. Back");
         System.out.println("===========================================================================================================");
     }
 }

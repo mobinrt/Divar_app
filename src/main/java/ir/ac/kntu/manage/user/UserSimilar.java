@@ -4,7 +4,7 @@ import ir.ac.kntu.util.users.User;
 
 import java.util.Scanner;
 
-public interface Menu {
+public interface UserSimilar {
     void menu(Scanner sc, User user);
 
     void profile(Scanner sc, User user);
