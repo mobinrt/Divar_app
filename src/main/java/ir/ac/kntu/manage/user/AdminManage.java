@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class AdminManage implements UserSimilar, Choice {
+public class AdminManage implements UsersCommonMethods, Choice {
     private final ArrayList<Product> req;
     private final ArrayList<Product> deliveryReq;
 

@@ -11,7 +11,7 @@ import ir.ac.kntu.util.users.User;
 
 import java.util.Scanner;
 
-public class DeliveryManage implements UserSimilar, Choice {
+public class DeliveryManage implements UsersCommonMethods, Choice {
     @Override
     public void menu(Scanner sc, User user) {
         Delivery delivery = (Delivery) user;

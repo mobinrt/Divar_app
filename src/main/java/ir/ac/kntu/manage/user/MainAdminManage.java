@@ -9,7 +9,7 @@ import ir.ac.kntu.util.users.*;
 
 import java.util.Scanner;
 
-public class MainAdminManage extends AdminManage implements UserSimilar, Choice {
+public class MainAdminManage extends AdminManage implements UsersCommonMethods, Choice {
     @Override
     public void menu(Scanner sc, User user) {
         MainAdmin mainAdmin = (MainAdmin) user;

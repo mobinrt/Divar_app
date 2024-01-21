@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
 
-public class CustomerManage implements UserSimilar, Choice {
+public class CustomerManage implements UsersCommonMethods, Choice {
     private final ArrayList<Product> products;
     CustomerStaticMethod staticMethod;
 

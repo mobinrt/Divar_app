@@ -10,7 +10,7 @@ import ir.ac.kntu.util.users.User;
 
 import java.util.Scanner;
 
-public class SellerManage implements UserSimilar, Choice {
+public class SellerManage implements UsersCommonMethods, Choice {
     /**
      * @param sc   - scan input
      * @param user - online seller
