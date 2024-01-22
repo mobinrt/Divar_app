@@ -20,7 +20,7 @@ public class User {
     private int y = -1;
     private final Point[][] location = new Point[1][1];
     private boolean isMainAdmin;
-    private final ArrayList<User> users;
+    private ArrayList<User> users;
     private final ArrayList<ChatRoom> allChats;
 
     public User(String userName, String password, String phoneNumber, String email) {
@@ -201,6 +201,10 @@ public class User {
 
     public ArrayList<User> getUsers() {
         return users;
+    }
+
+    public void setUsers(ArrayList<User> users) {
+        this.users = users;
     }
 
     public ArrayList<ChatRoom> getAllChats() {

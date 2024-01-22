@@ -1,14 +1,10 @@
 package ir.ac.kntu.manage;
 
-import ir.ac.kntu.Main;
 import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.UsersRole;
 import ir.ac.kntu.util.users.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 public class ChatRoomManage implements Choice {
     private final Map<User, ChatRoom> returnChatRoomByReceiver;
@@ -47,7 +43,6 @@ public class ChatRoomManage implements Choice {
     }
 
     public void checkExistenceChat(Scanner sc, Customer sender, Seller receiver) {
-        ChatRoom chatRoom;
         if (sender.getUsers().isEmpty()) {
             createChatRoom(sc, sender, receiver);
             return;
@@ -86,12 +81,16 @@ public class ChatRoomManage implements Choice {
     }
 
     private void createChatRoom(Scanner sc, Customer sender, Seller receiver) {
+        ArrayList<User> senderChat = sender.getUsers();
+        ArrayList<User> receiverChat = receiver.getUsers();
         ChatRoom chatRoom;
         chatRoom = new ChatRoom(sender, receiver);
         sender.getAllChats().add(chatRoom);
         receiver.getAllChats().add(chatRoom);
-        sender.getUsers().add(receiver);
-        receiver.getUsers().add(sender);
+        senderChat.add(receiver);
+        receiverChat.add(sender);
+        sender.setUsers(senderChat);
+        receiver.setUsers(receiverChat);
         returnChatRoomByReceiver.put(chatRoom.getReceiver(), chatRoom);
         sendMsg(sc, chatRoom);
     }

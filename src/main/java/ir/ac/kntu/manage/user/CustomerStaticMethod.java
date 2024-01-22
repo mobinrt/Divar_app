@@ -8,13 +8,12 @@ import ir.ac.kntu.util.users.Customer;
 import ir.ac.kntu.util.users.MainAdmin;
 import ir.ac.kntu.util.users.User;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CustomerStaticMethod {
     public void addToSavedBox(Customer customer, Product product) {
         customer.addToSavedBox(product);
-        System.out.println("Successfully done.");
-        System.out.println("===========================================================================================================");
     }
 
     public void setLocation(Scanner sc, Customer customer) {
@@ -37,7 +36,11 @@ public class CustomerStaticMethod {
         Main.getRunManage().getUsers().stream()
                 .filter(user -> user instanceof Customer)
                 .map(user -> (Customer) user)
-                .forEach(customer -> customer.getSavedBox().removeIf(product -> product.equals(deleteProduct)));
+                .forEach(customer -> {
+                    ArrayList<Product> temp = new ArrayList<>(customer.getSavedBox());
+                    temp.removeIf(product -> product.equals(deleteProduct));
+                    customer.setSavedBox(temp);
+                });
     }
 
     public MainAdmin findMainAdmin() {

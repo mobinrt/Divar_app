@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Delivery extends User implements ShowList {
     private final VehicleType vehicleType;
     private boolean isAvailable;
-    private final ArrayList<Product> history;
+    private ArrayList<Product> history;
 
     public Delivery(String userName, String password, String phoneNumber, String email, VehicleType vehicleType) {
         super(userName, password, phoneNumber, email);
@@ -73,4 +73,7 @@ public class Delivery extends User implements ShowList {
         return history;
     }
 
+    public void setHistory(ArrayList<Product> history) {
+        this.history = history;
+    }
 }

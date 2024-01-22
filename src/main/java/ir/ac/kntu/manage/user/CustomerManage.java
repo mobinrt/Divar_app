@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 public class CustomerManage implements UsersCommonMethods, Choice {
-    private final ArrayList<Product> products;
+    private ArrayList<Product> products;
     CustomerStaticMethod staticMethod;
 
     public CustomerManage() {
@@ -96,12 +96,14 @@ public class CustomerManage implements UsersCommonMethods, Choice {
         int type = getChoice(sc, 5);
         switch (type) {
             case 1 -> {
-                buyAd(sc, customer, product);
+                soldAdAction(sc, customer, product);
                 deliverProduct(sc, customer, product);
                 menu(sc, customer);
             }
             case 2 -> {
-                customer.getSavedBox().remove(choice);
+                ArrayList<Product> temp = customer.getSavedBox();
+                temp.remove(product);
+                customer.setSavedBox(temp);
                 menu(sc, customer);
             }
             case 3 -> {
@@ -160,7 +162,7 @@ public class CustomerManage implements UsersCommonMethods, Choice {
         switch (type) {
             case 1 -> staticMethod.addToSavedBox(customer, product);
             case 2 -> {
-                buyAd(sc, customer, product);
+                soldAdAction(sc, customer, product);
                 deliverProduct(sc, customer, product);
             }
             case 3 -> {
@@ -182,17 +184,25 @@ public class CustomerManage implements UsersCommonMethods, Choice {
                 .orElse(null);
     }
 
-    private void buyAd(Scanner sc, Customer customer, Product product) {
+    private void soldAdAction(Scanner sc, Customer customer, Product product) {
+        ArrayList<Product> customerHistory = customer.getHistory();
+        ArrayList<Product> customerSavedBox = customer.getSavedBox();
+        ArrayList<Product> sellerHistory = product.getSeller().getHistory();
+        ArrayList<Product> sellerProducts = product.getSeller().getProducts();
         outOfBudget(sc, customer, product.getPrice());
         customer.setWallet(customer.getWallet() - product.getPrice());
         product.getSeller().setWallet((product.getPrice() * 9) / 10);
         MainAdmin mainAdmin = staticMethod.findMainAdmin();
         assert mainAdmin != null;
         mainAdmin.setWallet(product.getPrice() / 10);
-        customer.getHistory().add(product);
-        product.getSeller().getProducts().remove(product);
-        product.getSeller().getHistory().add(product);
-        customer.getSavedBox().remove(product);
+        customerHistory.add(product);
+        customer.setHistory(customerHistory);
+        sellerProducts.remove(product);
+        product.getSeller().setProducts(sellerProducts);
+        sellerHistory.add(product);
+        product.getSeller().setHistory(sellerHistory);
+        customerSavedBox.remove(product);
+        customer.setSavedBox(customerSavedBox);
         staticMethod.deleteProductFromSavedBox(product);
         product.setCustomer(customer);
         products.remove(product);
@@ -223,10 +233,11 @@ public class CustomerManage implements UsersCommonMethods, Choice {
 
 
     private void deliverPay(Scanner sc, Customer customer, Product product, AdsCategory adsCategory) {
+        ArrayList<Product> temp = Main.getRunManage().getMainAdminManage().getDeliveryReq();
         int charge = (int) customer.calculateDistance(customer, product.getSeller());
         staticMethod.makeSureToDeliver(charge, adsCategory);
-        int temp = getChoice(sc, 2);
-        if (temp == 2) {
+        int i = getChoice(sc, 2);
+        if (i == 2) {
             product.setSold(true);
             return;
         }
@@ -235,9 +246,14 @@ public class CustomerManage implements UsersCommonMethods, Choice {
         assert mainAdmin != null;
         mainAdmin.setWallet(charge * adsCategory.getBaseCharge());
         customer.setWallet(customer.getWallet() - (charge * adsCategory.getBaseCharge()));
-        Main.getRunManage().getAdminManage().getDeliveryReq().add(product);
-        Main.getRunManage().getMainAdminManage().getDeliveryReq().add(product);
+        temp.add(product);
+        Main.getRunManage().getAdminManage().setDeliveryReq(temp);
+        Main.getRunManage().getMainAdminManage().setDeliveryReq(temp);
         System.out.println("==============================================================================================================");
+        checkActiveDelivery(product);
+    }
+
+    private void checkActiveDelivery(Product product) {
         boolean isAvailableDelivery = Main.getRunManage().getDeliveryManage().isAvailableDelivery(product);
         if (isAvailableDelivery) {
             product.setReadyToSend(true);
@@ -245,7 +261,6 @@ public class CustomerManage implements UsersCommonMethods, Choice {
         }
         product.setWaitingToSend(true);
     }
-
 
     @Override
     public void profile(Scanner sc, User user) {
@@ -316,7 +331,7 @@ public class CustomerManage implements UsersCommonMethods, Choice {
                 .mapToObj(i -> (i + 1) + ") " + products.get(i))
                 .forEach(System.out::println);
         System.out.println("==============================================================================================================");
-        System.out.println("press zero if zero for back");
+        System.out.println("press zero for back");
     }
 
     private int showAdsListByCategory(Scanner sc, String adsCategory, Customer customer) {
@@ -356,5 +371,9 @@ public class CustomerManage implements UsersCommonMethods, Choice {
 
     public ArrayList<Product> getProducts() {
         return products;
+    }
+
+    public void setProducts(ArrayList<Product> products) {
+        this.products = products;
     }
 }

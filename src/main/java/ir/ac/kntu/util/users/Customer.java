@@ -7,8 +7,8 @@ import ir.ac.kntu.util.enums.UsersRole;
 import java.util.ArrayList;
 
 public class Customer extends User implements ShowList {
-    private final ArrayList<Product> savedBox;
-    private final ArrayList<Product> history;
+    private ArrayList<Product> savedBox;
+    private ArrayList<Product> history;
 
     /**
      * @param userName    - customer name
@@ -53,6 +53,14 @@ public class Customer extends User implements ShowList {
 
     public ArrayList<Product> getHistory() {
         return history;
+    }
+
+    public void setHistory(ArrayList<Product> history) {
+        this.history = history;
+    }
+
+    public void setSavedBox(ArrayList<Product> savedBox) {
+        this.savedBox = savedBox;
     }
 }
 

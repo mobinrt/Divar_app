@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 public class Seller extends User implements ShowList {
     private ArrayList<Product> products;
-    private final ArrayList<Product> history;
-    private final ArrayList<Feedback> feedback;
+    private ArrayList<Product> history;
+    private ArrayList<Feedback> feedback;
 
     /**
      * @param userName    - seller name
@@ -72,8 +72,16 @@ public class Seller extends User implements ShowList {
         return history;
     }
 
+    public void setHistory(ArrayList<Product> history) {
+        this.history = history;
+    }
+
     public ArrayList<Feedback> getFeedback() {
         return feedback;
+    }
+
+    public void setFeedback(ArrayList<Feedback> feedback) {
+        this.feedback = feedback;
     }
 }
 

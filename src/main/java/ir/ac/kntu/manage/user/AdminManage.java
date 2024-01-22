@@ -15,8 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 public class AdminManage implements UsersCommonMethods, Choice {
-    private final ArrayList<Product> req;
-    private final ArrayList<Product> deliveryReq;
+    private ArrayList<Product> req;
+    private ArrayList<Product> deliveryReq;
 
     public AdminManage() {
         req = new ArrayList<>();
@@ -167,10 +167,12 @@ public class AdminManage implements UsersCommonMethods, Choice {
             return;
         }
         Delivery delivery = findClosestDelivery(product);
+        ArrayList<Product> deliveryHistory = delivery.getHistory();
         int distance = (int) delivery.calculateDistance(delivery, product.getSeller());
         distance += (int) delivery.calculateDistance(product.getSeller(), product.getCustomer());
         makeDeliveryUnavailable(distance, product, delivery);
-        delivery.getHistory().add(product);
+        deliveryHistory.add(product);
+        delivery.setHistory(deliveryHistory);
         delivery.setX(product.getCustomer().getX());
         delivery.setY(product.getCustomer().getY());
         delivery.setLocation();
@@ -222,15 +224,19 @@ public class AdminManage implements UsersCommonMethods, Choice {
     }
 
     public void adsEdit(Scanner sc, Admin admin) {
+        ArrayList<Product> customersList = Main.getRunManage().getCustomerManage().getProducts();
         Main.getRunManage().getCustomerManage().showAdsList();
         int choice = getChoice(sc, Main.getRunManage().getCustomerManage().getProducts().size() + 1);
         if (choice == 0) {
             menu(sc, admin);
             return;
         }
-        Product product = Main.getRunManage().getCustomerManage().getProducts().remove(--choice);
+        Product product = customersList.remove(--choice);
+        Main.getRunManage().getCustomerManage().setProducts(customersList);
+        ArrayList<Product> sellerList = product.getSeller().getProducts();
         Main.getRunManage().getCustomerManage().staticMethod.deleteProductFromSavedBox(product);
-        product.getSeller().getProducts().remove(product);
+        sellerList.remove(product);
+        product.getSeller().setProducts(sellerList);
         System.out.println("Successfully done.");
         System.out.println("==============================================================================================================");
     }
@@ -248,7 +254,7 @@ public class AdminManage implements UsersCommonMethods, Choice {
                 reqListOption(sc, admin);
             }
             case 3 -> {
-                showReqList(sc, admin, getReq());
+                showReqList(sc, admin, req);
                 reqListOption(sc, admin);
             }
             default -> menu(sc, admin);
@@ -256,31 +262,31 @@ public class AdminManage implements UsersCommonMethods, Choice {
     }
 
     public void acceptReq(Scanner sc, Admin admin) {
-        showReqList(sc, admin, getReq());
+        showReqList(sc, admin, req);
         System.out.println("Which product do you want to accept?");
-        int choice = getChoice(sc, getReq().size() + 1);
+        int choice = getChoice(sc, req.size() + 1);
         if (choice == 0) {
             reqListOption(sc, admin);
             return;
         }
-        Product product = getReq().get(--choice);
+        Product product = req.get(--choice);
         product.setIsVisible(true);
         Main.getRunManage().getCustomerManage().getProducts().add(product);
-        getReq().remove(product);
+        req.remove(product);
     }
 
     public void deniedReq(Scanner sc, Admin admin) {
-        showReqList(sc, admin, getReq());
+        showReqList(sc, admin, req);
         System.out.println("Which product do you want to delete?");
-        int choice = getChoice(sc, getReq().size() + 1);
+        int choice = getChoice(sc, req.size() + 1);
         if (choice == 0) {
             reqListOption(sc, admin);
             return;
         }
-        Product deleteProduct = getReq().get(--choice);
-        Seller seller = getReq().get(choice).getSeller();
+        Product deleteProduct = req.get(--choice);
+        Seller seller = req.get(choice).getSeller();
         seller.getProducts().remove(deleteProduct);
-        getReq().remove(deleteProduct);
+        req.remove(deleteProduct);
     }
 
     public void showReqList(Scanner sc, Admin admin, ArrayList<Product> req) {
@@ -293,10 +299,8 @@ public class AdminManage implements UsersCommonMethods, Choice {
         IntStream.range(0, req.size())
                 .mapToObj(i -> (i + 1) + ". " + req.get(i))
                 .forEach(System.out::println);
-        System.out.println("0. Back");
         System.out.println("==============================================================================================================");
     }
-
 
     public int showUsersList(UsersRole role) {
         AtomicInteger i = new AtomicInteger(1);
@@ -306,12 +310,19 @@ public class AdminManage implements UsersCommonMethods, Choice {
         return i.get();
     }
 
-
     public ArrayList<Product> getReq() {
         return req;
     }
 
+    public void setReq(ArrayList<Product> req) {
+        this.req = req;
+    }
+
     public ArrayList<Product> getDeliveryReq() {
         return deliveryReq;
+    }
+
+    public void setDeliveryReq(ArrayList<Product> deliveryReq) {
+        this.deliveryReq = deliveryReq;
     }
 }

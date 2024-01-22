@@ -7,6 +7,7 @@ import ir.ac.kntu.util.Product;
 import ir.ac.kntu.util.enums.UsersRole;
 import ir.ac.kntu.util.users.*;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MainAdminManage extends AdminManage implements UsersCommonMethods, Choice {
@@ -109,39 +110,49 @@ public class MainAdminManage extends AdminManage implements UsersCommonMethods, 
 
     @Override
     public void makeDeliveryUnavailable(int distanceInKm, Product product, Delivery delivery) {
+        ArrayList<Product> temp = Main.getRunManage().getAdminManage().getDeliveryReq();
         super.makeDeliveryUnavailable(distanceInKm, product, delivery);
-        Main.getRunManage().getAdminManage().getDeliveryReq().remove(product);
+        temp.remove(product);
+        Main.getRunManage().getAdminManage().setDeliveryReq(temp);
     }
 
     @Override
     public void acceptReq(Scanner sc, Admin admin) {
-        showReqList(sc, admin, getReq());
+        ArrayList<Product> temp = getReq();
+        ArrayList<Product> customersProduct = Main.getRunManage().getCustomerManage().getProducts();
+        showReqList(sc, admin, temp);
         System.out.println("Which product do you want to accept?");
-        int choice = getChoice(sc, getReq().size() + 1);
+        int choice = getChoice(sc, temp.size() + 1);
         if (choice == 0) {
             reqListOption(sc, admin);
             return;
         }
-        Product product = getReq().get(--choice);
+        Product product = temp.get(--choice);
         product.setIsVisible(true);
-        Main.getRunManage().getCustomerManage().getProducts().add(product);
-        getReq().remove(product);
-        Main.getRunManage().getAdminManage().getReq().remove(product);
+        customersProduct.add(product);
+        Main.getRunManage().getCustomerManage().setProducts(customersProduct);
+        temp.remove(product);
+        setReq(temp);
+        Main.getRunManage().getAdminManage().setReq(temp);
     }
 
     @Override
     public void deniedReq(Scanner sc, Admin admin) {
-        showReqList(sc, admin, getReq());
+        ArrayList<Product> temp = getReq();
+        showReqList(sc, admin, temp);
         System.out.println("Which product do you want to delete?");
-        int choice = getChoice(sc, getReq().size() + 1);
+        int choice = getChoice(sc, temp.size() + 1);
         if (choice == 0) {
             reqListOption(sc, admin);
             return;
         }
-        Product deleteProduct = getReq().get(--choice);
-        Seller seller = getReq().get(choice).getSeller();
-        seller.getProducts().remove(deleteProduct);
-        getReq().remove(deleteProduct);
-        Main.getRunManage().getAdminManage().getReq().remove(deleteProduct);
+        Product deleteProduct = temp.get(--choice);
+        Seller seller = temp.get(choice).getSeller();
+        ArrayList<Product> sellerProduct = seller.getProducts();
+        sellerProduct.remove(deleteProduct);
+        seller.setProducts(sellerProduct);
+        temp.remove(deleteProduct);
+        setReq(temp);
+        Main.getRunManage().getAdminManage().setReq(temp);
     }
 }
