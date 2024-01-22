@@ -54,9 +54,7 @@ public class SellerManage implements UsersCommonMethods, Choice {
             System.out.println("There is no comment.");
             return;
         }
-        for (Feedback feedback : seller.getFeedback()) {
-            System.out.println(feedback);
-        }
+        seller.getFeedback().forEach(System.out::println);
     }
 
     /**

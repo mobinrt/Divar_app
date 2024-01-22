@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 public class AdminManage implements UsersCommonMethods, Choice {
     private final ArrayList<Product> req;
@@ -135,22 +137,20 @@ public class AdminManage implements UsersCommonMethods, Choice {
         removeSeller.setProducts(new ArrayList<>());
         removeSellerAds(removeSeller, Main.getRunManage().getCustomerManage().getProducts());
         removeSellerAds(removeSeller, req);
-        for (User user : Main.getRunManage().getUsers()) {
-            if (user instanceof Customer customer)
-                removeSellerAds(removeSeller, customer.getSavedBox());
-        }
+        Main.getRunManage().getUsers().stream()
+                .filter(user -> user instanceof Customer)
+                .map(user -> (Customer) user)
+                .forEach(customer -> removeSellerAds(removeSeller, customer.getSavedBox()));
         System.out.println("Successfully done.");
         System.out.println("==============================================================================================================");
     }
 
     public User findUser(int choice, UsersRole role) {
-        ArrayList<User> temp = new ArrayList<>();
-        for (User user : Main.getRunManage().getUsers()) {
-            if (user.getRole().equals(role)) {
-                temp.add(user);
-            }
-        }
-        return temp.get(--choice);
+        return Main.getRunManage().getUsers().stream()
+                .filter(user -> user.getRole().equals(role))
+                .skip(choice - 1)
+                .findFirst()
+                .orElse(null);
     }
 
     public void deliverProduct(Scanner sc, Admin admin) {
@@ -290,23 +290,22 @@ public class AdminManage implements UsersCommonMethods, Choice {
             return;
         }
         System.out.println("===============================================   Requests:  ==================================================");
-        for (Product product : req) {
-            System.out.println(req.indexOf(product) + 1 + ". " + product);
-        }
+        IntStream.range(0, req.size())
+                .mapToObj(i -> (i + 1) + ". " + req.get(i))
+                .forEach(System.out::println);
         System.out.println("0. Back");
         System.out.println("==============================================================================================================");
     }
 
+
     public int showUsersList(UsersRole role) {
-        int i = 1;
-        for (User user : Main.getRunManage().getUsers()) {
-            if (user.getRole().equals(role)) {
-                System.out.println(i + ") " + user);
-                i++;
-            }
-        }
-        return i;
+        AtomicInteger i = new AtomicInteger(1);
+        Main.getRunManage().getUsers().stream()
+                .filter(user -> user.getRole().equals(role))
+                .forEach(user -> System.out.println(i.getAndIncrement() + ") " + user));
+        return i.get();
     }
+
 
     public ArrayList<Product> getReq() {
         return req;

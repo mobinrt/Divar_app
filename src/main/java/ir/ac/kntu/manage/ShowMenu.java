@@ -1,24 +1,23 @@
 package ir.ac.kntu.manage;
 
+import java.util.stream.IntStream;
+
 public class ShowMenu {
     public static void showMenu(String text) {
         System.out.println("==============================================================================================================");
         String[] icon = text.split(", ");
-        for (int i = 1; i <= icon.length; i++) {
-            System.out.println(i + ". " + icon[i - 1]);
-        }
+        IntStream.range(0, icon.length)
+                .mapToObj(i -> (i + 1) + ". " + icon[i])
+                .forEach(System.out::println);
         System.out.println("0. Exit");
         System.out.println("==============================================================================================================");
     }
 
     public static <T> void showMenuEnum(T[] icons) {
         System.out.println("==============================================================================================================");
-        int i = 1;
-        for (T icon : icons) {
-            String temp = capitalizeFirstLetter(icon);
-            System.out.println(i + ". " + temp);
-            i++;
-        }
+        IntStream.range(0, icons.length)
+                .mapToObj(i -> (i + 1) + ". " + capitalizeFirstLetter(icons[i]))
+                .forEach(System.out::println);
         System.out.println("0. Exit");
         System.out.println("==============================================================================================================");
     }

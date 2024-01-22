@@ -2,12 +2,12 @@ package ir.ac.kntu.util.users;
 
 import ir.ac.kntu.util.Feedback;
 import ir.ac.kntu.util.Product;
-import ir.ac.kntu.util.ShowHistory;
+import ir.ac.kntu.util.ShowList;
 import ir.ac.kntu.util.enums.UsersRole;
 
 import java.util.ArrayList;
 
-public class Seller extends User implements ShowHistory {
+public class Seller extends User implements ShowList {
     private ArrayList<Product> products;
     private final ArrayList<Product> history;
     private final ArrayList<Feedback> feedback;
@@ -32,22 +32,19 @@ public class Seller extends User implements ShowHistory {
             return;
         }
         System.out.println("===============================================   AvailableAds:  =============================================");
-        for (Product product : products) {
-            System.out.println(products.indexOf(product) + 1 + ") " + product + " (" + visibleProduct(product) + ")");
-        }
+        products.stream()
+                .map(product -> products.indexOf(product) + 1 + ") " + product + " (" + visibleProduct(product) + ")")
+                .forEach(System.out::println);
         System.out.println("==============================================================================================================");
     }
 
-    @Override
     public void showHistory() {
         if (history.isEmpty()) {
-            System.out.println("Seller history box is empty");
+            System.out.println("History is empty");
             return;
         }
         System.out.println("===============================================   History:  ==================================================");
-        for (Product product : history) {
-            System.out.println(history.indexOf(product) + 1 + ") " + product);
-        }
+        showList(history);
         System.out.println("==============================================================================================================");
     }
 

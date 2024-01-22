@@ -71,16 +71,11 @@ public class DeliveryManage implements UsersCommonMethods, Choice {
     }
 
     public boolean isAvailableDelivery(Product product) {
-        for (User user : Main.getRunManage().getUsers()) {
-            if (user instanceof Delivery delivery) {
-                if (!(delivery.isAvailable()))
-                    continue;
-                if (product.getAdsCategory().matches(AdsCategory.HOME_STUFF.toString()) &&
-                        delivery.getVehicleType().equals(VehicleType.MOTOR))
-                    continue;
-            }
-            return true;
-        }
-        return false;
+        return Main.getRunManage().getUsers().stream()
+                .filter(user -> user instanceof Delivery)
+                .map(user -> (Delivery) user)
+                .filter(Delivery::isAvailable)
+                .noneMatch(delivery -> product.getAdsCategory().matches(AdsCategory.HOME_STUFF.toString()) &&
+                        delivery.getVehicleType().equals(VehicleType.MOTOR));
     }
 }

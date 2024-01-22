@@ -5,12 +5,15 @@ import ir.ac.kntu.manage.Choice;
 import ir.ac.kntu.manage.ShowMenu;
 import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.AdsCategory;
+import ir.ac.kntu.util.enums.BuyOptions;
 import ir.ac.kntu.util.enums.SavedBoxOptions;
 import ir.ac.kntu.util.users.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 public class CustomerManage implements UsersCommonMethods, Choice {
     private final ArrayList<Product> products;
@@ -61,19 +64,22 @@ public class CustomerManage implements UsersCommonMethods, Choice {
         sc.nextLine();
         System.out.print("Enter seller name: ");
         String name = sc.nextLine();
-        int i = 1;
-        for (Product product : products) {
-            if (product.getSeller().toString().contains(name)) {
-                System.out.println(i + ") " + product);
-                i++;
-            }
-        }
-        System.out.print("Enter 0 for Back ");
+        int i = foundProductBySeller(name);
         int choice = getChoice(sc, i + 1);
         if (choice == 0)
             return;
         Product product = findProduct(choice, "", name);
         handleUserAction(sc, customer, product);
+    }
+
+    private int foundProductBySeller(String name) {
+        AtomicInteger i = new AtomicInteger(1);
+        products.stream()
+                .filter(product -> product.getSeller().toString().contains(name))
+                .peek(product -> System.out.println(i.getAndIncrement() + ") " + product))
+                .count();
+        System.out.print("(Enter 0 for Back)");
+        return i.get();
     }
 
     private void savedBoxOption(Scanner sc, Customer customer) {
@@ -149,7 +155,7 @@ public class CustomerManage implements UsersCommonMethods, Choice {
     }
 
     private void handleUserAction(Scanner sc, Customer customer, Product product) {
-        ShowMenu.showMenuEnum(SavedBoxOptions.values());
+        ShowMenu.showMenuEnum(BuyOptions.values());
         int type = getChoice(sc, 5);
         switch (type) {
             case 1 -> staticMethod.addToSavedBox(customer, product);
@@ -168,16 +174,12 @@ public class CustomerManage implements UsersCommonMethods, Choice {
     }
 
     private Product findProduct(int choice, String category, String name) {
-        ArrayList<Product> temp = new ArrayList<>();
-        for (Product product : products) {
-            if (category.matches(product.getAdsCategory()) && name.isEmpty()) {
-                temp.add(product);
-            }
-            if (category.isEmpty() && product.getSeller().toString().contains(name)) {
-                temp.add(product);
-            }
-        }
-        return temp.get(--choice);
+        return products.stream()
+                .filter(product -> (category.isEmpty() && product.getSeller().toString().contains(name))
+                        || (category.matches(product.getAdsCategory()) && name.isEmpty()))
+                .skip(choice - 1)
+                .findFirst()
+                .orElse(null);
     }
 
     private void buyAd(Scanner sc, Customer customer, Product product) {
@@ -220,7 +222,6 @@ public class CustomerManage implements UsersCommonMethods, Choice {
     }
 
 
-
     private void deliverPay(Scanner sc, Customer customer, Product product, AdsCategory adsCategory) {
         int charge = (int) customer.calculateDistance(customer, product.getSeller());
         staticMethod.makeSureToDeliver(charge, adsCategory);
@@ -244,7 +245,6 @@ public class CustomerManage implements UsersCommonMethods, Choice {
         }
         product.setWaitingToSend(true);
     }
-
 
 
     @Override
@@ -287,8 +287,6 @@ public class CustomerManage implements UsersCommonMethods, Choice {
         }
     }
 
-
-
     private int[] handlePriceFilter(Scanner sc, Customer customer) {
         staticMethod.priceFilterOption();
         int[] filter = new int[2];
@@ -308,40 +306,35 @@ public class CustomerManage implements UsersCommonMethods, Choice {
         return filter;
     }
 
-
     public void showAdsList() {
         if (products.isEmpty()) {
             System.out.println("Product box is empty");
             return;
         }
         System.out.println("===============================================   Ads list:  =================================================");
-        for (Product product : products) {
-            System.out.println(products.indexOf(product) + 1 + ") " + product);
-        }
+        IntStream.range(0, products.size())
+                .mapToObj(i -> (i + 1) + ") " + products.get(i))
+                .forEach(System.out::println);
         System.out.println("==============================================================================================================");
         System.out.println("press zero if zero for back");
     }
 
     private int showAdsListByCategory(Scanner sc, String adsCategory, Customer customer) {
-//        if (products.isEmpty()) {
+//      if (products.isEmpty()) {
 //            System.out.println("Product box is empty");
 //            menu(sc, customer);
 //            return 0;
-//        }
+//      }
         int[] filter = handlePriceFilter(sc, customer);
-        int i = 1;
+        AtomicInteger i = new AtomicInteger(1);
         System.out.println("===============================================   Ads list:  =================================================");
-        for (Product product : products) {
-            if (adsCategory.matches(product.getAdsCategory())) {
-                if (product.getPrice() >= filter[0] && product.getPrice() <= filter[1]) {
-                    System.out.println(i + ") " + product);
-                    ++i;
-                }
-            }
-        }
+        products.stream()
+                .filter(product -> adsCategory.matches(product.getAdsCategory()))
+                .filter(product -> product.getPrice() >= filter[0] && product.getPrice() <= filter[1])
+                .forEach(product -> System.out.println(i.getAndIncrement() + ") " + product));
         System.out.println("0) Back");
         System.out.println("==============================================================================================================");
-        return i;
+        return i.get();
     }
 
     private String equipAdsCategory(Scanner sc, Customer customer) {

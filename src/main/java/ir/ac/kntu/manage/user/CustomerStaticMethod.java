@@ -34,19 +34,18 @@ public class CustomerStaticMethod {
     }
 
     public void deleteProductFromSavedBox(Product deleteProduct) {
-        for (User user : Main.getRunManage().getUsers()) {
-            if (user instanceof Customer customer)
-                customer.getSavedBox().removeIf(product -> product.equals(deleteProduct));
-        }
+        Main.getRunManage().getUsers().stream()
+                .filter(user -> user instanceof Customer)
+                .map(user -> (Customer) user)
+                .forEach(customer -> customer.getSavedBox().removeIf(product -> product.equals(deleteProduct)));
     }
 
     public MainAdmin findMainAdmin() {
-        for (User user : Main.getRunManage().getUsers()) {
-            if (user.isMainAdmin()) {
-                return (MainAdmin) user;
-            }
-        }
-        return null;
+        return Main.getRunManage().getUsers().stream()
+                .filter(User::isMainAdmin)
+                .map(user -> (MainAdmin) user)
+                .findFirst()
+                .orElse(null);
     }
 
     public void inputPriceFilter(Scanner sc, int[] filter) {

@@ -1,13 +1,13 @@
 package ir.ac.kntu.util.users;
 
 import ir.ac.kntu.util.Product;
-import ir.ac.kntu.util.ShowHistory;
+import ir.ac.kntu.util.ShowList;
 import ir.ac.kntu.util.enums.UsersRole;
 import ir.ac.kntu.util.enums.VehicleType;
 
 import java.util.ArrayList;
 
-public class Delivery extends User implements ShowHistory {
+public class Delivery extends User implements ShowList {
     private final VehicleType vehicleType;
     private boolean isAvailable;
     private final ArrayList<Product> history;
@@ -47,6 +47,16 @@ public class Delivery extends User implements ShowHistory {
         return "unAvailable";
     }
 
+    public void showHistory() {
+        if (history.isEmpty()) {
+            System.out.println("History is empty");
+            return;
+        }
+        System.out.println("===============================================   History:  ==================================================");
+        showList(history);
+        System.out.println("==============================================================================================================");
+    }
+
     public VehicleType getVehicleType() {
         return vehicleType;
     }
@@ -63,16 +73,4 @@ public class Delivery extends User implements ShowHistory {
         return history;
     }
 
-    @Override
-    public void showHistory() {
-        if (history.isEmpty()) {
-            System.out.println("Seller history box is empty");
-            return;
-        }
-        System.out.println("===============================================   History:  ==================================================");
-        for (Product product : history) {
-            System.out.println(history.indexOf(product) + 1 + ") " + product);
-        }
-        System.out.println("==============================================================================================================");
-    }
 }

@@ -7,6 +7,7 @@ import ir.ac.kntu.util.users.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class ChatRoomManage implements Choice {
@@ -27,22 +28,22 @@ public class ChatRoomManage implements Choice {
             return;
 
         User user = currentUser.getUsers().get(--choice);
-        for (ChatRoom chatRoom : currentUser.getAllChats()) {
-            if (chatRoom.getSender().equals(user)) {
-                swapRole(chatRoom, user, currentUser);
-                chatPage(chatRoom);
-                sendMsg(sc, chatRoom);
-            }
-            if (chatRoom.getReceiver().equals(user)) {
-                chatPage(chatRoom);
-                sendMsg(sc, chatRoom);
-            }
-        }
-    }
+        currentUser.getAllChats().stream()
+                .filter(chatRoom -> chatRoom.getSender().equals(user))
+                .findFirst()
+                .ifPresent(chatRoom -> {
+                    swapRole(chatRoom, user, currentUser);
+                    chatPage(chatRoom);
+                    sendMsg(sc, chatRoom);
+                });
 
-    private void swapRole(ChatRoom chatRoom, User receiver, User crrentUser) {
-        chatRoom.setSender(crrentUser);
-        chatRoom.setReceiver(receiver);
+        currentUser.getAllChats().stream()
+                .filter(chatRoom -> chatRoom.getReceiver().equals(user))
+                .findFirst()
+                .ifPresent(chatRoom -> {
+                    chatPage(chatRoom);
+                    sendMsg(sc, chatRoom);
+                });
     }
 
     public void checkExistenceChat(Scanner sc, Customer sender, Seller receiver) {
@@ -51,16 +52,37 @@ public class ChatRoomManage implements Choice {
             createChatRoom(sc, sender, receiver);
             return;
         }
-        for (User user : sender.getUsers()) {
-            Seller seller = (Seller) user;
-            if (receiver.equals(seller)) {
-                chatRoom = returnChatRoomByReceiver.get(receiver);
-                chatPage(chatRoom);
-                sendMsg(sc, chatRoom);
-                return;
-            }
+        Optional<ChatRoom> existingChatRoom = sender.getUsers().stream()
+                .filter(user -> user instanceof Seller)
+                .map(user -> (Seller) user)
+                .filter(receiver::equals)
+                .findFirst()
+                .map(returnChatRoomByReceiver::get);
+
+        if (existingChatRoom.isPresent()) {
+            chatPage(existingChatRoom.get());
+            sendMsg(sc, existingChatRoom.get());
+        } else {
+            createChatRoom(sc, sender, receiver);
         }
-        createChatRoom(sc, sender, receiver);
+    }
+
+    private void showAllChats(User sender) {
+        System.out.println("===========================================   Chat room:  ===================================================");
+        sender.getUsers().stream()
+                .map(user -> {
+                    if (sender.getRole().equals(UsersRole.CUSTOMER)) {
+                        Seller seller = (Seller) user;
+                        int index = sender.getUsers().indexOf(seller);
+                        return (index + 1) + ") " + seller.getUserName();
+                    } else {
+                        Customer customer = (Customer) user;
+                        int index = sender.getUsers().indexOf(customer);
+                        return (index + 1) + ") " + customer.getUserName();
+                    }
+                })
+                .forEach(System.out::println);
+        System.out.println("0) Back");
     }
 
     private void createChatRoom(Scanner sc, Customer sender, Seller receiver) {
@@ -74,21 +96,9 @@ public class ChatRoomManage implements Choice {
         sendMsg(sc, chatRoom);
     }
 
-    private void showAllChats(User sender) {
-        System.out.println("===========================================   Chat room:  ===================================================");
-        for (User user : sender.getUsers()) {
-            if (sender.getRole().equals(UsersRole.CUSTOMER)) {
-                Seller seller = (Seller) user;
-                int index = sender.getUsers().indexOf(seller);
-                System.out.println((index + 1) + ") " + seller.getUserName());
-            }
-            if (sender.getRole().equals(UsersRole.SELLER)) {
-                Customer customer = (Customer) user;
-                int index = sender.getUsers().indexOf(customer);
-                System.out.println((index + 1) + ") " + customer.getUserName());
-            }
-        }
-        System.out.println("0) Back");
+    private void swapRole(ChatRoom chatRoom, User receiver, User crrentUser) {
+        chatRoom.setSender(crrentUser);
+        chatRoom.setReceiver(receiver);
     }
 
     private void sendMsg(Scanner sc, ChatRoom chatRoom) {
@@ -103,8 +113,6 @@ public class ChatRoomManage implements Choice {
 
     private void chatPage(ChatRoom chatRoom) {
         System.out.println("===========================================   Chat page:  ====================================================");
-        for (String msg : chatRoom.getMsg()) {
-            System.out.println(msg);
-        }
+        chatRoom.getMsg().forEach(System.out::println);
     }
 }

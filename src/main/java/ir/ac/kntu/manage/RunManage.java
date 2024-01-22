@@ -72,12 +72,10 @@ public class RunManage implements Choice {
     }
 
     public User findUser(String userName, String password) {
-        for (User user : users) {
-            if (userName.equals(user.getUserName()) && password.equals(user.getPassword())) {
-                return user;
-            }
-        }
-        return null;
+        return users.stream()
+                .filter(user -> userName.equals(user.getUserName()) && password.equals(user.getPassword()))
+                .findFirst()
+                .orElse(null);
     }
 
     private void handleUserMenu(Scanner sc, User user) {
@@ -135,13 +133,14 @@ public class RunManage implements Choice {
     }
 
     public boolean checkInfo(String userName) {
-        for (User user : users) {
-            if (userName.equals(user.getUserName())) {
-                System.out.println("This user name had taken please try again.");
-                return true;
-            }
+        boolean userNameExist = users.stream()
+                .anyMatch(user -> userName.equals(user.getUserName()));
+
+        if (userNameExist) {
+            System.out.println("This user name had taken please try again.");
         }
-        return false;
+
+        return userNameExist;
     }
 
     /**
@@ -199,25 +198,27 @@ public class RunManage implements Choice {
                 user = new Customer(userName, password, phoneNumber, email);
                 user.setRole(UsersRole.CUSTOMER);
             }
-            case 4 -> deliverySignUp(sc, userName, password, phoneNumber, email);
+            case 4 -> {
+                user = deliverySignUp(sc, userName, password, phoneNumber, email);
+                user.setRole(UsersRole.DELIVERY);
+            }
             default -> run();
         }
         assert user != null;
         return user;
     }
 
-    private void deliverySignUp(Scanner sc, String userName, String password, String phoneNumber, String email) {
-        User user;
+    private User deliverySignUp(Scanner sc, String userName, String password, String phoneNumber, String email) {
+        User user = null;
         deliverySignUpOption();
         int type = getChoice(sc, 3);
-        if (type == 1) {
+        if (type == 1)
             user = new Delivery(userName, password, phoneNumber, email, VehicleType.MOTOR);
-            user.setRole(UsersRole.DELIVERY);
-        } else if (type == 2) {
+        else if (type == 2)
             user = new Delivery(userName, password, phoneNumber, email, VehicleType.TRUCK);
-            user.setRole(UsersRole.DELIVERY);
-        } else
-            getRole(sc, userName, password, phoneNumber, email);
+        else
+            return getRole(sc, userName, password, phoneNumber, email);
+        return user;
     }
 
     private void deliverySignUpOption() {
