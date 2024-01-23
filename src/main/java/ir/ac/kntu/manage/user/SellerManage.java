@@ -1,7 +1,7 @@
 package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
-import ir.ac.kntu.manage.Choice;
+import ir.ac.kntu.manage.Input;
 import ir.ac.kntu.manage.ShowMenu;
 import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.AdsCategory;
@@ -10,9 +10,9 @@ import ir.ac.kntu.util.users.User;
 
 import java.util.Scanner;
 
-public class SellerManage implements UsersCommonMethods, Choice {
+public class SellerManage implements UsersCommonMethods, Input {
     /**
-     * @param sc   - scan input
+     * @param sc   - scan Input
      * @param user - online seller
      */
     @Override
@@ -58,26 +58,29 @@ public class SellerManage implements UsersCommonMethods, Choice {
     }
 
     /**
-     * @param sc            - scan input
+     * @param sc            - scan Input
      * @param currentSeller - online seller
      */
     public void addAd(Scanner sc, Seller currentSeller) {
-        if (currentSeller.getX() < 0 || currentSeller.getY() < 0) {
-            System.out.println("you don't set your location.");
-            currentSeller.setLocation(sc, currentSeller);
-        }
+        setLocation(sc, currentSeller);
         String adsCategory = showAdsCategory(sc, currentSeller);
         sc.nextLine();
         System.out.print("Enter product's name: ");
-        String name = sc.next();
-        System.out.print("Enter product's price: ");
-        double price = sc.nextDouble();
+        String name = sc.nextLine();
+        double price = inputDouble(sc, "Enter product's price: ");
         Product product = currentSeller.addToRequestList(adsCategory, name, currentSeller, price);
         System.out.println("Successfully done.");
         System.out.println("Waiting for admin accept...");
         System.out.println("==============================================================================================================");
         Main.getRunManage().getAdminManage().addProductToReq(product);
         Main.getRunManage().getMainAdminManage().addProductToReq(product);
+    }
+
+    private void setLocation(Scanner sc, Seller currentSeller) {
+        if (currentSeller.getX() < 0 || currentSeller.getY() < 0) {
+            System.out.println("you don't set your location.");
+            currentSeller.setLocation(sc, currentSeller);
+        }
     }
 
     @Override

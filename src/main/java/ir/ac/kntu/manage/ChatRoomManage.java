@@ -6,7 +6,7 @@ import ir.ac.kntu.util.users.*;
 
 import java.util.*;
 
-public class ChatRoomManage implements Choice {
+public class ChatRoomManage implements Input {
     private final Map<User, ChatRoom> returnChatRoomByReceiver;
 
     public ChatRoomManage() {

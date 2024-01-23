@@ -10,7 +10,7 @@ import ir.ac.kntu.util.users.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class RunManage implements Choice {
+public class RunManage implements Input {
     private final AdminManage adminManage = new AdminManage();
     private final SellerManage sellerManage = new SellerManage();
     private final CustomerManage customerManage = new CustomerManage();
@@ -18,7 +18,7 @@ public class RunManage implements Choice {
     private final MainAdminManage mainAdminManage = new MainAdminManage();
     private final ChatRoomManage chatRoomManage = new ChatRoomManage();
     private final FeedbackManage feedbackManage = new FeedbackManage();
-    private final ArrayList<User> users;
+    private ArrayList<User> users;
 
     public RunManage() {
         users = new ArrayList<>();
@@ -170,13 +170,13 @@ public class RunManage implements Choice {
     private void guest(Scanner sc) {
         int back;
         do {
-            back = sc.nextInt();
+            back = (int) inputDouble(sc, "Enter 0 for back: ");
             if (back == 0) {
                 run();
                 return;
             }
-            System.out.println("Invalid input!!");
-            back = sc.nextInt();
+            System.out.println("Invalid Input!!");
+            back = (int) inputDouble(sc, "Enter 0 for back: ");
         } while (back == 0);
     }
 
@@ -246,15 +246,19 @@ public class RunManage implements Choice {
         return mainAdminManage;
     }
 
-    public ArrayList<User> getUsers() {
-        return users;
-    }
-
     public ChatRoomManage getChatRoomManage() {
         return chatRoomManage;
     }
 
     public FeedbackManage getFeedbackManage() {
         return feedbackManage;
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(ArrayList<User> users) {
+        this.users = users;
     }
 }

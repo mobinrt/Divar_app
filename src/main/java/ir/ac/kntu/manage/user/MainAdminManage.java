@@ -1,7 +1,7 @@
 package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
-import ir.ac.kntu.manage.Choice;
+import ir.ac.kntu.manage.Input;
 import ir.ac.kntu.manage.ShowMenu;
 import ir.ac.kntu.util.Product;
 import ir.ac.kntu.util.enums.UsersRole;
@@ -10,7 +10,7 @@ import ir.ac.kntu.util.users.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class MainAdminManage extends AdminManage implements UsersCommonMethods, Choice {
+public class MainAdminManage extends AdminManage implements UsersCommonMethods, Input {
     @Override
     public void menu(Scanner sc, User user) {
         MainAdmin mainAdmin = (MainAdmin) user;
@@ -85,18 +85,20 @@ public class MainAdminManage extends AdminManage implements UsersCommonMethods, 
 
     private void salaryPay(Scanner sc, MainAdmin mainAdmin, UsersRole usersRole) {
         User user = chooseUser(sc, mainAdmin, usersRole);
-        int salary;
-        System.out.print("Enter the payment amount: ");
-        salary = sc.nextInt();
-        while (mainAdmin.getWallet() < salary) {
-            System.out.println("You don't have enough money to pay!");
-            System.out.print("Enter the payment amount: ");
-            salary = sc.nextInt();
-        }
+        double salary = payment(sc, mainAdmin);
         mainAdmin.setWallet(mainAdmin.getWallet() - salary);
         user.setWallet(salary);
         System.out.println("Successfully done.");
         System.out.println("==============================================================================================================");
+    }
+
+    private Double payment(Scanner sc, MainAdmin mainAdmin) {
+        double salary = inputDouble(sc, "Enter the payment amount: ");
+        while (mainAdmin.getWallet() < salary) {
+            System.out.println("You don't have enough money to pay!");
+            salary = inputDouble(sc, "Enter the payment amount: ");
+        }
+        return salary;
     }
 
     private User chooseUser(Scanner sc, MainAdmin mainAdmin, UsersRole usersRole) {
@@ -110,8 +112,8 @@ public class MainAdminManage extends AdminManage implements UsersCommonMethods, 
 
     @Override
     public void makeDeliveryUnavailable(int distanceInKm, Product product, Delivery delivery) {
-        ArrayList<Product> temp = Main.getRunManage().getAdminManage().getDeliveryReq();
         super.makeDeliveryUnavailable(distanceInKm, product, delivery);
+        ArrayList<Product> temp = Main.getRunManage().getAdminManage().getDeliveryReq();
         temp.remove(product);
         Main.getRunManage().getAdminManage().setDeliveryReq(temp);
     }

@@ -1,7 +1,7 @@
 package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
-import ir.ac.kntu.manage.Choice;
+import ir.ac.kntu.manage.Input;
 import ir.ac.kntu.manage.ShowMenu;
 import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.AdsCategory;
@@ -15,7 +15,7 @@ import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
-public class CustomerManage implements UsersCommonMethods, Choice {
+public class CustomerManage implements UsersCommonMethods, Input {
     private ArrayList<Product> products;
     CustomerStaticMethod staticMethod;
 

@@ -1,6 +1,7 @@
 package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
+import ir.ac.kntu.manage.Input;
 import ir.ac.kntu.manage.ShowMenu;
 import ir.ac.kntu.util.Product;
 import ir.ac.kntu.util.enums.AdsCategory;
@@ -11,7 +12,7 @@ import ir.ac.kntu.util.users.User;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CustomerStaticMethod {
+public class CustomerStaticMethod implements Input {
     public void addToSavedBox(Customer customer, Product product) {
         customer.addToSavedBox(product);
     }
@@ -25,8 +26,7 @@ public class CustomerStaticMethod {
 
     public void chargeWallet(Scanner sc, Customer customer) {
         System.out.println("How much do you want to charge your wallet?");
-        System.out.print("Enter: ");
-        double charge = sc.nextDouble();
+        double charge = inputDouble(sc, "Enter: ");
         charge += customer.getWallet();
         customer.setWallet(charge);
         System.out.println("Successfully done.");

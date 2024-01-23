@@ -10,8 +10,8 @@ public class MyTest {
     public void testAddProduct() {
 //        Seller seller = new Seller("mobin", "Mm123456", "01111111111", "m@m.com");
 //        SellerManage sellerManage = new SellerManage();
-//        String input = "1\nProduct Name\n100\n";
-//        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
+//        String Input = "1\nProduct Name\n100\n";
+//        ByteArrayInputStream inputStream = new ByteArrayInputStream(Input.getBytes());
 //        Scanner sc = new Scanner(inputStream);
 //
 //        sellerManage.addAd(sc, seller);

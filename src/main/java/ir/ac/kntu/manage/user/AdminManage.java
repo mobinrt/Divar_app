@@ -1,7 +1,7 @@
 package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
-import ir.ac.kntu.manage.Choice;
+import ir.ac.kntu.manage.Input;
 import ir.ac.kntu.manage.ShowMenu;
 import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.*;
@@ -14,7 +14,7 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
-public class AdminManage implements UsersCommonMethods, Choice {
+public class AdminManage implements UsersCommonMethods, Input {
     private ArrayList<Product> req;
     private ArrayList<Product> deliveryReq;
 
@@ -24,7 +24,7 @@ public class AdminManage implements UsersCommonMethods, Choice {
     }
 
     /**
-     * @param sc   - scan input
+     * @param sc   - scan Input
      * @param user - current admin
      */
     @Override
@@ -109,38 +109,32 @@ public class AdminManage implements UsersCommonMethods, Choice {
         }
     }
 
-    public void generalEdit(Scanner sc, Admin admin, UsersRole userRole) {
+    public User generalEdit(Scanner sc, Admin admin, UsersRole userRole) {
+        ArrayList<User> temp = Main.getRunManage().getUsers();
         int length = showUsersList(userRole);
         System.out.println("Select one of the customers to remove or press zero to back");
         int choice = getChoice(sc, length);
         if (choice == 0) {
             menu(sc, admin);
-            return;
+            return null;
         }
         User user = findUser(choice, userRole);
-        Main.getRunManage().getUsers().remove(user);
+        temp.remove(user);
+        Main.getRunManage().setUsers(temp);
         System.out.println("Successfully done.");
         System.out.println("==============================================================================================================");
+        return user;
     }
 
     public void sellerEdit(Scanner sc, Admin admin) {
-        int length = showUsersList(UsersRole.SELLER);
-        System.out.println("Select one of the sellers to remove or press zero to back");
-        int choice = getChoice(sc, length);
-        if (choice == 0) {
-            menu(sc, admin);
-            return;
-        }
-        User removeUser = findUser(choice, UsersRole.SELLER);
-        Main.getRunManage().getUsers().remove(removeUser);
-        Seller removeSeller = (Seller) removeUser;
-        removeSeller.setProducts(new ArrayList<>());
-        removeSellerAds(removeSeller, Main.getRunManage().getCustomerManage().getProducts());
-        removeSellerAds(removeSeller, req);
+        Seller deletedSeller = (Seller) generalEdit(sc, admin, UsersRole.SELLER);
+        deletedSeller.setProducts(new ArrayList<>());
+        removeSellerAds(deletedSeller, Main.getRunManage().getCustomerManage().getProducts());
+        removeSellerAds(deletedSeller, req);
         Main.getRunManage().getUsers().stream()
                 .filter(user -> user instanceof Customer)
                 .map(user -> (Customer) user)
-                .forEach(customer -> removeSellerAds(removeSeller, customer.getSavedBox()));
+                .forEach(customer -> removeSellerAds(deletedSeller, customer.getSavedBox()));
         System.out.println("Successfully done.");
         System.out.println("==============================================================================================================");
     }
@@ -220,7 +214,7 @@ public class AdminManage implements UsersCommonMethods, Choice {
     }
 
     public void removeSellerAds(Seller removeSeller, ArrayList<Product> ads) {
-        ads.removeIf(product -> removeSeller.getUserName().matches(product.getSeller().getUserName()));
+        ads.removeIf(product -> removeSeller.equals(product.getSeller()));
     }
 
     public void adsEdit(Scanner sc, Admin admin) {

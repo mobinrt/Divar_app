@@ -1,7 +1,7 @@
 package ir.ac.kntu.manage.user;
 
 import ir.ac.kntu.Main;
-import ir.ac.kntu.manage.Choice;
+import ir.ac.kntu.manage.Input;
 import ir.ac.kntu.manage.ShowMenu;
 import ir.ac.kntu.util.*;
 import ir.ac.kntu.util.enums.AdsCategory;
@@ -11,7 +11,7 @@ import ir.ac.kntu.util.users.User;
 
 import java.util.Scanner;
 
-public class DeliveryManage implements UsersCommonMethods, Choice {
+public class DeliveryManage implements UsersCommonMethods, Input {
     @Override
     public void menu(Scanner sc, User user) {
         Delivery delivery = (Delivery) user;

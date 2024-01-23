@@ -7,7 +7,7 @@ import ir.ac.kntu.util.Product;
 
 import java.util.Scanner;
 
-public class FeedbackManage implements Choice {
+public class FeedbackManage implements Input {
     public void handleFeedback(Scanner sc, Customer customer, Product product) {
         ShowMenu.showMenu("Show feedbacks, Add your feedback");
         int choice = getChoice(sc, 3);
