@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class Delivery extends User implements ShowList {
     private final VehicleType vehicleType;
     private boolean isAvailable;
-    private int payment;
     private ArrayList<Product> history;
 
     public Delivery(String userName, String password, String phoneNumber, String email, VehicleType vehicleType) {
@@ -19,7 +18,6 @@ public class Delivery extends User implements ShowList {
         isAvailable = true;
         history = new ArrayList<>();
         setRole(UsersRole.DELIVERY);
-        setPayment(0);
         setX(0);
         setY(0);
         setLocation();
@@ -77,13 +75,5 @@ public class Delivery extends User implements ShowList {
 
     public void setHistory(ArrayList<Product> history) {
         this.history = history;
-    }
-
-    public double getPayment() {
-        return payment;
-    }
-
-    public void setPayment(int payment) {
-        this.payment = payment;
     }
 }

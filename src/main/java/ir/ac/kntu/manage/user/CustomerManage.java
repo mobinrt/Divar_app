@@ -236,11 +236,10 @@ public class CustomerManage implements UsersCommonMethods, Input {
         deliverPay(sc, customer, product, adsCategory);
     }
 
-
     private void deliverPay(Scanner sc, Customer customer, Product product, AdsCategory adsCategory) {
         ArrayList<Product> temp = Main.getRunManage().getMainAdminManage().getDeliveryReq();
         int charge = (int) customer.calculateDistance(customer, product.getSeller()) * adsCategory.getBaseCharge();
-        staticMethod.makeSureToDeliver(charge, adsCategory);
+        staticMethod.makeSureToDeliver(charge);
         int i = getChoice(sc, 2);
         if (i == 2) {
             product.setSold(true);

@@ -60,7 +60,7 @@ public class CustomerStaticMethod implements Input {
         filter[1] = temp;
     }
 
-    public void makeSureToDeliver(int charge, AdsCategory adsCategory) {
+    public void makeSureToDeliver(int charge) {
         System.out.println("It costs " + charge + ". Are you sure?");
         System.out.println("1. Yes");
         System.out.println("2. No");

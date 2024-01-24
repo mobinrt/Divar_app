@@ -57,13 +57,6 @@ public class MainAdminManage extends AdminManage implements UsersCommonMethods, 
         }
     }
 
-    private void salaryPayText() {
-        System.out.println("Witch type of user you want to pay?");
-        System.out.println("1. " + UsersRole.DELIVERY);
-        System.out.println("2. " + UsersRole.ADMIN);
-        System.out.println("0. Back");
-    }
-
     private void salaryPay(Scanner sc, MainAdmin mainAdmin) {
         ShowMenu.showMenu("Admin");
         int choice = getChoice(sc, 2);

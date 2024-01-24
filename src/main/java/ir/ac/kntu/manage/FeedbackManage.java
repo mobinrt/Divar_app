@@ -5,6 +5,7 @@ import ir.ac.kntu.util.users.Customer;
 import ir.ac.kntu.util.Feedback;
 import ir.ac.kntu.util.Product;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FeedbackManage implements Input {
@@ -21,11 +22,13 @@ public class FeedbackManage implements Input {
 
     private void feedbackToSeller(Scanner sc, Customer customer, Product product) {
         sc.nextLine();
+        ArrayList<Feedback> temp = product.getSeller().getFeedback();
         Feedback feedback = new Feedback(customer);
         System.out.print("Enter your feedback: ");
         String text = sc.nextLine();
         feedback.setText(text);
-        product.getSeller().getFeedback().add(feedback);
+        temp.add(feedback);
+        product.getSeller().setFeedback(temp);
         System.out.println("Successfully done.");
         System.out.println("===========================================================================================================");
     }
