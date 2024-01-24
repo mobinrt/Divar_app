@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
 
 public class CustomerManage implements UsersCommonMethods, Input {
     private ArrayList<Product> products;
-    CustomerStaticMethod staticMethod;
+    private final CustomerStaticMethod staticMethod;
 
     public CustomerManage() {
         products = new ArrayList<>();
@@ -189,12 +189,8 @@ public class CustomerManage implements UsersCommonMethods, Input {
         ArrayList<Product> customerSavedBox = customer.getSavedBox();
         ArrayList<Product> sellerHistory = product.getSeller().getHistory();
         ArrayList<Product> sellerProducts = product.getSeller().getProducts();
-        outOfBudget(sc, customer, product.getPrice());
-        customer.setWallet(customer.getWallet() - product.getPrice());
-        product.getSeller().setWallet((product.getPrice() * 9) / 10);
-        MainAdmin mainAdmin = staticMethod.findMainAdmin();
-        assert mainAdmin != null;
-        mainAdmin.setWallet(product.getPrice() / 10);
+
+        productPayment(sc, customer, product);
         customerHistory.add(product);
         customer.setHistory(customerHistory);
         sellerProducts.remove(product);
@@ -208,6 +204,15 @@ public class CustomerManage implements UsersCommonMethods, Input {
         products.remove(product);
         System.out.println("Successfully done.");
         System.out.println("===========================================================================================================");
+    }
+
+    private void productPayment(Scanner sc, Customer customer, Product product) {
+        outOfBudget(sc, customer, product.getPrice());
+        customer.setWallet(customer.getWallet() - product.getPrice());
+        product.getSeller().setWallet((product.getPrice() * 9) / 10);
+        MainAdmin mainAdmin = staticMethod.findMainAdmin();
+        assert mainAdmin != null;
+        mainAdmin.setWallet(product.getPrice() / 10);
     }
 
     private void outOfBudget(Scanner sc, Customer customer, double need) {
@@ -234,18 +239,18 @@ public class CustomerManage implements UsersCommonMethods, Input {
 
     private void deliverPay(Scanner sc, Customer customer, Product product, AdsCategory adsCategory) {
         ArrayList<Product> temp = Main.getRunManage().getMainAdminManage().getDeliveryReq();
-        int charge = (int) customer.calculateDistance(customer, product.getSeller());
+        int charge = (int) customer.calculateDistance(customer, product.getSeller()) * adsCategory.getBaseCharge();
         staticMethod.makeSureToDeliver(charge, adsCategory);
         int i = getChoice(sc, 2);
         if (i == 2) {
             product.setSold(true);
             return;
         }
-        outOfBudget(sc, customer, (charge * adsCategory.getBaseCharge()));
+        outOfBudget(sc, customer, charge);
         MainAdmin mainAdmin = staticMethod.findMainAdmin();
         assert mainAdmin != null;
-        mainAdmin.setWallet(charge * adsCategory.getBaseCharge());
-        customer.setWallet(customer.getWallet() - (charge * adsCategory.getBaseCharge()));
+        mainAdmin.setDeliveryMoney(charge);
+        customer.setWallet(customer.getWallet() - charge);
         temp.add(product);
         Main.getRunManage().getAdminManage().setDeliveryReq(temp);
         Main.getRunManage().getMainAdminManage().setDeliveryReq(temp);
@@ -335,11 +340,11 @@ public class CustomerManage implements UsersCommonMethods, Input {
     }
 
     private int showAdsListByCategory(Scanner sc, String adsCategory, Customer customer) {
-//      if (products.isEmpty()) {
-//            System.out.println("Product box is empty");
-//            menu(sc, customer);
-//            return 0;
-//      }
+        if (products.isEmpty()) {
+            System.out.println("Product box is empty");
+            menu(sc, customer);
+            return 0;
+        }
         int[] filter = handlePriceFilter(sc, customer);
         AtomicInteger i = new AtomicInteger(1);
         System.out.println("===============================================   Ads list:  =================================================");
@@ -351,6 +356,7 @@ public class CustomerManage implements UsersCommonMethods, Input {
         System.out.println("==============================================================================================================");
         return i.get();
     }
+
 
     private String equipAdsCategory(Scanner sc, Customer customer) {
         String adsCategory = "";
@@ -375,5 +381,9 @@ public class CustomerManage implements UsersCommonMethods, Input {
 
     public void setProducts(ArrayList<Product> products) {
         this.products = products;
+    }
+
+    public CustomerStaticMethod getStaticMethod() {
+        return staticMethod;
     }
 }

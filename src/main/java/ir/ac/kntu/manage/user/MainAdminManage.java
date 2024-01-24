@@ -65,21 +65,15 @@ public class MainAdminManage extends AdminManage implements UsersCommonMethods, 
     }
 
     private void salaryPay(Scanner sc, MainAdmin mainAdmin) {
-        salaryPayText();
-        int choice = getChoice(sc, 3);
+        ShowMenu.showMenu("Admin");
+        int choice = getChoice(sc, 2);
         UsersRole usersRole;
-        switch (choice) {
-            case 1 -> {
-                usersRole = UsersRole.DELIVERY;
-                salaryPay(sc, mainAdmin, usersRole);
-                menu(sc, mainAdmin);
-            }
-            case 2 -> {
-                usersRole = UsersRole.ADMIN;
-                salaryPay(sc, mainAdmin, usersRole);
-                menu(sc, mainAdmin);
-            }
-            case 3 -> menu(sc, mainAdmin);
+        if (choice == 1) {
+            usersRole = UsersRole.ADMIN;
+            salaryPay(sc, mainAdmin, usersRole);
+            menu(sc, mainAdmin);
+        } else {
+            menu(sc, mainAdmin);
         }
     }
 

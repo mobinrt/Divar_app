@@ -3,6 +3,7 @@ package ir.ac.kntu.util.users;
 import ir.ac.kntu.util.enums.UsersRole;
 
 public class MainAdmin extends Admin {
+    private int deliveryMoney;
 
     /**
      * @param userName    - admin name
@@ -14,5 +15,13 @@ public class MainAdmin extends Admin {
         super(userName, password, phoneNumber, email);
         setRole(UsersRole.MAIN_ADMIN);
         setMainAdmin(true);
+    }
+
+    public int getDeliveryMoney() {
+        return deliveryMoney;
+    }
+
+    public void setDeliveryMoney(int deliveryMoney) {
+        this.deliveryMoney = deliveryMoney;
     }
 }

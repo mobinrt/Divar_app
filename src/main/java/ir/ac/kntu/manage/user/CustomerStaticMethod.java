@@ -61,7 +61,7 @@ public class CustomerStaticMethod implements Input {
     }
 
     public void makeSureToDeliver(int charge, AdsCategory adsCategory) {
-        System.out.println("It costs " + (charge * adsCategory.getBaseCharge()) + ". Are you sure?");
+        System.out.println("It costs " + charge + ". Are you sure?");
         System.out.println("1. Yes");
         System.out.println("2. No");
     }

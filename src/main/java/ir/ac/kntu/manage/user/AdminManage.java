@@ -9,8 +9,9 @@ import ir.ac.kntu.util.users.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
@@ -128,7 +129,7 @@ public class AdminManage implements UsersCommonMethods, Input {
 
     public void sellerEdit(Scanner sc, Admin admin) {
         Seller deletedSeller = (Seller) generalEdit(sc, admin, UsersRole.SELLER);
-        deletedSeller.setProducts(new ArrayList<>());
+        deletedSeller.setProducts(null);
         removeSellerAds(deletedSeller, Main.getRunManage().getCustomerManage().getProducts());
         removeSellerAds(deletedSeller, req);
         Main.getRunManage().getUsers().stream()
@@ -162,9 +163,11 @@ public class AdminManage implements UsersCommonMethods, Input {
         }
         Delivery delivery = findClosestDelivery(product);
         ArrayList<Product> deliveryHistory = delivery.getHistory();
-        int distance = (int) delivery.calculateDistance(delivery, product.getSeller());
-        distance += (int) delivery.calculateDistance(product.getSeller(), product.getCustomer());
-        makeDeliveryUnavailable(distance, product, delivery);
+        int distance1 = (int) delivery.calculateDistance(delivery, product.getSeller());
+        int distance2 = (int) delivery.calculateDistance(product.getSeller(), product.getCustomer());
+        distance1 += distance2;
+        makeDeliveryUnavailable(distance1, product, delivery);
+        deliveryPayment(delivery, product, distance1, distance2);
         deliveryHistory.add(product);
         delivery.setHistory(deliveryHistory);
         delivery.setX(product.getCustomer().getX());
@@ -172,24 +175,25 @@ public class AdminManage implements UsersCommonMethods, Input {
         delivery.setLocation();
     }
 
-    public void makeDeliveryUnavailable(int distanceInKm, Product product, Delivery delivery) {
-        product.setWaitingToSend(false);
-        product.setReadyToSend(false);
-        product.setSold(false);
-        deliveryReq.remove(product);
-        delivery.setAvailable(false);
-        product.setSending(true);
-        System.out.println(delivery);
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                delivery.setAvailable(true);
-                product.setSending(false);
-                product.setSold(true);
-                timer.cancel();
+    private void deliveryPayment(Delivery delivery, Product product, int finalDistance, int distanceForPay) {
+        ExecutorService customExecutor = Executors.newCachedThreadPool();
+        CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+            try {
+                Thread.sleep(finalDistance * 5000L);
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
             }
-        }, distanceInKm * 5000L);
+        }, customExecutor);
+
+        future.thenRun(() -> {
+            MainAdmin mainAdmin = Main.getRunManage().getCustomerManage().getStaticMethod().findMainAdmin();
+            AdsCategory adsCategory = AdsCategory.valueOf(product.getAdsCategory());
+            int charge = adsCategory.getBaseCharge() * distanceForPay;
+            mainAdmin.setDeliveryMoney(mainAdmin.getDeliveryMoney() - charge);
+            delivery.setWallet(charge);
+        });
+
+        customExecutor.shutdown();
     }
 
     public Delivery findClosestDelivery(Product product) {
@@ -213,6 +217,29 @@ public class AdminManage implements UsersCommonMethods, Input {
         return finalDelivery;
     }
 
+    public void makeDeliveryUnavailable(int distanceInKm, Product product, Delivery delivery) {
+        product.setWaitingToSend(false);
+        product.setReadyToSend(false);
+        product.setSold(false);
+        deliveryReq.remove(product);
+        delivery.setAvailable(false);
+        product.setSending(true);
+        System.out.println(delivery);
+
+        ExecutorService makeDeliveryUnavailable = Executors.newCachedThreadPool();
+        makeDeliveryUnavailable.submit(() -> {
+            try {
+                Thread.sleep(distanceInKm * 4000L);
+                delivery.setAvailable(true);
+                product.setSending(false);
+                product.setSold(true);
+            } catch (InterruptedException e) {
+                System.out.println("Sorry! We got unwanted error. Please try again.");
+            }
+        });
+        makeDeliveryUnavailable.shutdown();
+    }
+
     public void removeSellerAds(Seller removeSeller, ArrayList<Product> ads) {
         ads.removeIf(product -> removeSeller.equals(product.getSeller()));
     }
@@ -228,7 +255,7 @@ public class AdminManage implements UsersCommonMethods, Input {
         Product product = customersList.remove(--choice);
         Main.getRunManage().getCustomerManage().setProducts(customersList);
         ArrayList<Product> sellerList = product.getSeller().getProducts();
-        Main.getRunManage().getCustomerManage().staticMethod.deleteProductFromSavedBox(product);
+        Main.getRunManage().getCustomerManage().getStaticMethod().deleteProductFromSavedBox(product);
         sellerList.remove(product);
         product.getSeller().setProducts(sellerList);
         System.out.println("Successfully done.");
@@ -320,3 +347,23 @@ public class AdminManage implements UsersCommonMethods, Input {
         this.deliveryReq = deliveryReq;
     }
 }
+//    public void makeDeliveryUnavailable(int distanceInKm, Product product, Delivery) {
+//        product.setWaitingToSend(false);
+//        product.setReadyToSend(false);
+//        product.setSold(false);
+//        deliveryReq.remove(product);
+//        delivery.setAvailable(false);
+//        product.setSending(true);
+//        System.out.println(delivery);
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                delivery.setAvailable(true);
+//                product.setSending(false);
+//                product.setSold(true);
+//                timer.cancel();
+//            }
+//        }, distanceInKm * 5000L);
+//
+//    }

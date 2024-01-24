@@ -39,7 +39,9 @@ public class Customer extends User implements ShowList {
             return;
         }
         System.out.println("===============================================   History:  ==================================================");
-        showList(history);
+        history.stream()
+                .map(product -> history.indexOf(product) + 1 + ") " + product + " {" + product.productStatus(product) + "}")
+                .forEach(System.out::println);
         System.out.println("==============================================================================================================");
     }
 

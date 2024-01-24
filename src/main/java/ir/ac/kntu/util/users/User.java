@@ -1,6 +1,7 @@
 package ir.ac.kntu.util.users;
 
 import ir.ac.kntu.Main;
+import ir.ac.kntu.manage.Input;
 import ir.ac.kntu.manage.RunManage;
 import ir.ac.kntu.util.ChatRoom;
 import ir.ac.kntu.util.enums.UsersRole;
@@ -9,7 +10,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class User {
+public class User implements Input {
     private UsersRole role;
     private String userName;
     private String password;
@@ -70,10 +71,8 @@ public class User {
     }
 
     public void setLocation(Scanner sc, User user) {
-        System.out.print("Set your location relative to the X-axis: ");
-        int x = sc.nextInt();
-        System.out.print("Set your location relative to the Y-axis: ");
-        int y = sc.nextInt();
+        int x = (int) inputDouble(sc, "Set your location relative to the X-axis: ");
+        int y = (int) inputDouble(sc, "Set your location relative to the Y-axis: ");
         if (!(x >= 0 && y >= 0)) {
             System.out.println("Follow the rule!");
             setLocation(sc, user);
