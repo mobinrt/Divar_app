@@ -1,4 +1,4 @@
-# Project 2 - Divar Sales ad Management System Phase 2
+# Divar Sales ad Management System
 [Documentation](https://docs.google.com/document/d/1w9QAmOihZnK_JHsnD4-3XlfkfuCtT9-VWdjbe38bKJk/edit?usp=sharing)
 
 <ul>
